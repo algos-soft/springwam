@@ -23,7 +23,6 @@ import java.util.Date;
 public class Generator extends VerticalLayout implements View {
 
     private ADateField dateField1;
-
     private ADateField dateField2;
     private ProgressBar progressBar;
     private boolean generatorRunning;
