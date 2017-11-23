@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="webbase">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../webbase/out/production/webbase" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

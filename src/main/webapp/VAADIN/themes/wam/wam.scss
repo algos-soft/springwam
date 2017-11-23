@@ -1,0 +1,518 @@
+/* This contains all of your theme.*/
+/* If somebody wants to extend the theme she will include this mixin. */
+@mixin wam {
+
+  // bottoni del dialogo di scelta funzioni nella scheda funzione
+  .bfunzione .v-icon {
+    color: black;
+  }
+
+  // attributi di tutto il tabellone
+  .ctabellone {
+    font-size: 16px;
+  }
+
+  //@media screen and (max-width: 640px) {
+  //  .ctabellone {
+  //    font-size: 36px;
+  //  }
+  //}
+
+  // attributi ereditati dalle celle del tabellone
+  .cbasecell {
+    display: block;
+    white-space: nowrap;
+  }
+
+  // componente servizio2
+  //$dark: rgba(218, 115, 0, 1);
+  //$light: rgba(218, 115, 0, 0.6);
+  .cservizio {
+    @extend .cbasecell;
+    border-top-style: solid;
+    border-top-width: 0.1em;
+    border-top-left-radius: 6px;
+    border-color: rgb(101, 101, 104);
+
+    //padding-top: 0.5em;
+    //cursor: pointer;
+
+    //background: $dark;
+    //background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    //background: -moz-linear-gradient(top, $dark, $light, $dark);
+    //background: -o-linear-gradient(top, $dark, $light, $dark);
+    //background: linear-gradient(top, $dark, $light, $dark);
+  }
+
+  // titolo servizio2 nel tabellone
+  // (il colore di background è iniettato dinamicamente)
+  //$dark: rgb(101, 101, 104);
+  //$light: rgba(101, 101, 104, 0.6);
+  .cservizio-titolo {
+
+    //background: $dark;
+    //background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    //background: -moz-linear-gradient(top, $dark, $light, $dark);
+    //background: -o-linear-gradient(top, $dark, $light, $dark);
+    //background: linear-gradient(top, $dark, $light, $dark);
+
+    color: white;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+
+  }
+
+  //// titolo servizio2 a orario variabile
+  //$dark: rgb(186, 180, 0);
+  //$light: rgba(186, 180, 0, 0.6);
+  //.cservizio-variabile {
+  //  @extend .cservizio-ora;
+  //  background: $dark;
+  //  background: -webkit-linear-gradient(top, $dark, $light, $dark);
+  //  background: -moz-linear-gradient(top, $dark, $light, $dark);
+  //  background: -o-linear-gradient(top, $dark, $light, $dark);
+  //  background: linear-gradient(top, $dark, $light, $dark);
+  //}
+
+  .cpointer {
+    cursor: pointer;
+  }
+
+  // componente nome nel componente servizio2
+  .cservizio-nome {
+    font-weight: bold;
+    //margin-left: 10%;
+  }
+
+  // componente funzione (singola funzione nel componente CFunzioni)
+  //$dark: rgb(42, 156, 218);
+  //$light: rgba(42, 156, 218, 0.6);
+  .cfunzione {
+    @extend .cbasecell;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-color: rgb(101, 101, 104);
+
+    //background: $dark;
+    //background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    //background: -moz-linear-gradient(top, $dark, $light, $dark);
+    //background: -o-linear-gradient(top, $dark, $light, $dark);
+    //background: linear-gradient(top, $dark, $light, $dark);
+  }
+
+  // componente funzione obbligatoria
+  //$dark: rgb(218, 42, 156);
+  //$light: rgba(218, 42, 156, 0.6);
+  .cfunzioneobblig {
+    @extend .cbasecell;
+    font-weight: bold;
+
+    //background: $dark;
+    //background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    //background: -moz-linear-gradient(top, $dark, $light, $dark);
+    //background: -o-linear-gradient(top, $dark, $light, $dark);
+    //background: linear-gradient(top, $dark, $light, $dark);
+  }
+
+  //// componente base giorno
+  //.cgiorno {
+  //  @extend .cbasecell;
+  //  color: white;
+  //  text-align: center;
+  //  border-radius: 6px;
+  //}
+
+  // colore base del giorno
+  $dark: rgb(101, 101, 104);
+  $light: rgba(101, 101, 104, 0.6);
+  .cgiorno {
+    @extend .cbasecell;
+
+    background: $dark;
+    background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    background: -moz-linear-gradient(top, $dark, $light, $dark);
+    background: -o-linear-gradient(top, $dark, $light, $dark);
+    background: linear-gradient(top, $dark, $light, $dark);
+
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+
+  }
+
+  // colore del giorno di oggi
+  $dark: rgba(93, 85, 169, 1);
+  $light: rgba(93, 85, 169, 0.6);
+  .cgiorno-today {
+    background: $dark;
+    background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    background: -moz-linear-gradient(top, $dark, $light, $dark);
+    background: -o-linear-gradient(top, $dark, $light, $dark);
+    background: linear-gradient(top, $dark, $light, $dark);
+  }
+
+  // colore dei giorni festivi
+  $dark: rgba(209, 53, 29, 1);
+  $light: rgba(209, 53, 29, 0.6);
+  .cgiorno-festivo {
+    background: $dark;
+    background: -webkit-linear-gradient(top, $dark, $light, $dark);
+    background: -moz-linear-gradient(top, $dark, $light, $dark);
+    background: -o-linear-gradient(top, $dark, $light, $dark);
+    background: linear-gradient(top, $dark, $light, $dark);
+  }
+
+  // componente turno di base
+  .cturno {
+    @extend .cbasecell;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    //padding-top: 0.5em;
+    cursor: pointer;
+  }
+
+  // componente turno di oggi
+  .cturno-today {
+    background: rgba(58, 58, 127, 0.65);
+  }
+
+  // componente turno valido
+  .cturno-ok {
+    background: rgb(0, 140, 13);
+  }
+
+  // componente turno in warning
+  .cturno-warning {
+    background: rgba(237, 237, 0, 0.4);
+  }
+
+  // componente turno in alert
+  .cturno-alert {
+    background: rgba(206, 18, 10, 0.89);
+  }
+
+  // titolo del turno
+  .cturno-title {
+    font-size: small;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // componente no turno
+  .cnoturno {
+    @extend .cbasecell;
+    background: repeating-linear-gradient(
+                    135deg,
+                    rgba(0, 0, 0, 0.05),
+                    rgba(0, 0, 0, 0.05) 0.3em,
+                    rgba(0, 0, 0, 0.0) 0.3em,
+                    rgba(0, 0, 0, 0.0) 0.6em
+    );
+    border-radius: 6px;
+  }
+
+  // cursore a forma di pointer (manina)
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  // componente iscrizione
+  .ciscrizione {
+    @extend .cbasecell;
+    border-radius: 6px;
+    border-bottom-width: thin;
+    border-bottom-style: solid;
+    border-bottom-color: rgba(255, 255, 255, 0.9);
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    text-align: left;
+
+    // label nel componente iscrizione
+    .v-label {
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    // icona nel componente iscrizione
+    .v-icon {
+      font-weight: normal;
+      font-size: 0.7em;
+      color: red;
+    }
+  }
+
+  // componente iscrizione - testo scuro
+  .ciscrizione-dark {
+    $color: rgba(0, 0, 0, 0.75);
+    .v-label {
+      color: $color;
+    }
+    .v-icon {
+      color: $color;
+    }
+  }
+
+  // componente iscrizione - testo chiaro
+  .ciscrizione-light {
+    $color: rgba(255, 255, 255, 0.95);
+    .v-label {
+      color: $color;
+    }
+    .v-icon {
+      color: $color;
+    }
+  }
+
+  // verde
+  .verde {
+    color: green;
+
+    .v-label {
+      color: green;
+    }
+    .v-icon {
+      color: green;
+    }
+    .v-menubar-menuitem {
+      color: green;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: green;
+      background: #6282A3;
+    }
+  }
+
+  // salmone
+  .salmone {
+    color: #FA8072;
+
+    .v-label {
+      color: #FA8072;
+    }
+    .v-icon {
+      color: #FA8072;
+    }
+    .v-menubar-menuitem {
+      color: #FA8072;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #FA8072;
+    }
+  }
+
+  // rosso pompeiano
+  .rosso {
+    color: #D21F1B;
+
+    .v-label {
+      color: #D21F1B;
+    }
+    .v-icon {
+      color: #D21F1B;
+    }
+    .v-menubar-menuitem {
+      color: #D21F1B;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #D21F1B;
+    }
+  }
+
+  // altro colore
+  .blue {
+    .v-label {
+      color: blue;
+    }
+    .v-icon {
+      color: blue;
+    }
+    .v-grid-row {
+      color: blue;
+    }
+  }
+
+  .v-caption-wamTable {
+    color: red;
+    font-weight: bold;
+  }
+
+  .v-select-optiongroup-horizontal .v-select-option {
+    display: inline-block;
+  }
+
+  .v-select-optiongroup-horizontal {
+    white-space: nowrap;
+  }
+
+  .v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
+    padding-right: 10px;
+  }
+
+  .buttonGreen {
+    color: white;
+    background: #4CAF50;
+  }
+  /* Green */
+
+  .buttonBlue {
+    color: white;
+    background: rgba(52, 137, 215, 0.75);
+  }
+  /* Blue */
+
+  .buttonRed {
+    color: white;
+    background: #f44336;
+  }
+  /* Red */
+
+  .yellowBg {
+    background: #FFFF99;
+  }
+
+  .greenBg {
+    background: #7FCA9F;
+  }
+
+  .blueBg {
+    background: #a0f0f0;
+  }
+
+  .pinkBg {
+    background: #FF9999;
+  }
+
+  .redBg {
+    background: #F0311E;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .grayBg {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .darkGrayBg {
+    background: #5d5d5d;
+  }
+
+  .lightGrayBg {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  //.v-grid-row.error_row > td {
+  //  background-color: red;
+  //}
+
+  .verde {
+    color: green;
+
+    .v-label {
+      color: green;
+    }
+    .v-icon {
+      color: green;
+    }
+    .v-menubar-menuitem {
+      color: green;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: green;
+      background: #6282A3;
+    }
+  }
+
+  .salmone {
+    color: #FA8072;
+
+    .v-label {
+      color: #FA8072;
+    }
+    .v-icon {
+      color: #FA8072;
+    }
+    .v-menubar-menuitem {
+      color: #FA8072;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #FA8072;
+    }
+  }
+
+  .rosso {
+    color: #D21F1B;
+
+    .v-label {
+      color: #D21F1B;
+    }
+    .v-icon {
+      color: #D21F1B;
+    }
+    .v-menubar-menuitem {
+      color: #D21F1B;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #D21F1B;
+    }
+  }
+
+
+  .blue {
+    color: #1030d2;
+
+    .v-label {
+      color: #1030d2;
+    }
+    .v-icon {
+      color: #1030d2;
+    }
+    .v-menubar-menuitem {
+      color: #1030d2;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #1030d2;
+    }
+  }
+
+}

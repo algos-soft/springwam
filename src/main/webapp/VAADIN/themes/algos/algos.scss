@@ -1,0 +1,334 @@
+/* This contains all of your theme.*/
+/* If somebody wants to extend the theme she will include this mixin. */
+@mixin algos {
+
+  /* Insert your theme rules here */
+  .v-menubar-mainmenu {
+    background: yellow;
+    font-family: "Lucida Sans", Georgia, Serif;
+    font-size: large;
+    border: 5px solid white;
+  }
+  .mymenubar {
+    color: white;
+    background: #0B6CFF;
+    font-family: Arial;
+    font-size: 24px;
+    font-heith: 80px;
+    font-weight: bold;
+    border: 5px solid white;
+    height: 44px;
+  }
+  .mybutton {
+    color: white;
+    background: #0B6CFF;
+    font-family: Arial;
+    font-size: 24px;
+    font-weight: bold;
+    height: 44px;
+  }
+  .toolbar {
+    background: #D8D8D8;
+    padding: 1em;
+  }
+
+  .colorebase {
+    background: #F2FFEE;
+  }
+
+  .yellowBg {
+    background: #FFFF99;
+  }
+
+  .greenBg {
+    background: #7FCA9F;
+  }
+
+  .blueBg {
+    background: #a0f0f0;
+  }
+
+  .pinkBg {
+    background: #FF9999;
+  }
+
+  .redBg {
+    background: #F0311E;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .grayBg {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .darkGrayBg {
+    background: #5d5d5d;
+  }
+
+  .lightGrayBg {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+
+  .v-textfield-align-left {
+    text-align: left;
+  }
+
+  .v-textfield-align-center {
+    text-align: center;
+  }
+
+  .v-textfield-align-right {
+    text-align: right;
+  }
+
+  .error-screen-msg {
+    font-size: 18px;
+    color: red
+  }
+
+  .v-menubar .v-menubar-menuitem-highlight {
+    color: white;
+    background: #6282A3;
+  }
+
+  .v-menubar-submenu .v-menubar-menuitem-highlight {
+    color: white;
+    background: #6282A3;
+  }
+
+  .v-icon {
+    color:blue;
+  }
+
+  .icon-red {
+    .v-icon {
+      color: red;
+    }
+  }
+
+  .icon-green {
+    .v-icon {
+      color: green;
+    }
+  }
+
+  // verde
+  .verde {
+    color: green;
+
+    .v-label {
+      color: green;
+    }
+    .v-icon {
+      color: green;
+    }
+    .v-menubar-menuitem {
+      color: green;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: green;
+      background: #6282A3;
+    }
+  }
+
+  // salmone
+  .salmone {
+    color: #FA8072;
+
+    .v-label {
+      color: #FA8072;
+    }
+    .v-icon {
+      color: #FA8072;
+    }
+    .v-menubar-menuitem {
+      color: #FA8072;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #FA8072;
+    }
+  }
+
+  // rosso pompeiano
+  .rosso {
+    color: #D21F1B;
+    //background: #6282A3;
+
+    .v-label {
+      color: #D21F1B;
+    }
+    .v-icon {
+      color: #D21F1B;
+    }
+    .v-menubar-menuitem {
+      color: #D21F1B;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-caption {
+      color: red;
+    }
+    .v-grid-row {
+      color: #D21F1B;
+    }
+  }
+
+  // altro colore
+  .blue {
+    .v-label {
+      color: blue;
+    }
+    .v-icon {
+      color: blue;
+    }
+    .v-grid-row {
+      color: blue;
+    }
+  }
+
+  .v-grid-caption.rossoa {
+    color: red;
+    font-weight: bold;
+  }
+
+
+  .v-select-optiongroup-horizontal .v-select-option {
+    display: inline-block;
+  }
+
+  .v-select-optiongroup-horizontal {
+    white-space: nowrap;
+  }
+
+  .v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
+    padding-right: 10px;
+  }
+
+  .mydate.v-datefield-parseerror .v-textfield {
+    background: pink;
+  }
+
+  .buttonGreen {
+    color: white;
+    background: #4CAF50;
+  } /* Green */
+
+  .buttonBlue {
+    color: white;
+    background: rgba(52, 137, 215, 0.75);
+  } /* Blue */
+
+  .buttonRed {
+    color: white;
+    background: #f44336;
+  } /* Red */
+
+
+  .verde {
+    color: green;
+
+    .v-label {
+      color: green;
+    }
+    .v-icon {
+      color: green;
+    }
+    .v-menubar-menuitem {
+      color: green;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: green;
+      background: #6282A3;
+    }
+  }
+
+  .salmone {
+    color: #FA8072;
+
+    .v-label {
+      color: #FA8072;
+    }
+    .v-icon {
+      color: #FA8072;
+    }
+    .v-menubar-menuitem {
+      color: #FA8072;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #FA8072;
+    }
+  }
+
+  .rosso {
+    color: #D21F1B;
+
+    .v-label {
+      color: #D21F1B;
+    }
+    .v-icon {
+      color: #D21F1B;
+    }
+    .v-menubar-menuitem {
+      color: #D21F1B;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #D21F1B;
+    }
+  }
+
+
+  .blue {
+    color: #1030d2;
+
+    .v-label {
+      color: #1030d2;
+    }
+    .v-icon {
+      color: #1030d2;
+    }
+    .v-menubar-menuitem {
+      color: #1030d2;
+      background: #E5E4E2;
+    }
+    .v-menubar-menuitem-highlight {
+      color: white;
+      background: #6282A3;
+    }
+    .v-grid-row {
+      color: #1030d2;
+    }
+  }
+
+}
