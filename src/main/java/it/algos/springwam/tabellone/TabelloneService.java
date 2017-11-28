@@ -1,6 +1,7 @@
 package it.algos.springwam.tabellone;
 
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.lib.LibDate;
 import it.algos.springvaadin.lib.LibReflection;
 import it.algos.springvaadin.service.AlgosServiceImpl;
 import it.algos.springwam.application.AppCost;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -68,7 +70,7 @@ public class TabelloneService extends AlgosServiceImpl {
     @Override
     public List<Field> getListFields() {
         List<Field> listaField = new ArrayList<>();
-        Field field = LibReflection.getField(Riga.class,"servizio");
+        Field field = LibReflection.getField(Riga.class, "servizio");
         listaField.add(field);
         return listaField;
     }// end of method
@@ -186,18 +188,21 @@ public class TabelloneService extends AlgosServiceImpl {
      *
      * @return selected entities
      */
-    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+    public List<Riga> creaRighe(LocalDateTime giornoInizio, int giorni) {
         List<Riga> righe = new ArrayList<>();
-        List<Turno> listaTurni = null;
-        Turno turno = null;
-        List<Servizio> listaServiziVisibili = servizioService.findAllByCompany();//@todo SOLO visibili (da fare)
+        List<Turno> listaTurni;
+        Turno turno;
+        List<Servizio> listaServiziVisibili = servizioService.findAllByCompanyVisibili();
+        LocalDateTime giorno = null;
         Riga riga;
 
-        if (listaServiziVisibili!=null&&listaServiziVisibili.size()>0) {
+        if (listaServiziVisibili != null && listaServiziVisibili.size() > 0) {
             for (int k = 0; k < listaServiziVisibili.size(); k++) {
                 listaTurni = new ArrayList<>();
+
                 for (int y = 0; y < giorni; y++) {
-                    turno = turnoService.newEntity(null,null);
+                    giorno = LibDate.add(giornoInizio, y);
+                    turno = turnoService.findByServizioAndInizio(listaServiziVisibili.get(k), giorno);
                     listaTurni.add(turno);
                 }// end of for cycle
 

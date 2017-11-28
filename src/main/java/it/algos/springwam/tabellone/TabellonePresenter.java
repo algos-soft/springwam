@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -107,11 +108,11 @@ public class TabellonePresenter extends AlgosPresenterImpl {
 
 
     public List<Riga> creaRighe() {
-        return creaRighe(LocalDate.now(), 7);
+        return creaRighe(LocalDateTime.now(), 7);
     }// end of method
 
 
-    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+    public List<Riga> creaRighe(LocalDateTime giornoInizio, int giorni) {
         return service.creaRighe(giornoInizio,giorni);
     }// end of method
 

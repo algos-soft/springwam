@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class RigaService extends AlgosServiceImpl {
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Riga newEntity(LocalDate giorno, Servizio servizio, List<Turno> turni) {
+    public Riga newEntity(LocalDateTime giorno, Servizio servizio, List<Turno> turni) {
         return newEntity(LibSession.getCompany(), giorno, servizio, turni);
     }// end of method
 
@@ -90,7 +91,7 @@ public class RigaService extends AlgosServiceImpl {
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Riga newEntity(Company company, LocalDate giorno, Servizio servizio, List<Turno> turni) {
+    public Riga newEntity(Company company, LocalDateTime giorno, Servizio servizio, List<Turno> turni) {
         Riga entity = null;
 
         if (company != null) {

@@ -369,6 +369,22 @@ public class ServizioService extends AlgosServiceImpl {
         return findAllByCompany(LibSession.getCompany());
     }// end of method
 
+
+    /**
+     * Returns all instances of the current company.
+     *
+     * @return selected entities
+     */
+    public List findAllByCompanyVisibili() {
+        Company company = LibSession.getCompany();
+
+        if (company != null) {
+            return repository.findByCompanyAndVisibileOrderByOrdineAsc(company, true);
+        } else {
+            return null;
+        }// end of if/else cycle
+    }// end of method
+
     /**
      * Returns all instances of the type.
      * Usa MultiCompany obbligatoria -> ACompanyRequired.obbligatoria

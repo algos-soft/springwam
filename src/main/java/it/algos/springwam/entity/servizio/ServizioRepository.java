@@ -27,6 +27,8 @@ public interface ServizioRepository extends MongoRepository<Servizio, String> {
 
     public List<Servizio> findByCompanyOrderByOrdineAsc(Company company);
 
+    public List<Servizio> findByCompanyAndVisibileOrderByOrdineAsc(Company company, boolean visible);
+
     public List<Servizio> findTop1ByCompanyOrderByOrdineDesc(Company company);
 
 }// end of class

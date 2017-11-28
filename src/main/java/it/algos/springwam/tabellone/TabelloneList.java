@@ -1,17 +1,14 @@
 package it.algos.springwam.tabellone;
 
+import com.apple.laf.AquaButtonLabeledUI;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.GridSelectionModel;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.grid.AlgosGrid;
 import it.algos.springvaadin.label.LabelRosso;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibParams;
-import it.algos.springvaadin.lib.LibSession;
-import it.algos.springvaadin.lib.LibText;
+import it.algos.springvaadin.lib.*;
 import it.algos.springvaadin.list.AlgosListImpl;
 import it.algos.springvaadin.presenter.AlgosPresenterImpl;
 import it.algos.springvaadin.service.AlgosService;
@@ -24,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -38,6 +36,8 @@ import java.util.*;
 @Qualifier(AppCost.TAG_TAB)
 public class TabelloneList extends AlgosListImpl {
 
+    private final static String TURNO_VUOTO = "Turno non<br>(ancora)<br>previsto";
+    private final static int LAR_COLONNE = 170;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -53,7 +53,7 @@ public class TabelloneList extends AlgosListImpl {
      */
     @Override
     protected void fixCaption(String className, List items) {
-        super.caption = LibSession.getCompany().getDescrizione()+" - Situazione dei turni previsti per i servizi dal 24 nov al 31 nov";
+        super.caption = LibSession.getCompany().getDescrizione() + " - Situazione dei turni previsti per i servizi dal 24 nov al 31 nov";
     }// end of method
 
     /**
@@ -84,6 +84,7 @@ public class TabelloneList extends AlgosListImpl {
         }// end of if cycle
 
         grid.inizia(entityClazz, columns, items);
+        grid.setRowHeight(80);
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         this.addComponent(grid);
 
@@ -105,11 +106,13 @@ public class TabelloneList extends AlgosListImpl {
 
     /**
      * Crea le colonne (di tipo Component) per visualizzare i turni
+     * Estrae la data iniziale dalla prima riga
+     * Elabora le date successive dal numero di turni presenti nella prima riga (sono sempre gli stessi, anche se nulli)
      */
     private void columnsTurni(List items) {
         Riga riga = null;
         int colonne = 0;
-        LocalDate giornoInizio = null;
+        LocalDateTime giornoInizio = null;
 
         if (items == null) {
             return;
@@ -127,7 +130,7 @@ public class TabelloneList extends AlgosListImpl {
 
         if (colonne > 0) {
             for (int k = 0; k < colonne; k++) {
-                columnTurno(k);
+                columnTurno(giornoInizio, k);
             }// end of for cycle
         }// end of if cycle
     }// end of method
@@ -136,16 +139,50 @@ public class TabelloneList extends AlgosListImpl {
     /**
      * Crea la colonna (di tipo Component) per visualizzare il turno
      */
-    private void columnTurno(int k) {
-        Component comp;
+    private void columnTurno(LocalDateTime giornoInizio, int delta) {
+        LocalDateTime giorno = LibDate.add(giornoInizio, delta);
+
         Grid.Column colonna = grid.addComponentColumn(riga -> {
-            String name;
+            Turno turno;
             List<Turno> turni = ((Riga) riga).getTurni();
-//            name = turni.get(k).getServizio().getCode();
+            if (turni != null && turni.size() > 0) {
+                try { // prova ad eseguire il codice
+                    turno = turni.get(delta);
+                    if (turno != null) {
+                        Component comp = new Label("Pieno");
+                        return comp;
+                    } else {
+                        VerticalLayout layout = new VerticalLayout(new LabelRosso(TURNO_VUOTO));
+                        layout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+                            @Override
+                            public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
+                                int a=87;
+                            }// end of inner method
+                        });// end of anonymous inner class
+
+                        return layout;
+
+//                        Button comp = new Button(TURNO_VUOTO);
+//                        comp.addClickListener(new Button.ClickListener() {
+//                            @Override
+//                            public void buttonClick(Button.ClickEvent clickEvent) {
+//                                int a=87;
+//                            }// end of inner method
+//                        });// end of anonymous inner class
+//
+//                        return comp;
+
+                    }// end of if/else cycle
+                } catch (Exception unErrore) { // intercetta l'errore
+                    log.error(unErrore.toString());
+                }// fine del blocco try-catch
+            } else {
+            }// end of if/else cycle
+
             return new Label("Pippoz");
         });//end of lambda expressions
 
-        fixColumn(colonna, k + "a", k + "b", 110);
+        fixColumn(colonna, delta + "", LibDate.getWeekLong(giorno), LAR_COLONNE);
     }// end of method
 
 

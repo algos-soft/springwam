@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ public class Riga extends ACompanyEntity {
     @Indexed()
     @AIField(type = AFieldType.date)
     @AIColumn()
-    private LocalDate giorno;
+    private LocalDateTime giorno;
 
 
     /**
