@@ -28,13 +28,6 @@ public abstract class AlgosUIParams extends UI {
     @Autowired
     protected AlgosStartService algosStartService;
 
-    /**
-     * Flag di utilizzo di tre componenti per la view (top, body e footer)
-     * In alternativa usa un solo componente (panel)
-     * Regolato nel metodo genericFixAndPrint() di questa classe
-     * Può essere modificato in @PostConstruct.inizia() della sottoclasse concreta
-     */
-    public boolean usaViewTreComponenti;
 
     /**
      * Flag per un main layout verticale piuttosto che orizzontale.
@@ -272,9 +265,6 @@ public abstract class AlgosUIParams extends UI {
      * Stampa a video (productionMode) i valori per controllo
      */
     protected void genericFixAndPrint() {
-        this.usaViewTreComponenti = true;
-        log.info("AlgosUIParams.usaViewTreComponenti: " + this.usaViewTreComponenti);
-
         this.usaRootLayoutVerticale = true;
         log.info("AlgosUIParams.usaRootLayoutVerticale: " + this.usaRootLayoutVerticale);
 

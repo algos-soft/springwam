@@ -32,8 +32,8 @@ public class AIconField extends AField {
 //     * Regolazioni varie DOPO aver creato l'istanza
 //     * L'istanza può essere creata da Spring o con clone(), ma necessita comunque di questi due parametri
 //     */
-//    protected void inizializza(String publicFieldName, ApplicationListener source, ApplicationListener target) {
-//        super.inizializza(publicFieldName, source);
+//    protected void fixCaption(String publicFieldName, ApplicationListener source, ApplicationListener target) {
+//        super.fixCaption(publicFieldName, source);
 //        if (button != null) {
 //            button.setIcon(VaadinIcons.CHECK);
 //        }// end of if cycle

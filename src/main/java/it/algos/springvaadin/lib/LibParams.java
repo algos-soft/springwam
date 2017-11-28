@@ -118,17 +118,6 @@ public abstract class LibParams {
     }// end of static method
 
 
-    /**
-     * Flag di utilizzo di tre componenti per la view (top, body e footer)
-     * In alternativa usa un solo componente (panel)
-     * Regolato nella classe AlgosUIParams con @PostConstruct inizia()->genericFixAndPrint()
-     * Modificato nella sottoclasse concreta xxxVaadinUI con @PostConstruct inizia()->specificFixAndPrint()
-     */
-    @SuppressWarnings("all")
-    public static boolean usaViewTreComponenti() {
-        return LibVaadin.getUI() != null ? ((AlgosUIParams) LibVaadin.getUI()).usaViewTreComponenti : true;
-    }// end of static method
-
 
     /**
      * Flag per un main layout verticale piuttosto che orizzontale.

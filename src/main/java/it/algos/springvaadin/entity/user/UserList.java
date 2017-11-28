@@ -34,9 +34,9 @@ public class UserList extends AlgosListImpl {
      * Può essere sovrascritto per un'intestazione (caption) della grid
      */
     @Override
-    protected void inizializza(String className, List items) {
+    protected void fixCaption(String className, List items) {
         if (LibSession.isDeveloper()) {
-            super.inizializza(className, items);
+            super.fixCaption(className, items);
             caption += "</br>Lista visibile a tutti";
             caption += "</br>Usa la company che è ACompanyRequired.obbligatoria";
             caption += "</br>Solo il developer vede queste note";

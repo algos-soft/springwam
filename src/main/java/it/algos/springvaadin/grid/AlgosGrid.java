@@ -2,6 +2,7 @@ package it.algos.springvaadin.grid;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueProvider;
+import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
@@ -79,10 +80,11 @@ public class AlgosGrid extends Grid {
         this.setRowHeight(ALTEZZA_RIGHE_DEFAULT);
         this.addColumns(columns);
 
-        if (items != null) {
+        if (items != null && items.size() > 0) {
             this.setItems(items);
+            this.setHeightMode(HeightMode.ROW);
+            this.setHeightByRows(items.size());
         }// end of if cycle
-        this.setHeightByRows(numeroRighe);
 
         //--Aggiunge alla grid tutti i listener previsti
         addAllListeners();
@@ -98,7 +100,6 @@ public class AlgosGrid extends Grid {
 
         //--modello di selezione righe
         //--lancia (fire) un evento per la condizione iniziale di default della selezione nella Grid
-        Grid.SelectionMode modelloSelezione = null;
         if (pref.isTrue(Cost.KEY_USE_SELEZIONE_MULTIPLA_GRID)) {
             this.setSelectionMode(SelectionMode.MULTI);
             applicationEventPublisher.publishEvent(new AActionEvent(TypeAction.multiSelectionChanged, presenter));

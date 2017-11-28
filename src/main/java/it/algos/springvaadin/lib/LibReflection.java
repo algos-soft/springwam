@@ -3,7 +3,9 @@ package it.algos.springvaadin.lib;
 import com.vaadin.server.Resource;
 import it.algos.springvaadin.entity.ACompanyEntity;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.entity.preferenza.PreferenzaService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 
 import javax.persistence.Table;

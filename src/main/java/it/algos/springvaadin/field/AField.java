@@ -36,7 +36,7 @@ import javax.annotation.PostConstruct;
  * AFieldFactoryImpl.create() ->
  * AlgosConfiguration.Function<Class<? extends AField>, AField> FieldFactory() -> AlgosConfiguration.getField() ->
  * AField.<init> -> AField.inizia() ->
- * inizializza() -> creaContent() -> setName() -> setSource() -> addListener() -> regolaParametri() -> setWidth() -> setFocus() ->
+ * fixCaption() -> creaContent() -> setName() -> setSource() -> addListener() -> regolaParametri() -> setWidth() -> setFocus() ->
  * AlgosFormImpl.bindFields() -> AField.initContent() -> AField.getValue() -> AField.doSetValue
  */
 @SpringComponent

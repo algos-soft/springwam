@@ -5,10 +5,14 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import it.algos.springvaadin.annotation.AIEntity;
 import it.algos.springvaadin.field.ADateField;
 import it.algos.springvaadin.lib.DateConvertUtils;
+import it.algos.springvaadin.login.ARoleType;
+import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.servizio.Servizio;
 
 import javax.persistence.EntityManager;
@@ -20,10 +24,12 @@ import java.util.Date;
 /**
  * Componente per preparare il generatore/eliminatore di turni vuoti
  */
+@SpringView(name = AppCost.TAG_GEN)
+@AIEntity(roleTypeVisibility = ARoleType.admin)
 public class Generator extends VerticalLayout implements View {
 
-    private ADateField dateField1;
-    private ADateField dateField2;
+    private ADateField dateField1=new ADateField();
+    private ADateField dateField2=new ADateField();;
     private ProgressBar progressBar;
     private boolean generatorRunning;
     private ArrayList<Servizio> servizi;
@@ -33,7 +39,6 @@ public class Generator extends VerticalLayout implements View {
     private MenuBar.MenuItem itemGenera;
 
     public Generator() {
-
         this.genera = true;
 
         addComponent(creaCompTitolo());
@@ -46,7 +51,6 @@ public class Generator extends VerticalLayout implements View {
 
         // seleziona l'item Genera
         itemGenera.getCommand().menuSelected(itemGenera);
-
     }// end of Spring constructor
 
 

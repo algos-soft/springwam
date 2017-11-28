@@ -53,8 +53,8 @@ public class Edit2Dialog extends Window implements ApplicationListener {
 
 
         field.setValue("");
-//        buttonBack.inizializza(null,source);
-//        buttonAccetta.inizializza(null,source);
+//        buttonBack.fixCaption(null,source);
+//        buttonAccetta.fixCaption(null,source);
         this.setModal(true);
         this.setResizable(false);
         this.setClosable(false);

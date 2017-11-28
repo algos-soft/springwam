@@ -68,25 +68,26 @@ public abstract class AEntity implements Serializable {
 
 
     /**
-     * Data di nuovo del record (obbligatoria, non modificabile)
-     * Gestita in automatico
+     * Data di creazione del nuovo record (facoltativa, non modificabile)
+     * Gestita in automatico.
+     * Utilizzo obbligatorio o facoltativo.
+     * Regolato uguale per tutta l'applicazione col flag KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA
      * Field visibile solo al developer
      */
-    @NotNull
     @AIField(type = AFieldType.localdatetime, name = "Creazione della scheda", roleTypeVisibility = ARoleType.developer, dev = FieldAccessibility.showOnly)
     @AIColumn(roleTypeVisibility = ARoleType.nobody)
-    public LocalDateTime dataCreazione;
+    public LocalDateTime creazione;
 
 
     /**
-     * Data di edit del record (obbligatoria, modificabile solo da codice, non da UI)
-     * Gestita in automatico
+     * Data di edit del record (facoltativa, modificabile solo da codice, non da UI)
+     * Utilizzo obbligatorio o facoltativo.
+     * Regolato uguale per tutta l'applicazione col flag KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA
      * Field visibile solo al developer
      */
-    @NotNull
     @AIField(type = AFieldType.localdatetime, name = "Ultima modifica della scheda", roleTypeVisibility = ARoleType.developer, dev = FieldAccessibility.showOnly)
     @AIColumn(roleTypeVisibility = ARoleType.nobody)
-    public LocalDateTime dataModifica;
+    public LocalDateTime modifica;
 
 }// end of entity abstract class
 

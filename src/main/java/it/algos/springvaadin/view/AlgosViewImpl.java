@@ -5,8 +5,10 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.bottone.AButtonType;
+import it.algos.springvaadin.entity.preferenza.PreferenzaService;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AlgosForm;
+import it.algos.springvaadin.lib.Cost;
 import it.algos.springvaadin.list.AlgosList;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.menu.MenuLayout;
@@ -17,18 +19,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ApplicationListener;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * Created by gac on 07/07/17
  * Implementazione standard dell'annotation AlgosView
+ * La vista sia List che Form, 'normalmente' si compone di:
+ * Top - eventuali scritte esplicative, collezione usata, records trovati, tipo di modifica, ecc
+ * Body - Grid o fields del Form. Scorrevole
+ * Footer - barra dei bottoni
  */
 public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView {
 
     //--la lista specifica viene iniettata dal costruttore della sottoclasse concreta
     private AlgosList list;
-    SecurityProperties.User pippo;
 
     //--il form specifico viene iniettato dal costruttore della sottoclasse concreta
     private AlgosForm form;
@@ -38,6 +44,9 @@ public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView 
 
     @Autowired
     protected MenuLayout menuLayout;
+
+    @Autowired
+    public PreferenzaService pref;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -49,6 +58,14 @@ public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView 
         this.list = list;
         this.form = form;
     }// end of Spring constructor
+
+
+    /**
+     * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
+     */
+    @PostConstruct
+    private void inizia() {
+    }// end of method
 
     /**
      * Metodo inserito per compatibilità con l'annotation View, ma non utilizzato
@@ -71,8 +88,16 @@ public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView 
      */
     @Override
     public void setList(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+//        if (pref.isTrue(Cost.KEY_USE_DEBUG, false)) {
+//            this.addStyleName("greenBg");
+//        }// end of if cycle
+//        removeAllComponents();
+//        this.setMargin(false);
+//        this.setWidth("100%");
+//        this.setHeight("100%");
+
+        fixGUI();
         fixMenu();
-        removeAllComponents();
         list.restart(presenter, entityClazz, columns, items);
         addComponent(list.getComponent());
     }// end of method
@@ -84,11 +109,11 @@ public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView 
      */
     protected void fixMenu() {
         AlgosUI algosUI = getUI();
+        menuLayout.start();
         if (algosUI != null) {
             algosUI.menuPlaceholder.removeAllComponents();
             algosUI.menuPlaceholder.addComponent(menuLayout);
         }// end of if cycle
-
     }// end of method
 
 
@@ -125,11 +150,26 @@ public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView 
      */
     @Override
     public void setFormLink(ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField, List<Field> reflectedFields, AButtonType type) {
-        removeAllComponents();
+        fixGUI();
         form.restartLink(source, target, sourceField, entityBean, reflectedFields, type);
         addComponent(form.getComponent());
         enableButtonForm(AButtonType.revert, false);
         enableButtonForm(AButtonType.registra, false);
+    }// end of method
+
+
+    /**
+     * Regola l'aspetto grafico di questo contenitore
+     *
+     */
+    public void fixGUI() {
+        if (pref.isTrue(Cost.KEY_USE_DEBUG, false)) {
+            this.addStyleName("greenBg");
+        }// end of if cycle
+        removeAllComponents();
+        this.setMargin(false);
+        this.setWidth("100%");
+        this.setHeight("100%");
     }// end of method
 
 

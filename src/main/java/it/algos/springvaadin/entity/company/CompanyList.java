@@ -1,11 +1,8 @@
 package it.algos.springvaadin.entity.company;
 
 import com.vaadin.data.HasValue;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import it.algos.springvaadin.bottone.AButton;
 import it.algos.springvaadin.grid.AlgosGrid;
 import it.algos.springvaadin.lib.Cost;
 import it.algos.springvaadin.lib.LibSession;
@@ -16,13 +13,8 @@ import it.algos.springvaadin.toolbar.ListToolbar;
 import it.algos.springvaadin.ui.AlgosUI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.convert.Property;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by gac on 13/06/17.
@@ -49,9 +41,9 @@ public class CompanyList extends AlgosListImpl {
      * Può essere sovrascritto per un'intestazione (caption) della grid
      */
     @Override
-    protected void inizializza(String className, List items) {
+    protected void fixCaption(String className, List items) {
         if (LibSession.isDeveloper()) {
-            super.inizializza(className, items);
+            super.fixCaption(className, items);
             super.caption += "</br>Lista visibile solo all'admin. Filtrata su una sola company";
             super.caption += "</br>NON usa la company (ovvio)";
             super.caption += "</br>Usabile direttamente, ma anche estendendo la classe";

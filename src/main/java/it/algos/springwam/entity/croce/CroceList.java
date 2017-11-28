@@ -54,9 +54,9 @@ public class CroceList extends AlgosListImpl {
      * Può essere sovrascritto per un'intestazione (caption) della grid
      */
     @Override
-    protected void inizializza(String className, List items) {
+    protected void fixCaption(String className, List items) {
         if (LibSession.isDeveloper()) {
-            super.inizializza(className, items);
+            super.fixCaption(className, items);
             super.caption += "</br>Lista visibile solo all'admin. Filtrata su una sola company";
             super.caption += "</br>NON usa la company (ovvio)";
             super.caption += "</br>Estende la superclasse Company";

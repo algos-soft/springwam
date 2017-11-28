@@ -4,11 +4,13 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.components.grid.GridSelectionModel;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.grid.AlgosGrid;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.lib.Cost;
 import it.algos.springvaadin.lib.LibParams;
+import it.algos.springvaadin.lib.LibSession;
 import it.algos.springvaadin.lib.LibText;
 import it.algos.springvaadin.list.AlgosListImpl;
 import it.algos.springvaadin.presenter.AlgosPresenterImpl;
@@ -46,6 +48,15 @@ public class TabelloneList extends AlgosListImpl {
 
 
     /**
+     * Chiamato ogni volta che la finestra diventa attiva
+     * Può essere sovrascritto per un'intestazione (caption) della grid
+     */
+    @Override
+    protected void fixCaption(String className, List items) {
+        super.caption = LibSession.getCompany().getDescrizione()+" - Situazione dei turni previsti per i servizi dal 24 nov al 31 nov";
+    }// end of method
+
+    /**
      * Creazione della grid
      * Ricrea tutto ogni volta che diventa attivo
      *
@@ -62,7 +73,7 @@ public class TabelloneList extends AlgosListImpl {
         this.removeAllComponents();
 
         //--gestione delle scritte in rosso sopra la Grid
-        inizializza(entityClazz.getSimpleName(), items);
+        fixCaption(entityClazz.getSimpleName(), items);
         if (LibText.isValid(caption)) {
             if (LibParams.usaAvvisiColorati()) {
                 label = new LabelRosso(caption);
@@ -73,6 +84,7 @@ public class TabelloneList extends AlgosListImpl {
         }// end of if cycle
 
         grid.inizia(entityClazz, columns, items);
+        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
         this.addComponent(grid);
 
         //--Prepara la toolbar e la aggiunge al contenitore grafico

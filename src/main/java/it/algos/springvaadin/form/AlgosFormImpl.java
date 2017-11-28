@@ -5,14 +5,19 @@ import com.vaadin.data.BinderValidationStatus;
 import com.vaadin.data.Converter;
 import com.vaadin.data.ValidationResult;
 import com.vaadin.data.validator.AbstractValidator;
+import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.bottone.AButtonType;
 import it.algos.springvaadin.entity.preferenza.Preferenza;
+import it.algos.springvaadin.entity.preferenza.PreferenzaService;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.grid.AlgosGrid;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.lib.*;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.panel.AlgosPanel;
 import it.algos.springvaadin.service.AlgosService;
 import it.algos.springvaadin.service.FieldService;
 import it.algos.springvaadin.toolbar.AToolbar;
@@ -24,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -74,11 +80,35 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
     private final static String CAPTION_EDIT = "Modifica scheda";
 
 
+//    //--Top - Eventuali scritte esplicative come collezione usata, records trovati, ecc
+//    protected VerticalLayout topLayout;
+//
+//    //--valore che può essere regolato nella classe specifica
+//    //--usando un metodo @PostConstruct
+//    protected String caption;
+//
+//    //--Body - Grid. Scorrevole
+//    protected Panel bodyPanel ;
+//
+//    //--AlgosGrid, iniettata dal costruttore
+//    //--un eventuale Grid specifico verrebbe iniettato dal costruttore della sottoclasse concreta
+//    protected AlgosGrid grid;
+//
+//    //--Bottom - Barra dei bottoni
+//    protected VerticalLayout bottomLayout;
+
+    @Autowired
+    protected AlgosPanel bodyPanel;
+
+
     //--toolbar coi bottoni, iniettato dal costruttore
     //--un eventuale Toolbar specifica verrebbe iniettata dal costruttore della sottoclasse concreta
     protected AToolbar toolbar;
     protected AToolbar toolbarNormale;
     private AToolbar toolbarLink;
+
+    @Autowired
+    public PreferenzaService pref;
 
     /**
      * Costruttore @Autowired
@@ -98,6 +128,14 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
 
 
     /**
+     * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
+     */
+    @PostConstruct
+    private void inizia() {
+    }// end of method
+
+
+    /**
      * Creazione del form
      * Ricrea tutto ogni volta che diventa attivo
      * Sceglie tra pannello a tutto schermo, oppure finestra popup
@@ -109,6 +147,13 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
      */
     @Override
     public void restart(ApplicationListener source, List<Field> reflectedFields, AEntity entityBean, boolean usaSeparateFormDialog) {
+        if (pref.isTrue(Cost.KEY_USE_DEBUG, false)) {
+            this.addStyleName("blueBg");
+        }// end of if cycle
+        this.setMargin(false);
+        this.setWidth("100%");
+        this.setHeight("100%");
+
         this.source = source;
         this.entityBean = entityBean;
         toolbar = toolbarNormale;
@@ -183,12 +228,22 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
          * Aggiunge i componenti grafici AField ad una fieldList interna,
          * --necessaria per ''recuperare'' un singolo algosField dal nome
          */
+        VerticalLayout bodyLayout = new VerticalLayout();
+        bodyLayout.setMargin(false);
+        bodyLayout.setHeightUndefined();
+
         //--rimanda ad un metodo separato per poterlo sovrascrivere
-        fixFields(source, this, reflectedFields, entityBean);
+        fixFields(source, bodyLayout, reflectedFields, entityBean);
+
+        //--inserisce il layout con i fields in un pannello scorrevole
+        bodyPanel.setContent(bodyLayout);
+        this.addComponent(bodyPanel);
 
         //--Prepara la toolbar e la aggiunge al layout
         //--rimanda ad un metodo separato per poterlo sovrascrivere
         fixToolbar(this);
+
+        this.setExpandRatio(bodyPanel, 1);
     }// end of method
 
     /**

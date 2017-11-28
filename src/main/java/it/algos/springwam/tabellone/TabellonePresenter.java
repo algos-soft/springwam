@@ -1,6 +1,7 @@
 package it.algos.springwam.tabellone;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.lib.LibAnnotation;
 import it.algos.springvaadin.presenter.AlgosPresenterImpl;
 import it.algos.springvaadin.service.AlgosService;
 import it.algos.springvaadin.view.AlgosView;
@@ -8,6 +9,8 @@ import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.riga.Riga;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -51,7 +54,7 @@ public class TabellonePresenter extends AlgosPresenterImpl {
      * Passa il controllo alla view con i dati necessari
      */
     protected void presentaLista2() {
-        List<LinkedHashMap<String, String>> mappa= service.findMappaRowsColumns();
+        List<LinkedHashMap<String, String>> mappa = service.findMappaRowsColumns();
 
 //        // Create a hashmap
 //        List<HashMap<String, String>> rows = new ArrayList<>();
@@ -75,6 +78,41 @@ public class TabellonePresenter extends AlgosPresenterImpl {
 //            grid2.addColumn(h -> h.get(entry.getKey())).setCaption(entry.getKey());
 //        }
 //        view.setList( mappa);
+    }// end of method
+
+
+    /**
+     * Metodo invocato dalla view ogni volta che questa diventa attiva
+     * oppure
+     * metodo invocato da un Evento (azione) che necessita di aggiornare e ripresentare la Lista
+     * tipo dopo un delete, dopo un nuovo record, dopo la edit di un record
+     * <p>
+     * Recupera dal service tutti i dati necessari (aggiornati)
+     * Recupera dal service le colonne da mostrare nella grid
+     * Recupera dal service gli items (records) della collection, da mostrare nella grid
+     * Passa il controllo alla view con i dati necessari
+     */
+    @Override
+    protected void presentaLista() {
+        List items = null;
+        List<Field> columns = null;
+
+        if (service != null) {
+            columns = service.getListFields();
+            items = creaRighe();
+        }// end of if cycle
+
+        view.setList(entityClass, columns, items);
+    }// end of method
+
+
+    public List<Riga> creaRighe() {
+        return creaRighe(LocalDate.now(), 7);
+    }// end of method
+
+
+    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+        return service.creaRighe(giornoInizio,giorni);
     }// end of method
 
 }// end of class

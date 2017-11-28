@@ -43,8 +43,8 @@ public abstract class AToolbarImpl extends VerticalLayout implements AToolbar {
      */
     public AToolbarImpl(AButtonFactory buttonFactory) {
         this.buttonFactory = buttonFactory;
+        this.setMargin(false);
         this.addComponent(primaRiga);
-        this.addComponent(secondaRiga);
     }// end of @Autowired constructor
 
 
@@ -118,6 +118,10 @@ public abstract class AToolbarImpl extends VerticalLayout implements AToolbar {
      */
     @Override
     public AButton creaAddButtonSecondaRiga(AButtonType type, ApplicationListener source) {
+        if (this.getComponentCount() == 1) {
+            this.addComponent(secondaRiga);
+        }// end of if cycle
+
         return creaAddButtonSecondaRiga(type, source, source, (AEntity) null, (AField) null);
     }// end of method
 

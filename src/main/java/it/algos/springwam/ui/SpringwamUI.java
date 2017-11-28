@@ -145,6 +145,15 @@ public class SpringwamUI extends AlgosUI {
         menuLayout.addView(ServizioNavView.class);
         menuLayout.addView(TurnoNavView.class);
         menuLayout.addView(TabelloneNavView.class);
+    }// end of method
+
+    /**
+     * Lancio della vista iniziale
+     * Chiamato DOPO aver finito di costruire il MenuLayout e la AlgosUI
+     * Deve (DEVE) essere sovrascritto dalla sottoclasse
+     */
+    @Override
+    protected void startVistaIniziale() {
         navigateTo(AppCost.TAG_FUN);
     }// end of method
 

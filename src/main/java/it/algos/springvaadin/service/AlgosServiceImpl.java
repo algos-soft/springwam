@@ -4,12 +4,14 @@ import com.vaadin.ui.Notification;
 import it.algos.springvaadin.entity.ACompanyEntity;
 import it.algos.springvaadin.entity.ACompanyRequired;
 import it.algos.springvaadin.entity.company.Company;
+import it.algos.springvaadin.entity.preferenza.PreferenzaService;
 import it.algos.springvaadin.exception.*;
 import it.algos.springvaadin.form.FormButton;
 import it.algos.springvaadin.lib.*;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.list.ListButton;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.io.Serializable;
@@ -24,6 +26,9 @@ import java.util.List;
 @Slf4j
 public abstract class AlgosServiceImpl implements AlgosService {
 
+
+    @Autowired
+    public PreferenzaService pref;
 
     //--la repository dei dati viene iniettata dal costruttore della sottoclasse concreta
     public MongoRepository repository;
@@ -63,6 +68,12 @@ public abstract class AlgosServiceImpl implements AlgosService {
             creaIdKeySpecifica(entityBean);
         }// end of if cycle
 
+        //--controllo per l'uso delle properties creazione e modifica
+        if (pref.isFalse(Cost.KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA)) {
+            entityBean.creazione = null;
+            entityBean.modifica = null;
+        }// end of if cycle
+
         if (LibParams.useMultiCompany()) {
             switch (tableCompanyRequired) {
                 case nonUsata:
@@ -99,10 +110,10 @@ public abstract class AlgosServiceImpl implements AlgosService {
     private AEntity checkDate(AEntity entityBeanIn) {
         AEntity entityBeanOut = entityBeanIn;
 
-        if (entityBeanOut.dataCreazione == null) {
-            entityBeanOut.dataCreazione = LocalDateTime.now();
+        if (entityBeanOut.creazione == null) {
+            entityBeanOut.creazione = LocalDateTime.now();
         }// end of if cycle
-        entityBeanOut.dataModifica = LocalDateTime.now();
+        entityBeanOut.modifica = LocalDateTime.now();
 
         return entityBeanOut;
     }// end of method
@@ -357,7 +368,31 @@ public abstract class AlgosServiceImpl implements AlgosService {
      * @return fields, oppure null se non esiste l'Annotation specifica @AIForm() nella Entity
      */
     protected List<Field> getFormFields(List<String> listaNomi) {
-        return LibReflection.getFormFields(entityClass, listaNomi, displayCompany());
+        List<Field> listaProperties = LibReflection.getFormFields(entityClass, listaNomi, displayCompany());
+
+        //--controllo per l'uso delle properties creazione e modifica
+        if (pref.isFalse(Cost.KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA)) {
+            Field fieldCreazione = null;
+            Field fieldModifica = null;
+
+            for (Field field : listaProperties) {
+                if (field.getName().equals(Cost.PROPERTY_CREAZIONE)) {
+                    fieldCreazione = field;
+                }// end of if cycle
+                if (field.getName().equals(Cost.PROPERTY_MODIFICA)) {
+                    fieldModifica = field;
+                }// end of if cycle
+            }// end of for cycle
+
+            if (fieldCreazione != null) {
+                listaProperties.remove(fieldCreazione);
+            }// end of if cycle
+            if (fieldModifica != null) {
+                listaProperties.remove(fieldModifica);
+            }// end of if cycle
+        }// end of if cycle
+
+        return listaProperties;
     }// end of method
 
 

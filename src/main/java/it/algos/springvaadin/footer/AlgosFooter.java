@@ -6,9 +6,11 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.label.LabelRosso;
+import it.algos.springvaadin.label.LabelVerde;
 import it.algos.springvaadin.lib.LibSession;
 import it.algos.springvaadin.lib.LibText;
 import org.springframework.context.annotation.Lazy;
@@ -18,10 +20,19 @@ import javax.annotation.PostConstruct;
 
 /**
  * Created by gac on 12/06/17
- * .
+ * VerticalLayout has 100% width and undefined height by default.
+ * Barra inferiore di messaggi all'utente.
+ * Può essere visibile o nascosta a seconda del flag booleano KEY_DISPLAY_FOOTER_INFO
+ * La visibilità viene gestita da AlgosUI
+ * Tipicamente dovrebbe mostrare:
+ * Copyright di Algos
+ * Nome dell'applicazione
+ * Versione dell'applicazione
+ * Livello di accesso dell'utente loggato (developer, admin, utente) eventualmente oscurato per l'utente semplice
+ * Company selezionata (nel caso di applicazione multiCompany)
  */
 @SpringComponent
-public class AlgosFooter extends HorizontalLayout {
+public class AlgosFooter extends VerticalLayout {
 
     private final static String DEVELOPER_NAME = "Algos® ";
     private String message = "";
@@ -38,10 +49,8 @@ public class AlgosFooter extends HorizontalLayout {
      */
     @PostConstruct
     protected void inizia() {
-        this.setWidth("100%");
-        this.setMargin(new MarginInfo(false, false, true, false));
+        this.setMargin(false);
         this.setSpacing(true);
-        this.setHeight("60px");
     }// end of method
 
     public void setAppMessage(String message) {
@@ -51,7 +60,7 @@ public class AlgosFooter extends HorizontalLayout {
 
 
     private void fixMessage() {
-        String tag="all companies";
+        String tag = "all companies";
         String companyCode = "";
         this.removeAllComponents();
 
@@ -74,7 +83,6 @@ public class AlgosFooter extends HorizontalLayout {
             }// end of if/else cycle
         }// end of if/else cycle
 
-//        label.setValue(DEVELOPER_NAME + message);
         label = new LabelRosso(DEVELOPER_NAME + message);
         this.addComponent(label);
     }// end of method

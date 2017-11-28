@@ -3,6 +3,7 @@ package it.algos.springwam.entity.iscrizione;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.entity.ACompanyEntity;
 import it.algos.springvaadin.entity.ACompanyRequired;
+import it.algos.springvaadin.entity.stato.Stato;
 import it.algos.springvaadin.field.AFieldType;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.field.FieldAccessibility;
@@ -43,7 +44,7 @@ import java.time.LocalDateTime;
 @Document(collection = AppCost.TAG_ISC)
 @AIEntity(roleTypeVisibility = ARoleType.developer)
 @AIList(columns = {"code", "descrizione"}, dev = ListButton.standard, admin = ListButton.noSearch, user = ListButton.show)
-@AIForm(fields = {"code", "descrizione", "note"})
+@AIForm(fields = {"turno", "utente", "funzione"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -64,7 +65,7 @@ public class Iscrizione extends AEntity {
     @NotNull
     @DBRef
     @AIField(type = AFieldType.link, clazz = ServizioPresenter.class)
-    private Turno turno ;
+    private Turno turno;
 
 
     /**
@@ -73,8 +74,9 @@ public class Iscrizione extends AEntity {
      */
     @NotNull
     @DBRef
-    @AIField(type = AFieldType.link, clazz = UtentePresenter.class)
-    private Utente utente ;
+    @AIField(type = AFieldType.combo, clazz = Utente.class)
+    private Utente utente;
+
 
     /**
      * funzione per cui il milite/volontario/utente si iscrive (obbligatorio)
@@ -82,8 +84,9 @@ public class Iscrizione extends AEntity {
      */
     @NotNull
     @DBRef
-    @AIField(type = AFieldType.link, clazz = FunzionePresenter.class)
-    private Funzione funzione ;
+    @AIField(type = AFieldType.combo, clazz = Funzione.class)
+    @AIColumn(width = 140)
+    private Funzione funzione;
 
 
     /**
@@ -92,7 +95,7 @@ public class Iscrizione extends AEntity {
      */
     @NotNull
     @AIField(type = AFieldType.localdatetime)
-    private LocalDateTime timestamp ;
+    private LocalDateTime timestamp;
 
 
     /**
@@ -100,7 +103,7 @@ public class Iscrizione extends AEntity {
      */
     @NotNull
     @AIField(type = AFieldType.integer)
-    private int minutiEffettivi ;
+    private int minutiEffettivi;
 
 
     /**
@@ -108,7 +111,7 @@ public class Iscrizione extends AEntity {
      * serve per evidenziare il problema nel tabellone
      */
     @AIField(type = AFieldType.checkbox)
-    private boolean esisteProblema ;
+    private boolean esisteProblema;
 
 
     /**

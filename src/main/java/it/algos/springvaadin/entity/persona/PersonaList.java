@@ -34,14 +34,14 @@ public class PersonaList extends AlgosListImpl {
      * Può essere sovrascritto per un'intestazione (caption) della grid
      */
     @Override
-    protected void inizializza(String className, List items) {
+    protected void fixCaption(String className, List items) {
         if (LibSession.isDeveloper()) {
             caption = className + " - ";
             caption += "Non dovrebbero esserci schede.";
             caption += "</br>Lista visibile solo al developer";
             caption += "</br>NON usa la company";
             caption += "</br>L'entity è 'embedded' nelle collezioni che la usano (no @Annotation property DbRef)";
-            caption += "</br>In pratica questa lista non dovrebbe mai essere usata";
+            caption += "</br>In pratica questa lista non dovrebbe mai essere usata (serve come test o per le sottoclassi specifiche)";
         }// end of if cycle
     }// end of method
 

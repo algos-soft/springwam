@@ -132,6 +132,15 @@ public abstract class AlgosUIViews extends AlgosUIParams {
 
 
     /**
+     * Lancio della vista iniziale
+     * Chiamato DOPO aver finito di costruire il MenuLayout e la AlgosUI
+     * Deve (DEVE) essere sovrascritto dalla sottoclasse
+     */
+    protected void startVistaIniziale() {
+    }// end of method
+
+
+    /**
      * Adds a lazy view to the MenuBar
      *
      * @param viewClass the view class to instantiate

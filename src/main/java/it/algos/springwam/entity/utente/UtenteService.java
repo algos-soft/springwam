@@ -220,7 +220,7 @@ public class UtenteService extends AlgosServiceImpl {
 
         if (company != null) {
             if (nonEsiste(company, nome, cognome)) {
-                entity = new Utente(user, admin, dipendente, infermiere, funzioni);
+                entity = new Utente(user, admin, dipendente, infermiere,funzioni);
                 entity.setCompany(company);
                 entity.setNome(nome);
                 entity.setCognome(cognome);

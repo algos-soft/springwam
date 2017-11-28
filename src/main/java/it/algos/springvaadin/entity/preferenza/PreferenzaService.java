@@ -311,6 +311,32 @@ public class PreferenzaService extends AlgosServiceImpl {
      *
      * @return valore della preferenza, nella classe prevista da PrefType
      */
+    public Boolean isFalse(String code) {
+        return !isTrue(code, true);
+    } // end of method
+
+
+    /**
+     * Ricerca della preferenza col codice indicato
+     *
+     * @param code            della preferenza specifica
+     * @param valoreSuggerito se la preferenza non viene trovata
+     *
+     * @return valore della preferenza, nella classe prevista da PrefType, se viene trovata
+     * valoreSuggerito, se non trova la preferenza
+     */
+    public Boolean isFalse(String code, boolean valoreSuggerito) {
+        return !isTrue( code, valoreSuggerito);
+    } // end of method
+
+
+    /**
+     * Ricerca della preferenza col codice indicato
+     *
+     * @param code della preferenza specifica
+     *
+     * @return valore della preferenza, nella classe prevista da PrefType
+     */
     public Boolean isTrue(String code) {
         return isTrue(code, false);
     } // end of method

@@ -115,7 +115,23 @@ public class VersioneSpringvaadinBoot extends VersioneBoot {
         }// fine del blocco if
 
 
-        //--crea una nuova preferenza, globale per tutte le company
+        //--crea una nuova preferenza, valida per tutta l'applicazione
+        if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
+            creaPreferenzaAndVersione(
+                    PROGETTO,
+                    (Company)null,
+                    Cost.KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA,
+                    PrefType.bool,
+                    ARoleType.developer,
+                    "Uso delle properties di creazione e modifica",
+                    false,
+                    PrefEffect.dopoRiavvio,
+                    false,
+                    "Flag generale valido per tutta l'applicazione.\nLe properties o si usano oppure no");
+        }// fine del blocco if
+
+
+        //--crea una nuova preferenza, globale per tutte le company e replicabile per ogni singola (eventuale) company
         if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
             creaPreferenzaAndVersione(
                     PROGETTO,
@@ -127,7 +143,7 @@ public class VersioneSpringvaadinBoot extends VersioneBoot {
         }// fine del blocco if
 
 
-        //--crea una nuova preferenza, globale per tutte le company
+        //--crea una nuova preferenza, globale per tutte le company e replicabile per ogni singola (eventuale) company
         if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
             creaPreferenzaAndVersione(
                     PROGETTO,
@@ -137,7 +153,8 @@ public class VersioneSpringvaadinBoot extends VersioneBoot {
                     false);
         }// fine del blocco if
 
-        //--crea una nuova preferenza, globale per tutte le company
+
+        //--crea una nuova preferenza, globale per tutte le company e replicabile per ogni singola (eventuale) company
         if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
             creaPreferenzaAndVersione(
                     PROGETTO,
@@ -148,7 +165,7 @@ public class VersioneSpringvaadinBoot extends VersioneBoot {
         }// fine del blocco if
 
 
-        //--crea una nuova preferenza, globale per tutte le company
+        //--crea una nuova preferenza, globale per tutte le company e replicabile per ogni singola (eventuale) company
         if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
             creaPreferenzaAndVersione(
                     PROGETTO,
@@ -158,7 +175,7 @@ public class VersioneSpringvaadinBoot extends VersioneBoot {
                     false);
         }// fine del blocco if
 
-        //--crea una nuova preferenza, globale per tutte le company
+        //--crea una nuova preferenza, globale per tutte le company e replicabile per ogni singola company
         if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
             creaPreferenzaAndVersione(
                     PROGETTO,

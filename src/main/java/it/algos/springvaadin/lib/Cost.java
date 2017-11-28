@@ -24,6 +24,8 @@ public abstract class Cost {
     public final static String PROPERTY_COMPANY = "company";
     public final static String PROPERTY_SERIAL = "serialVersionUID";
     public final static String PROPERTY_ORDINE = "ordine";
+    public final static String PROPERTY_CREAZIONE = "creazione";
+    public final static String PROPERTY_MODIFICA = "modifica";
     public final static String COMPANY_CODE = "code";
     public final static String COMPANY_UNICO = "codeCompanyUnico";
 
@@ -100,6 +102,7 @@ public abstract class Cost {
     public final static String KEY_DISPLAY_FOOTER_INFO = "displayFooterInfo";
     public final static String KEY_DISPLAY_TOOLTIPS = "displayTooltips";
     public final static String KEY_USE_SELEZIONE_MULTIPLA_GRID = "useSelezioneMultiplaGrid";
+    public final static String KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA = "usePropertyCreazioneAndModifica";
     public final static String DISPLAY_FIELD_ORDINE = "displayFieldOrdine";
     public final static String DISPLAY_LISTE_COLLEGATE = "displayListeCollegate";
     public final static String USA_FORM_LAYOUT = "usaFormLayout";

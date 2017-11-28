@@ -9,7 +9,6 @@ import it.algos.springvaadin.service.AlgosService;
 import it.algos.springvaadin.toolbar.ListToolbar;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -35,9 +34,9 @@ public class RoleList extends AlgosListImpl {
      * Può essere sovrascritto per un'intestazione (caption) della grid
      */
     @Override
-    protected void inizializza(String className, List items) {
+    protected void fixCaption(String className, List items) {
         if (LibSession.isDeveloper()) {
-            super.inizializza(className, items);
+            super.fixCaption(className, items);
             caption += "</br>Lista visibile solo al developer";
             caption += "</br>NON usa la company";
         }// end of if cycle

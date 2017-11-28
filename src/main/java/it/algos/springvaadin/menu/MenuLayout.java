@@ -2,19 +2,22 @@ package it.algos.springvaadin.menu;
 
 import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
+import com.vaadin.server.Sizeable;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.preferenza.Preferenza;
 import it.algos.springvaadin.entity.preferenza.PreferenzaNavView;
-import it.algos.springvaadin.lib.LibAnnotation;
-import it.algos.springvaadin.lib.LibReflection;
-import it.algos.springvaadin.lib.LibSession;
-import it.algos.springvaadin.lib.LibText;
+import it.algos.springvaadin.entity.preferenza.PreferenzaService;
+import it.algos.springvaadin.lib.*;
 import it.algos.springvaadin.login.ARoleType;
+import it.algos.springvaadin.panel.AlgosPanel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
@@ -23,12 +26,15 @@ import java.util.List;
 
 /**
  * Created by gac on 01/06/17.
- * .
+ * VerticalLayout has 100% width and undefined height by default.
  */
 @Slf4j
 @SpringComponent
 @Scope("singleton")
 public class MenuLayout extends VerticalLayout {
+
+    @Autowired
+    public PreferenzaService pref;
 
     public static String MENU_ABILITATO = "highlight";
     public static String MENU_DISABILITATO = "disabilitato";
@@ -83,16 +89,17 @@ public class MenuLayout extends VerticalLayout {
      * avvia la menubar, dopo aver aggiunto tutte le viste
      */
     public void start() {
+        this.removeAllComponents();
         if (firstMenuBar.getItems().size() > 0) {
-            this.addComponent(firstMenuBar);
+            this.addComponent(new AlgosPanel(firstMenuBar));
         }// end of if cycle
 
         if (secondMenuBar.getItems().size() > 0) {
-            this.addComponent(secondMenuBar);
+            this.addComponent(new AlgosPanel(secondMenuBar));
         }// end of if cycle
 
         if (thirdMenuBar.getItems().size() > 0) {
-            this.addComponent(thirdMenuBar);
+            this.addComponent(new AlgosPanel(thirdMenuBar));
         }// end of if cycle
     }// end of method
 

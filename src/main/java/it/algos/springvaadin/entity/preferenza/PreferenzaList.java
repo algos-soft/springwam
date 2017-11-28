@@ -1,8 +1,6 @@
 package it.algos.springvaadin.entity.preferenza;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
@@ -18,16 +16,13 @@ import it.algos.springvaadin.lib.LibDate;
 import it.algos.springvaadin.lib.LibSession;
 import it.algos.springvaadin.list.AlgosListImpl;
 import it.algos.springvaadin.presenter.AlgosPresenterImpl;
-import it.algos.springvaadin.renderer.ByteStringRenderer;
 import it.algos.springvaadin.service.AlgosService;
 import it.algos.springvaadin.toolbar.ListToolbar;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,9 +48,9 @@ public class PreferenzaList extends AlgosListImpl {
      * Può essere sovrascritto per un'intestazione (caption) della grid
      */
     @Override
-    protected void inizializza(String className, List items) {
+    protected void fixCaption(String className, List items) {
         if (LibSession.isDeveloper()) {
-            super.inizializza(className, items);
+            super.fixCaption(className, items);
             caption += "</br>Lista visibile solo all'buttonAdmin che vede SOLO le schede della sua company";
             caption += "</br>Usa la company (se AlgosApp.USE_MULTI_COMPANY=true) che è facoltativa";
             caption += "</br>Solo il developer vede queste note";

@@ -129,6 +129,7 @@ public class IscrizioneService extends AlgosServiceImpl {
      */
     public Iscrizione newEntity(Turno turno, Utente utente, Funzione funzione, LocalDateTime timestamp, int durata) {
         Iscrizione entity = null;
+        int durataPrevistaNelTurno = turno != null ? turno.getServizio().getOraInizio() : 0;
 
         if (nonEsiste(turno, utente)) {
             entity = new Iscrizione(
@@ -136,7 +137,7 @@ public class IscrizioneService extends AlgosServiceImpl {
                     utente,
                     funzione,
                     timestamp != null ? timestamp : LocalDateTime.now(),
-                    durata > 0 ? durata : turno.getServizio().getOraInizio(),//@todo SBAGLIATO
+                    durata > 0 ? durata : durataPrevistaNelTurno,
                     false,
                     "",
                     false);
@@ -224,7 +225,7 @@ public class IscrizioneService extends AlgosServiceImpl {
         if (LibText.isValid(entityBean.id)) {
             return super.save(entityBean);
         } else {
-            if (nonEsiste(turno,utente)) {
+            if (nonEsiste(turno, utente)) {
                 return super.save(entityBean);
             } else {
                 log.error("Ha cercato di salvare una entity già esistente, ma unica");

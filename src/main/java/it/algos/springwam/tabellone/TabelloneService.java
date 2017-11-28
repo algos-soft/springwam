@@ -8,6 +8,8 @@ import it.algos.springwam.entity.riga.Riga;
 import it.algos.springwam.entity.riga.RigaService;
 import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.servizio.ServizioService;
+import it.algos.springwam.entity.turno.Turno;
+import it.algos.springwam.entity.turno.TurnoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +35,8 @@ public class TabelloneService extends AlgosServiceImpl {
     @Autowired
     private ServizioService servizioService;
 
+    @Autowired
+    private TurnoService turnoService;
 
     @Autowired
     private RigaService rigaService;
@@ -175,6 +179,34 @@ public class TabelloneService extends AlgosServiceImpl {
      */
     public List findAllByCompany() {
         return rigaService.findAllByCompany();
+    }// end of method
+
+    /**
+     * Returns all instances of the current company.
+     *
+     * @return selected entities
+     */
+    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+        List<Riga> righe = new ArrayList<>();
+        List<Turno> listaTurni = null;
+        Turno turno = null;
+        List<Servizio> listaServiziVisibili = servizioService.findAllByCompany();//@todo SOLO visibili (da fare)
+        Riga riga;
+
+        if (listaServiziVisibili!=null&&listaServiziVisibili.size()>0) {
+            for (int k = 0; k < listaServiziVisibili.size(); k++) {
+                listaTurni = new ArrayList<>();
+                for (int y = 0; y < giorni; y++) {
+                    turno = turnoService.newEntity(null,null);
+                    listaTurni.add(turno);
+                }// end of for cycle
+
+                riga = rigaService.newEntity(giornoInizio, listaServiziVisibili.get(k), listaTurni);
+                righe.add(riga);
+            }// end of for cycle
+        }// end of if cycle
+
+        return righe;
     }// end of method
 
 }// end of class

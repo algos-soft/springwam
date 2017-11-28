@@ -18,6 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -83,7 +84,7 @@ public class Indirizzo extends AEntity {
      * riferimento dinamico con @DBRef (obbligatorio per il ComboBox)
      */
     @DBRef
-    @NotEmpty()
+    @NotNull
     @AIField(type = AFieldType.combo, clazz = Stato.class)
     @AIColumn(width = 140)
     private Stato stato;

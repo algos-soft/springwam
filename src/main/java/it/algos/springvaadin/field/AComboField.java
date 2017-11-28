@@ -44,10 +44,15 @@ public class AComboField extends AField {
     }// end of method
 
 
+    public void fixCombo(List items) {
+        fixCombo(items, false, false);
+    }// end of method
+
+
     public void fixCombo(List items, boolean nullSelectionAllowed, boolean newItemsAllowed) {
         if (combo != null) {
             combo.setItems(items);
-            this.items=items;
+            this.items = items;
             combo.setEmptySelectionAllowed(nullSelectionAllowed);
 
             // Allow adding new items and add
