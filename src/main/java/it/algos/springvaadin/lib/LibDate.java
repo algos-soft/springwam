@@ -38,18 +38,6 @@ public abstract class LibDate {
 
     private static SimpleDateFormat FORMATO = new SimpleDateFormat();
 
-    /**
-     * Convert java.util.Date to java.time.LocalDateTime
-     *
-     * @param data da convertire
-     *
-     * @return data e ora locale
-     */
-    public static LocalDateTime dateToLocalDateTime(Date data) {
-        Instant instant = Instant.ofEpochMilli(data.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-    }// end of static method
-
 
     /**
      * Convert java.util.Date to java.time.LocalDate
@@ -65,40 +53,15 @@ public abstract class LibDate {
 
 
     /**
-     * Convert java.util.Date to java.time.LocalTime
+     * Convert java.util.Date to java.time.LocalDateTime
      *
      * @param data da convertire
      *
-     * @return ora locale
+     * @return data e ora locale
      */
-    public static LocalTime dateToLocalTime(Date data) {
+    public static LocalDateTime dateToLocalDateTime(Date data) {
         Instant instant = Instant.ofEpochMilli(data.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
-    }// end of static method
-
-
-    /**
-     * Convert java.time.LocalDateTime to java.util.Date
-     *
-     * @param localDateTime da convertire
-     *
-     * @return data
-     */
-    public static Date localDateTimeToDate(LocalDateTime localDateTime) {
-        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        return Date.from(instant);
-    }// end of static method
-
-
-    /**
-     * Convert java.time.LocalDateTime to java.util.Date
-     *
-     * @param localDateTime da convertire
-     *
-     * @return data
-     */
-    public static LocalDate localDateTimeToLocalDate(LocalDateTime localDateTime) {
-        return dateToLocalDate(localDateTimeToDate(localDateTime));
+        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }// end of static method
 
 
@@ -107,13 +70,51 @@ public abstract class LibDate {
      *
      * @param localDate da convertire
      *
-     * @return data
+     * @return data (deprecated)
      */
     public static Date localDateToDate(LocalDate localDate) {
         Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }// end of static method
 
+
+    /**
+     * Convert java.time.LocalDate to java.time.LocalDateTime
+     *
+     * @param localDate da convertire
+     *
+     * @return data con ore e minuti alla mezzanotte
+     */
+    public static LocalDateTime localDateToLocalDateTime(LocalDate localDate) {
+        Date date = localDateToDate(localDate);
+        Instant istante = date.toInstant();
+        return istante.atZone(ZoneId.systemDefault()).toLocalDateTime();
+    }// end of static method
+
+
+    /**
+     * Convert java.time.LocalDateTime to java.time.LocalDate
+     *
+     * @param localDateTime da convertire
+     *
+     * @return data con ore e minuti alla mezzanotte
+     */
+    public static LocalDate localDateTimeToLocalDate(LocalDateTime localDateTime) {
+        return localDateTime.toLocalDate();
+    }// end of static method
+
+
+    /**
+     * Convert java.time.LocalDateTime to java.util.Date
+     *
+     * @param localDateTime da convertire
+     *
+     * @return data (deprecated)
+     */
+    public static Date localDateTimeToDate(LocalDateTime localDateTime) {
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }// end of static method
 
 
     /**
@@ -182,7 +183,6 @@ public abstract class LibDate {
         FORMATO.applyPattern("EEEE d");
         return FORMATO.format(localDateToDate(localDate));
     }// end of static method
-
 
 
     /**
@@ -755,8 +755,8 @@ public abstract class LibDate {
      * Se i giorni sono negativi, li sottrae <br>
      * Esegue solo se la data è valida (non nulla e non vuota) <br>
      *
-     * @param localDate   di riferimento
-     * @param giorni da aggiungere
+     * @param localDate di riferimento
+     * @param giorni    da aggiungere
      *
      * @return la data risultante
      */
@@ -771,8 +771,8 @@ public abstract class LibDate {
      * Se i giorni sono negativi, li sottrae <br>
      * Esegue solo se la data è valida (non nulla e non vuota) <br>
      *
-     * @param localDateTime   di riferimento
-     * @param giorni da aggiungere
+     * @param localDateTime di riferimento
+     * @param giorni        da aggiungere
      *
      * @return la data risultante
      */

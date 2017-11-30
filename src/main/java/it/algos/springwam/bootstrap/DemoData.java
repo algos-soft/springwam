@@ -42,6 +42,7 @@ public class DemoData {
      */
     public Croce creaCroceDemo() {
         Croce croce;
+        croceData.creaCroceTest();
         croce = croceData.creaCroceDemo();
 
         if (croce != null) {

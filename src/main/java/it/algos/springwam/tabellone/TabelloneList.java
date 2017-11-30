@@ -6,6 +6,10 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.GridSelectionModel;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.event.AActionEvent;
+import it.algos.springvaadin.event.AFieldEvent;
+import it.algos.springvaadin.event.TypeAction;
+import it.algos.springvaadin.event.TypeField;
 import it.algos.springvaadin.grid.AlgosGrid;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.lib.*;
@@ -17,7 +21,9 @@ import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.riga.Riga;
 import it.algos.springwam.entity.turno.Turno;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -36,8 +42,16 @@ import java.util.*;
 @Qualifier(AppCost.TAG_TAB)
 public class TabelloneList extends AlgosListImpl {
 
+    /**
+     * Property iniettata da Spring
+     */
+    @Autowired
+    protected ApplicationEventPublisher publisher;
+
     private final static String TURNO_VUOTO = "Turno non<br>(ancora)<br>previsto";
     private final static int LAR_COLONNE = 170;
+
+    private AlgosPresenterImpl source;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -68,6 +82,7 @@ public class TabelloneList extends AlgosListImpl {
     @Override
     public void restart(AlgosPresenterImpl source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
         Label label;
+        this.source = source;
         this.setMargin(false);
         List<String> listaBottoni;
         this.removeAllComponents();
@@ -112,7 +127,7 @@ public class TabelloneList extends AlgosListImpl {
     private void columnsTurni(List items) {
         Riga riga = null;
         int colonne = 0;
-        LocalDateTime giornoInizio = null;
+        LocalDate giornoInizio = null;
 
         if (items == null) {
             return;
@@ -139,8 +154,8 @@ public class TabelloneList extends AlgosListImpl {
     /**
      * Crea la colonna (di tipo Component) per visualizzare il turno
      */
-    private void columnTurno(LocalDateTime giornoInizio, int delta) {
-        LocalDateTime giorno = LibDate.add(giornoInizio, delta);
+    private void columnTurno(LocalDate giornoInizio, int delta) {
+        LocalDate giorno = LibDate.add(giornoInizio, delta);
 
         Grid.Column colonna = grid.addComponentColumn(riga -> {
             Turno turno;
@@ -148,31 +163,22 @@ public class TabelloneList extends AlgosListImpl {
             if (turni != null && turni.size() > 0) {
                 try { // prova ad eseguire il codice
                     turno = turni.get(delta);
+                    VerticalLayout layout = new VerticalLayout();
+
                     if (turno != null) {
-                        Component comp = new Label("Pieno");
-                        return comp;
+                        layout.addComponent(new LabelRosso("Pieno"));
                     } else {
-                        VerticalLayout layout = new VerticalLayout(new LabelRosso(TURNO_VUOTO));
-                        layout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-                            @Override
-                            public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
-                                int a=87;
-                            }// end of inner method
-                        });// end of anonymous inner class
-
-                        return layout;
-
-//                        Button comp = new Button(TURNO_VUOTO);
-//                        comp.addClickListener(new Button.ClickListener() {
-//                            @Override
-//                            public void buttonClick(Button.ClickEvent clickEvent) {
-//                                int a=87;
-//                            }// end of inner method
-//                        });// end of anonymous inner class
-//
-//                        return comp;
-
+                        layout.addComponent(new Label(TURNO_VUOTO));
                     }// end of if/else cycle
+
+                    layout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
+                        @Override
+                        public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
+                            clickCell(turno);
+                        }// end of inner method
+                    });// end of anonymous inner class
+
+                    return layout;
                 } catch (Exception unErrore) { // intercetta l'errore
                     log.error(unErrore.toString());
                 }// fine del blocco try-catch
@@ -186,26 +192,13 @@ public class TabelloneList extends AlgosListImpl {
     }// end of method
 
 
-//    /**
-//     * Creazione della grid
-//     * Ricrea tutto ogni volta che diventa attivo
-//     *
-//     * @param mappa righe/colonne da visualizzare nella Grid
-//     */
-//    public void restart(List<LinkedHashMap<String, String>> mappa) {
-//        Grid<LinkedHashMap<String, String>> grid = null;
-//
-//        this.removeAllComponents();
-//
-//        // Add the grid to the page
-//        grid = addGrid(mappa);
-//        if (grid!=null) {
-//            this.addComponent(addGrid(mappa));
-//        } else {
-//            log.warn("Non sono riuscito a costruire il tabellone");
-//        }// end of if/else cycle
-//
-//    }// end of method
+    /**
+     * Fire event
+     * entityBean Opzionale (entityBean) in elaborazione
+     */
+    public void clickCell(Turno entityBean) {
+        publisher.publishEvent(new AActionEvent(TypeAction.click, source, source, entityBean));
+    }// end of method
 
 
 //    public Grid addGrid(List<LinkedHashMap<String, String>> mappa) {

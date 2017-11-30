@@ -296,7 +296,6 @@ public abstract class AlgosServiceImpl implements AlgosService {
     public List<Field> getListFields() {
         List<Field> listaField = null;
         List<String> listaNomi = null;
-        boolean useCompany = false;
 
         //--Se la classe Entity->@Annotation prevede una lista specifica, usa quella lista (con o senza ID)
         listaNomi = LibAnnotation.getListColumns(entityClass);

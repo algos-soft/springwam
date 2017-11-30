@@ -23,6 +23,7 @@ import it.algos.springwam.entity.funzione.Funzione;
 import it.algos.springwam.entity.funzione.FunzioneService;
 import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.servizio.ServizioService;
+import it.algos.springwam.entity.turno.TurnoService;
 import it.algos.springwam.entity.utente.Utente;
 import it.algos.springwam.entity.utente.UtenteService;
 import it.algos.webbase.web.entity.EM;
@@ -32,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -79,6 +82,9 @@ public class Migration {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TurnoService turnoService;
 
     @Autowired
     protected CompanyData companyData;
@@ -168,6 +174,7 @@ public class Migration {
             importFunzioni(croceOld, croceNew);
             importServizi(croceOld, croceNew);
             importUtenti(croceOld, croceNew);
+            importTurni(croceOld, croceNew);
         }// end of if cycle
 
 //        // regolazioni aggiuntive di una particolare croce/company
@@ -566,6 +573,31 @@ public class Migration {
 
         return funzioni;
     }// end of method
+
+    /**
+     * Importa i turni della croce
+     *
+     * @param croceOld company usata in webambulanze
+     * @param croceNew company usata in springWam
+     */
+    private void importTurni(CroceAmb croceOld, Croce croceNew) {
+        //@todo provvisorio
+        Servizio servizio = null;
+        LocalDate giorno = null;
+
+        servizio = servizioService.findByCompanyAndCode(croceNew, "msa-pom");
+        giorno = LocalDate.of(2017, 11, 30);
+        turnoService.findOrCrea(croceNew, giorno, servizio);
+
+        giorno = LocalDate.of(2017, 12, 1);
+        turnoService.findOrCrea(croceNew, giorno, servizio);
+
+        servizio = servizioService.findByCompanyAndCode(croceNew, "amb-pom");
+        giorno = LocalDate.of(2017, 11, 30);
+        turnoService.findOrCrea(croceNew, giorno, servizio);
+
+    }// end of method
+
 
     /**
      * Creazione di un manager specifico

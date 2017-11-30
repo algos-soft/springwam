@@ -47,7 +47,7 @@ public abstract class Cost {
     public final static String TAG_PRE = "pref";
 
     public final static String BOT_ACCETTA = "accetta";
-    public final static String BOT_ANNULLA = "annulla";
+    public final static String BOT_ANNULLA = "back";
     public final static String BOT_BACK = "back";
     public final static String BOT_CREATE = "nuovo";
     public final static String BOT_DELETE = "elimina";

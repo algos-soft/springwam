@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import it.algos.springvaadin.lib.Cost;
 import it.algos.springvaadin.entity.company.Company;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import java.util.List;
 @SpringComponent
 @Qualifier(AppCost.TAG_TUR)
 public interface TurnoRepository extends MongoRepository<Turno, String> {
+
+    public Turno findByCompanyAndGiornoAndServizio(Company company, LocalDate giorno, Servizio servizio);
 
     public Turno findByCompanyAndServizioAndInizio(Company company, Servizio servizio, LocalDateTime inizio);
 

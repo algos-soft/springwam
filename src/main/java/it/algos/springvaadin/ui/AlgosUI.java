@@ -21,6 +21,7 @@ import it.algos.springvaadin.nav.AlgosNavView;
 import it.algos.springvaadin.view.AlgosView;
 import it.algos.springvaadin.view.AlgosViewImpl;
 import it.algos.springvaadin.view.ViewPlaceholder;
+import it.algos.springwam.turni.Generator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -208,7 +209,13 @@ public abstract class AlgosUI extends AlgosUIViews implements ViewDisplay {
 
             viewPlaceholder.removeAllComponents();
             viewPlaceholder.addComponent((Component) navView);
-        }// end of if cycle
+        } else {
+            root.removeAllComponents();
+            if (view instanceof AlgosNavView) {
+                root.addComponent((AlgosNavView) view);
+            }// end of if cycle
+        }// end of if/else cycle
+
     }// end of method
 
 

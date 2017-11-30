@@ -54,7 +54,7 @@ public class Riga extends ACompanyEntity {
     @Indexed()
     @AIField(type = AFieldType.date)
     @AIColumn()
-    private LocalDateTime giorno;
+    private LocalDate giorno;
 
 
     /**

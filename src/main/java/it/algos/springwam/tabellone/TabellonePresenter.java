@@ -54,45 +54,6 @@ public class TabellonePresenter extends AlgosPresenterImpl {
      * Recupera dal service gli items (records) della collection, da mostrare nella grid
      * Passa il controllo alla view con i dati necessari
      */
-    protected void presentaLista2() {
-        List<LinkedHashMap<String, String>> mappa = service.findMappaRowsColumns();
-
-//        // Create a hashmap
-//        List<HashMap<String, String>> rows = new ArrayList<>();
-//        String FIRST = "Firstname";
-//        String LAST = "Lastname";
-//
-//        for (int i = 0; i < 5; i++) {
-//            HashMap<String, String> fakeBean = new HashMap<>();
-//            fakeBean.put(FIRST, "first" + i);
-//            fakeBean.put(LAST, "last" + i);
-//            rows.add(fakeBean);
-//        }
-
-//        // Create the grid and set its items
-//        Grid<HashMap<String, String>> grid2 = new Grid<>();
-//        grid2.setItems(rows);
-//
-//        // Add the columns based on the first row
-//        HashMap<String, String> s = rows.get(0);
-//        for (Map.Entry<String, String> entry : s.entrySet()) {
-//            grid2.addColumn(h -> h.get(entry.getKey())).setCaption(entry.getKey());
-//        }
-//        view.setList( mappa);
-    }// end of method
-
-
-    /**
-     * Metodo invocato dalla view ogni volta che questa diventa attiva
-     * oppure
-     * metodo invocato da un Evento (azione) che necessita di aggiornare e ripresentare la Lista
-     * tipo dopo un delete, dopo un nuovo record, dopo la edit di un record
-     * <p>
-     * Recupera dal service tutti i dati necessari (aggiornati)
-     * Recupera dal service le colonne da mostrare nella grid
-     * Recupera dal service gli items (records) della collection, da mostrare nella grid
-     * Passa il controllo alla view con i dati necessari
-     */
     @Override
     protected void presentaLista() {
         List items = null;
@@ -108,12 +69,12 @@ public class TabellonePresenter extends AlgosPresenterImpl {
 
 
     public List<Riga> creaRighe() {
-        return creaRighe(LocalDateTime.now(), 7);
+        return creaRighe(LocalDate.now(), 7);
     }// end of method
 
 
-    public List<Riga> creaRighe(LocalDateTime giornoInizio, int giorni) {
-        return service.creaRighe(giornoInizio,giorni);
+    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+        return service.creaRighe(giornoInizio, giorni);
     }// end of method
 
 }// end of class

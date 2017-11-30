@@ -28,6 +28,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,9 +44,9 @@ import java.util.List;
  */
 @SpringComponent
 @Document(collection = AppCost.TAG_TUR)
-@AIEntity(roleTypeVisibility = ARoleType.user, company = ACompanyRequired.obbligatoria)
-@AIList(columns = {"code", "descrizione"}, dev = ListButton.standard, admin = ListButton.noSearch, user = ListButton.show)
-@AIForm(fields = {"code", "descrizione", "note"})
+@AIEntity(roleTypeVisibility = ARoleType.developer, company = ACompanyRequired.obbligatoria)
+@AIList(columns = {"giorno", "servizio"}, dev = ListButton.standard)
+@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni", "titoloExtra", "localitaExtra"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,13 +61,23 @@ public class Turno extends ACompanyEntity {
 
 
     /**
+     * giorno di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
+     */
+    @NotNull
+    @AIField(type = AFieldType.localdate)
+    @AIColumn()
+    private LocalDate giorno;
+
+
+    /**
      * servizio di riferimento (obbligatorio)
      * riferimento dinamico CON @DBRef
      */
     @NotNull
     @DBRef
     @AIField(type = AFieldType.link, clazz = ServizioPresenter.class)
-    private Servizio servizio ;
+    @AIColumn()
+    private Servizio servizio;
 
 
     /**
@@ -74,6 +85,7 @@ public class Turno extends ACompanyEntity {
      */
     @NotNull
     @AIField(type = AFieldType.localdatetime)
+    @AIColumn()
     private LocalDateTime inizio;
 
 
@@ -82,6 +94,7 @@ public class Turno extends ACompanyEntity {
      */
     @NotNull
     @AIField(type = AFieldType.localdatetime)
+    @AIColumn()
     private LocalDateTime fine;
 
 
@@ -95,15 +108,16 @@ public class Turno extends ACompanyEntity {
      * motivazione del turno extra (facoltativo)
      */
     @AIField(type = AFieldType.text)
-    private String titoloExtra ;
+    @AIColumn()
+    private String titoloExtra;
 
 
     /**
      * nome evidenziato della località per turni extra (facoltativo)
      */
     @AIField(type = AFieldType.text)
+    @AIColumn()
     private String localitaExtra;
-
 
 
 //    /**

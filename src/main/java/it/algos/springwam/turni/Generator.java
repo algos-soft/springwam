@@ -2,7 +2,9 @@ package it.algos.springwam.turni;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
@@ -10,11 +12,17 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import it.algos.springvaadin.annotation.AIEntity;
 import it.algos.springvaadin.field.ADateField;
-import it.algos.springvaadin.lib.DateConvertUtils;
+import it.algos.springvaadin.lib.*;
 import it.algos.springvaadin.login.ARoleType;
+import it.algos.springvaadin.nav.AlgosNavView;
+import it.algos.springvaadin.ui.AlgosUI;
+import it.algos.springvaadin.view.AlgosViewImpl;
 import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.servizio.Servizio;
+import it.algos.springwam.tabellone.TabelloneMenuLayout;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -26,10 +34,14 @@ import java.util.Date;
  */
 @SpringView(name = AppCost.TAG_GEN)
 @AIEntity(roleTypeVisibility = ARoleType.admin)
-public class Generator extends VerticalLayout implements View {
+public class Generator extends AlgosNavView {
 
-    private ADateField dateField1=new ADateField();
-    private ADateField dateField2=new ADateField();;
+    private MenuBar firstMenuBar;
+    private TabelloneMenuLayout tabMenuLayout;
+
+    private ADateField dateField1 = new ADateField();
+    private ADateField dateField2 = new ADateField();
+    ;
     private ProgressBar progressBar;
     private boolean generatorRunning;
     private ArrayList<Servizio> servizi;
@@ -38,21 +50,71 @@ public class Generator extends VerticalLayout implements View {
     private Button bEsegui;
     private MenuBar.MenuItem itemGenera;
 
-    public Generator() {
+    public Generator(TabelloneMenuLayout tabMenuLayout) {
+        super(null);
+        this.setMargin(false);
         this.genera = true;
+        this.tabMenuLayout = tabMenuLayout;
+        addMenu();
 
         addComponent(creaCompTitolo());
-        addComponent(creaCompDettaglio());
-
-        Component panComandi = creaPanComandi();
-        addComponent(panComandi);
-
-        setComponentAlignment(panComandi, Alignment.BOTTOM_CENTER);
-
-        // seleziona l'item Genera
-        itemGenera.getCommand().menuSelected(itemGenera);
+//        addComponent(creaCompDettaglio());
+//
+//        Component panComandi = creaPanComandi();
+//        addComponent(panComandi);
+//
+//        setComponentAlignment(panComandi, Alignment.BOTTOM_CENTER);
+//
+//        // seleziona l'item Genera
+//        itemGenera.getCommand().menuSelected(itemGenera);
     }// end of Spring constructor
 
+    private void addMenu() {
+        this.setMargin(false);
+
+        firstMenuBar = new MenuBar();
+        firstMenuBar.addStyleName("blue");
+        firstMenuBar.setAutoOpen(true);
+        this.addComponent(firstMenuBar);
+
+        addMenuBack();
+    }// end of method
+
+    private void addMenuBack() {
+        MenuBar.Command commandBack = null;
+
+        commandBack = new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                getUI().getNavigator().navigateTo(AppCost.TAG_TAB);
+            }// end of inner method
+        };// end of anonymous inner class
+
+        firstMenuBar.addItem(LibText.primaMaiuscola(Cost.BOT_ANNULLA), VaadinIcons.ARROW_BACKWARD, commandBack);
+    }// end of method
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        if (LibVaadin.getUI() != null) {
+//            ((AlgosUI) LibVaadin.getUI()).menuPlaceholder.removeAllComponents();
+//            ((AlgosUI) LibVaadin.getUI()).menuPlaceholder.addComponent(tabMenuLayout);
+        }// end of if cycle
+    }// end of method
+
+
+//    /**
+//     * Opzione per personalizzare il menu
+//     * Sovrascritto
+//     */
+//    @Override
+//    protected void fixMenu() {
+//        AlgosUI algosUI = getUI();
+//
+//        if (algosUI != null) {
+//            algosUI.menuPlaceholder.removeAllComponents();
+//            algosUI.menuPlaceholder.addComponent(tabMenuLayout);
+//        }// end of if cycle
+//    }// end of method
 
     /**
      * Crea il componente che visualizza il titolo

@@ -57,6 +57,23 @@ public class CroceData extends CompanyData {
     /**
      * Crea una croce
      */
+    public Croce creaCroceTest() {
+        Croce croce = creaAndLog(
+                (Organizzazione) null,
+                (Persona) null,
+                "crf",
+                "provvisoria",
+                (Persona) null,
+                "",
+                "",
+                (Indirizzo) null);
+        return croce;
+    }// end of method
+
+
+    /**
+     * Crea una croce
+     */
     public Croce creaCroceDemo() {
         Croce croce = creaAndLog(
                 Organizzazione.csv,
@@ -77,12 +94,12 @@ public class CroceData extends CompanyData {
      *
      * @param organizzazione (facoltativo)
      * @param presidente     (facoltativo)
-     * @param code        di riferimento interno (obbligatorio ed unico)
-     * @param descrizione ragione sociale o descrizione della company (visibile - obbligatoria)
-     * @param contact     persona di riferimento (facoltativo)
-     * @param telefono    della company (facoltativo)
-     * @param email       delal company (facoltativo)
-     * @param indirizzo   della company (facoltativo)
+     * @param code           di riferimento interno (obbligatorio ed unico)
+     * @param descrizione    ragione sociale o descrizione della company (visibile - obbligatoria)
+     * @param contact        persona di riferimento (facoltativo)
+     * @param telefono       della company (facoltativo)
+     * @param email          delal company (facoltativo)
+     * @param indirizzo      della company (facoltativo)
      */
     private Croce creaAndLog(Organizzazione organizzazione, Persona presidente, String code, String descrizione, Persona contact, String telefono, String email, Indirizzo indirizzo) {
         Croce croce = service.findOrCrea(organizzazione, presidente, code, descrizione, contact, telefono, email, indirizzo);

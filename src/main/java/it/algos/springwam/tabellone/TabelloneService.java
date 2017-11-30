@@ -188,25 +188,26 @@ public class TabelloneService extends AlgosServiceImpl {
      *
      * @return selected entities
      */
-    public List<Riga> creaRighe(LocalDateTime giornoInizio, int giorni) {
+    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
         List<Riga> righe = new ArrayList<>();
         List<Turno> listaTurni;
         Turno turno;
         List<Servizio> listaServiziVisibili = servizioService.findAllByCompanyVisibili();
-        LocalDateTime giorno = null;
+        LocalDate giorno = null;
         Riga riga;
 
         if (listaServiziVisibili != null && listaServiziVisibili.size() > 0) {
             for (int k = 0; k < listaServiziVisibili.size(); k++) {
+                Servizio servizio = listaServiziVisibili.get(k);
                 listaTurni = new ArrayList<>();
 
                 for (int y = 0; y < giorni; y++) {
                     giorno = LibDate.add(giornoInizio, y);
-                    turno = turnoService.findByServizioAndInizio(listaServiziVisibili.get(k), giorno);
+                    turno = turnoService.findByGiornoAndServizio(giorno, servizio);
                     listaTurni.add(turno);
                 }// end of for cycle
 
-                riga = rigaService.newEntity(giornoInizio, listaServiziVisibili.get(k), listaTurni);
+                riga = rigaService.newEntity(giornoInizio, servizio, listaTurni);
                 righe.add(riga);
             }// end of for cycle
         }// end of if cycle

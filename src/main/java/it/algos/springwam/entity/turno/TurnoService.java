@@ -1,13 +1,10 @@
 package it.algos.springwam.entity.turno;
 
+import it.algos.springvaadin.lib.*;
 import it.algos.springwam.application.AppCost;
-import it.algos.springvaadin.lib.LibText;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.ACompanyEntity;
-import it.algos.springvaadin.lib.LibSession;
 import it.algos.springvaadin.entity.company.Company;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibAvviso;
 import it.algos.springvaadin.service.AlgosServiceImpl;
 import it.algos.springwam.entity.iscrizione.Iscrizione;
 import it.algos.springwam.entity.servizio.Servizio;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,12 +47,27 @@ public class TurnoService extends AlgosServiceImpl {
      * Properties obbligatorie
      *
      * @param servizio di riferimento (obbligatorio)
-     * @param inizio   giorno, ora e minuto di inizio turno (obbligatorio)
+     * @param giorno   di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
      *
      * @return la entity trovata o appena creata
      */
-    public Turno findOrCrea(Servizio servizio, LocalDateTime inizio) {
-        return findOrCrea((Company) null, servizio, inizio, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+    public Turno findOrCrea(Servizio servizio, LocalDate giorno) {
+        return findOrCrea((Company) null, giorno, servizio, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+    }// end of method
+
+
+    /**
+     * Ricerca di una entity (la crea se non la trova)
+     * Properties obbligatorie
+     *
+     * @param company  (obbligatoria, se manca usa quella presente in LibSession, se manca anche quella non esegue)
+     * @param giorno   di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return la entity trovata o appena creata
+     */
+    public Turno findOrCrea(Company company, LocalDate giorno, Servizio servizio) {
+        return findOrCrea(company, giorno, servizio, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
     }// end of method
 
 
@@ -63,6 +76,7 @@ public class TurnoService extends AlgosServiceImpl {
      * All properties
      *
      * @param company       (obbligatoria, se manca usa quella presente in LibSession, se manca anche quella non esegue)
+     * @param giorno        di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
      * @param servizio      di riferimento (obbligatorio)
      * @param inizio        giorno, ora e minuto di inizio turno (obbligatorio)
      * @param fine          giorno, ora e minuto di fine turno (obbligatorio, suggerito da servizio)
@@ -72,15 +86,15 @@ public class TurnoService extends AlgosServiceImpl {
      *
      * @return la entity trovata o appena creata
      */
-    public Turno findOrCrea(Company company, Servizio servizio, LocalDateTime inizio, LocalDateTime fine, List<Iscrizione> iscrizioni, String titoloExtra, String localitaExtra) {
+    public Turno findOrCrea(Company company, LocalDate giorno, Servizio servizio, LocalDateTime inizio, LocalDateTime fine, List<Iscrizione> iscrizioni, String titoloExtra, String localitaExtra) {
         if (company == null) {
             company = LibSession.getCompany();
         }// end of if cycle
 
         if (company != null) {
-            if (nonEsiste(servizio, inizio)) {
+            if (nonEsiste(giorno, servizio)) {
                 try { // prova ad eseguire il codice
-                    return (Turno) save(newEntity(company, servizio, inizio, fine, iscrizioni, titoloExtra, localitaExtra));
+                    return (Turno) save(newEntity(company, giorno, servizio, inizio, fine, iscrizioni, titoloExtra, localitaExtra));
                 } catch (Exception unErrore) { // intercetta l'errore
                     log.error(unErrore.toString());
                     return null;
@@ -104,7 +118,7 @@ public class TurnoService extends AlgosServiceImpl {
      */
     @Override
     public Turno newEntity() {
-        return newEntity((Company) null, (Servizio) null, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+        return newEntity((Company) null, (LocalDate) null, (Servizio) null, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
     }// end of method
 
 
@@ -120,7 +134,7 @@ public class TurnoService extends AlgosServiceImpl {
      * @return la nuova entity appena creata (non salvata)
      */
     public Turno newEntity(Servizio servizio, LocalDateTime inizio) {
-        return newEntity((Company) null, servizio, inizio, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+        return newEntity((Company) null, (LocalDate) null, servizio, inizio, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
     }// end of method
 
 
@@ -131,6 +145,7 @@ public class TurnoService extends AlgosServiceImpl {
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
      * @param company       (obbligatoria, se manca usa quella presente in LibSession, se manca anche quella non esegue)
+     * @param giorno        di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
      * @param servizio      di riferimento (obbligatorio)
      * @param inizio        giorno, ora e minuto di inizio turno (obbligatorio)
      * @param fine          giorno, ora e minuto di fine turno (obbligatorio, suggerito da servizio)
@@ -140,15 +155,21 @@ public class TurnoService extends AlgosServiceImpl {
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Turno newEntity(Company company, Servizio servizio, LocalDateTime inizio, LocalDateTime fine, List<Iscrizione> iscrizioni, String titoloExtra, String localitaExtra) {
+    public Turno newEntity(Company company, LocalDate giorno, Servizio servizio, LocalDateTime inizio, LocalDateTime fine, List<Iscrizione> iscrizioni, String titoloExtra, String localitaExtra) {
         Turno entity = null;
+
         if (company == null) {
             company = LibSession.getCompany();
         }// end of if cycle
 
+        if (giorno == null) {
+            giorno = LibDate.localDateTimeToLocalDate(inizio);
+        }// end of if cycle
+
         if (company != null) {
-            if (nonEsiste(servizio, inizio)) {
+            if (nonEsiste(giorno, servizio)) {
                 entity = new Turno(
+                        giorno,
                         servizio,
                         inizio,
                         fine,
@@ -170,26 +191,53 @@ public class TurnoService extends AlgosServiceImpl {
     /**
      * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
      *
+     * @param giorno   di inizio turno (obbligatorio)
      * @param servizio di riferimento (obbligatorio)
-     * @param inizio   giorno, ora e minuto di inizio turno (obbligatorio)
      *
      * @return vero se esiste, false se non trovata
      */
-    public boolean esiste(Servizio servizio, LocalDateTime inizio) {
-        return findByServizioAndInizio(servizio, inizio) != null;
+    public boolean esiste(LocalDate giorno, Servizio servizio) {
+        return findByGiornoAndServizio(giorno, servizio) != null;
     }// end of method
 
 
     /**
      * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
      *
+     * @param giorno   di inizio turno (obbligatorio)
      * @param servizio di riferimento (obbligatorio)
-     * @param inizio   giorno, ora e minuto di inizio turno (obbligatorio)
      *
      * @return vero se non esiste, false se trovata
      */
-    public boolean nonEsiste(Servizio servizio, LocalDateTime inizio) {
-        return findByServizioAndInizio(servizio, inizio) == null;
+    public boolean nonEsiste(LocalDate giorno, Servizio servizio) {
+        return findByGiornoAndServizio(giorno, servizio) == null;
+    }// end of method
+
+
+    /**
+     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
+     *
+     * @param giorno   di inizio turno (obbligatorio)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public Turno findByGiornoAndServizio(LocalDate giorno, Servizio servizio) {
+        return findByGiornoAndServizio(LibSession.getCompany(), giorno, servizio);
+    }// end of method
+
+
+    /**
+     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
+     *
+     * @param company  (obbligatoria, se manca usa quella presente in LibSession, se manca anche quella non esegue)
+     * @param giorno   di inizio turno (obbligatorio)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public Turno findByGiornoAndServizio(Company company, LocalDate giorno, Servizio servizio) {
+        return repository.findByCompanyAndGiornoAndServizio(company, giorno, servizio);
     }// end of method
 
 
@@ -278,8 +326,8 @@ public class TurnoService extends AlgosServiceImpl {
     @Override
     public AEntity save(AEntity entityBean) throws Exception {
         Company company = ((ACompanyEntity) entityBean).getCompany();
+        LocalDate giorno = ((Turno) entityBean).getGiorno();
         Servizio servizio = ((Turno) entityBean).getServizio();
-        LocalDateTime inizio = ((Turno) entityBean).getInizio();
 
         if (entityBean == null) {
             return null;
@@ -293,7 +341,7 @@ public class TurnoService extends AlgosServiceImpl {
         if (LibText.isValid(entityBean.id)) {
             return super.save(entityBean);
         } else {
-            if (nonEsiste(servizio, inizio)) {
+            if (nonEsiste(giorno, servizio)) {
                 return super.save(entityBean);
             } else {
                 log.error("Ha cercato di salvare una entity già esistente per questa company");
