@@ -34,12 +34,12 @@ public class IndirizzoPresenter extends AlgosPresenterImpl {
     }// end of Spring constructor
 
 
-    @Override
-    protected List<Field> getFormFieldsLink() {
-        List<Field> reflectedFields = service.getFormFieldsLink();
-        reflectedFields.remove(0); //--rimuove il campo idKey
-
-        return reflectedFields;
-    }// end of method
+//    @Override
+//    protected List<Field> getFormFieldsLink() {
+//        List<Field> reflectedFields = service.getFormFieldsLink();
+//        reflectedFields.remove(0); //--rimuove il campo idKey
+//
+//        return reflectedFields;
+//    }// end of method
 
 }// end of class

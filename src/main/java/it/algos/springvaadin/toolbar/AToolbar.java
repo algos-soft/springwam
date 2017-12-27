@@ -34,9 +34,9 @@ public interface AToolbar {
      * Inietta nei bottoni il parametro obbligatorio (source)
      *
      * @param source       dell'evento generato dai bottoni
-     * @param listaBottoni da visualizzare
+     * @param typeButtons da visualizzare
      */
-    public void inizializza(ApplicationListener source, List<String> listaBottoni);
+    public void inizializza(ApplicationListener source, List<AButtonType> typeButtons);
 
 
     /**

@@ -40,6 +40,8 @@ public class FieldService {
     @Autowired
     private ApplicationContext context;
 
+    @Autowired
+    private MongoService mongoService;
 
     /**
      * Create a single field.
@@ -80,7 +82,7 @@ public class FieldService {
         }// end of if cycle
 
         if (type == AFieldType.combo && targetClazz != null && algosField != null) {
-            items = LibMongo.findAll(targetClazz);
+            items = mongoService.findAll(targetClazz);
             ((AComboField) algosField).fixCombo(items, nullSelection, newItems);
         }// end of if cycle
 

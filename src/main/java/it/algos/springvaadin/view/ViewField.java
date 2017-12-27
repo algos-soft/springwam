@@ -84,7 +84,7 @@ public class ViewField {
 //        }// end of if cycle
 //
 //        if (type == AFieldType.combo && targetClazz != null && field != null) {
-//            items = LibMongo.findAll(targetClazz).toArray();
+//            items = MongoService.findAll(targetClazz).toArray();
 //            ((AComboField) field).fixCombo(items, nullSelection);
 //        }// end of if cycle
 //

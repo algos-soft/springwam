@@ -76,8 +76,8 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
 
     //--intestazioni informative per Form
     //--valori standard
-    private final static String CAPTION_CREATE = "Nuova scheda";
-    private final static String CAPTION_EDIT = "Modifica scheda";
+    protected final static String CAPTION_CREATE = "Nuova scheda";
+    protected final static String CAPTION_EDIT = "Modifica scheda";
 
 
 //    //--Top - Eventuali scritte esplicative come collezione usata, records trovati, ecc
@@ -140,13 +140,12 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
      * Ricrea tutto ogni volta che diventa attivo
      * Sceglie tra pannello a tutto schermo, oppure finestra popup
      *
-     * @param source                presenter di riferimento per i componenti da cui vengono generati gli eventi
-     * @param reflectedFields       previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-     * @param entityBean            nuova istanza da creare, oppure istanza esistente da modificare
-     * @param usaSeparateFormDialog barra alternativa di bottoni per gestire il ritorno ad altro modulo
+     * @param source          presenter di riferimento per i componenti da cui vengono generati gli eventi
+     * @param reflectedFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+     * @param entityBean      nuova istanza da creare, oppure istanza esistente da modificare
      */
     @Override
-    public void restart(ApplicationListener source, List<Field> reflectedFields, AEntity entityBean, boolean usaSeparateFormDialog) {
+    public void restart(ApplicationListener source, List<Field> reflectedFields, AEntity entityBean) {
         if (pref.isTrue(Cost.KEY_USE_DEBUG, false)) {
             this.addStyleName("blueBg");
         }// end of if cycle
@@ -158,11 +157,7 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
         this.entityBean = entityBean;
         toolbar = toolbarNormale;
 
-        if (usaSeparateFormDialog) {
-            usaSeparateFormDialog(source, null, entityBean, null, reflectedFields);
-        } else {
-            usaAllScreen(source, reflectedFields, entityBean);
-        }// end of if/else cycle
+        usaAllScreen(source, reflectedFields, entityBean);
     }// end of method
 
 
@@ -261,8 +256,8 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
      * Sovrascrivibile
      */
     protected void fixToolbar(Layout layout) {
-        List<String> listaBottoni = service.getFormBottonNames();
-        toolbar.inizializza(source, listaBottoni);
+        List<AButtonType> typeButtons = service.getFormTypeButtons();
+        toolbar.inizializza(source, typeButtons);
         layout.addComponent(toolbar.get());
     }// end of method
 
@@ -286,7 +281,7 @@ public class AlgosFormImpl extends VerticalLayout implements AlgosForm {
      * @param reflectedFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
     protected void usaSeparateFormDialog(ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField, List<Field> reflectedFields) {
-        this.removeAllComponents();
+//        this.removeAllComponents();
 
         if (window != null) {
             window.close();

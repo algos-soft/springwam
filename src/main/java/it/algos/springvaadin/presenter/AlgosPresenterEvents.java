@@ -256,7 +256,7 @@ public abstract class AlgosPresenterEvents implements AlgosPresenter {
         }// end of if cycle
 
         if (event instanceof AActionEvent && sourceClazz == thisClazz) {
-            onGridAction((AActionEvent) event);
+            onGridAction(event.getActionType(), entityBean);
         }// end of if cycle
 
     }// end of method
@@ -362,15 +362,13 @@ public abstract class AlgosPresenterEvents implements AlgosPresenter {
 
     /**
      * Handle an action event
-     * Vedi enum AzioneOld
+     * Vedi enum TypeAction
      *
-     * @param event the event to respond to
+     * @param type       Obbligatorio specifica del tipo di evento
+     * @param entityBean Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      */
-    private void onGridAction(AActionEvent event) {
-        TypeAction tipo = event.getActionType();
-        AEntity entityBean = event.getEntityBean();
-
-        switch (tipo) {
+    protected void onGridAction(TypeAction type, AEntity entityBean) {
+        switch (type) {
             case attach:
                 click();
                 break;

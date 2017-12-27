@@ -2,9 +2,11 @@ package it.algos.springwam.tabellone;
 
 import com.apple.laf.AquaButtonLabeledUI;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.GridSelectionModel;
+import it.algos.springvaadin.bottone.AButtonType;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.event.AFieldEvent;
@@ -19,7 +21,9 @@ import it.algos.springvaadin.service.AlgosService;
 import it.algos.springvaadin.toolbar.ListToolbar;
 import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.riga.Riga;
+import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.turno.Turno;
+import it.algos.springwam.entity.turno.TurnoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,6 +52,9 @@ public class TabelloneList extends AlgosListImpl {
     @Autowired
     protected ApplicationEventPublisher publisher;
 
+    @Autowired
+    protected TurnoService turnoService;
+
     private final static String TURNO_VUOTO = "Turno non<br>(ancora)<br>previsto";
     private final static int LAR_COLONNE = 170;
 
@@ -56,7 +63,7 @@ public class TabelloneList extends AlgosListImpl {
     /**
      * Costruttore @Autowired (nella superclasse)
      */
-    public TabelloneList(@Qualifier(AppCost.TAG_CRO) AlgosService service, AlgosGrid grid, ListToolbar toolbar) {
+    public TabelloneList(@Qualifier(AppCost.TAG_TAB) AlgosService service, AlgosGrid grid, ListToolbar toolbar) {
         super(service, grid, toolbar);
     }// end of Spring constructor
 
@@ -84,7 +91,7 @@ public class TabelloneList extends AlgosListImpl {
         Label label;
         this.source = source;
         this.setMargin(false);
-        List<String> listaBottoni;
+        List<AButtonType> typeButtons;
         this.removeAllComponents();
 
         //--gestione delle scritte in rosso sopra la Grid
@@ -104,8 +111,8 @@ public class TabelloneList extends AlgosListImpl {
         this.addComponent(grid);
 
         //--Prepara la toolbar e la aggiunge al contenitore grafico
-        listaBottoni = service.getListBottonNames();
-        inizializzaToolbar(source, listaBottoni);
+        typeButtons = service.getListTypeButtons();
+        inizializzaToolbar(source, typeButtons);
         fixToolbar();
         this.addComponent((ListToolbar) toolbar);
 
@@ -159,22 +166,25 @@ public class TabelloneList extends AlgosListImpl {
 
         Grid.Column colonna = grid.addComponentColumn(riga -> {
             Turno turno;
+            Servizio servizio = ((Riga) riga).getServizio();
             List<Turno> turni = ((Riga) riga).getTurni();
+
             if (turni != null && turni.size() > 0) {
                 try { // prova ad eseguire il codice
                     turno = turni.get(delta);
                     VerticalLayout layout = new VerticalLayout();
+                    layout.setMargin(false);
 
                     if (turno != null) {
-                        layout.addComponent(new LabelRosso("Pieno"));
+                        layout.addComponent(new LabelRosso("Esiste"));
                     } else {
-                        layout.addComponent(new Label(TURNO_VUOTO));
+                        layout.addComponent(new Label(TURNO_VUOTO, ContentMode.HTML));
                     }// end of if/else cycle
 
                     layout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
                         @Override
                         public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
-                            clickCell(turno);
+                            clickCell(turno != null ? turno : turnoService.newEntity(giorno, servizio));
                         }// end of inner method
                     });// end of anonymous inner class
 
@@ -195,44 +205,11 @@ public class TabelloneList extends AlgosListImpl {
     /**
      * Fire event
      * entityBean Opzionale (entityBean) in elaborazione
+     * Rimanda a TabellonePresenter
      */
     public void clickCell(Turno entityBean) {
         publisher.publishEvent(new AActionEvent(TypeAction.click, source, source, entityBean));
     }// end of method
-
-
-//    public Grid addGrid(List<LinkedHashMap<String, String>> mappa) {
-//        int rowHeith = 80;
-//
-//        if (mappa == null || mappa.size() == 0) {
-//            return null;
-//        }// end of if cycle
-//
-//        // Create the grid
-//        Grid<LinkedHashMap<String, String>> grid = new Grid<>();
-//        this.setWidth("66.5em");
-//        grid.setWidth("66.5em");
-//        grid.setHeightByRows(mappa.size());
-//        grid.setRowHeight(rowHeith);
-//
-//        //set its items
-//        grid.setItems(mappa);
-//
-//        // Add the columns based on the first row
-//        HashMap<String, String> s = mappa.get(0);
-//        int k = 1;
-//        for (Map.Entry<String, String> entry : s.entrySet()) {
-//            Grid.Column colonna = grid.addColumn(h -> h.get(entry.getKey())).setCaption(entry.getKey());
-//            if (k == 1) {
-//                colonna.setWidth(250);
-//            } else {
-//                colonna.setWidth(135);
-//            }// end of if/else cycle
-//            k++;
-//        }// end of method
-//
-//        return grid;
-//    }// end of method
 
 
 }// end of class

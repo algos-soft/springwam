@@ -47,7 +47,8 @@ public abstract class Cost {
     public final static String TAG_PRE = "pref";
 
     public final static String BOT_ACCETTA = "accetta";
-    public final static String BOT_ANNULLA = "back";
+    public final static String BOT_CONFERMA = "conferma";
+    public final static String BOT_ANNULLA = "annulla";
     public final static String BOT_BACK = "back";
     public final static String BOT_CREATE = "nuovo";
     public final static String BOT_DELETE = "elimina";
@@ -103,6 +104,7 @@ public abstract class Cost {
     public final static String KEY_DISPLAY_TOOLTIPS = "displayTooltips";
     public final static String KEY_USE_SELEZIONE_MULTIPLA_GRID = "useSelezioneMultiplaGrid";
     public final static String KEY_USE_PROPERTY_CREAZIONE_AND_MODIFICA = "usePropertyCreazioneAndModifica";
+    public final static String KEY_USE_FORM_ALL_SCREEN = "useFormAllScreen";
     public final static String DISPLAY_FIELD_ORDINE = "displayFieldOrdine";
     public final static String DISPLAY_LISTE_COLLEGATE = "displayListeCollegate";
     public final static String USA_FORM_LAYOUT = "usaFormLayout";
@@ -113,12 +115,14 @@ public abstract class Cost {
     public final static String INFO_APP = "Algos® WAM-2.0 del 14.5.17";
 
     //--chiavi per i bottoni di List e Form
-    public final static String TAG_BOT_NEW = "usaBottoneNew";
-    public final static String TAG_BOT_EDIT = "usaBottoneEdit";
-    public final static String TAG_BOT_DELETE = "usaBottoneDelete";
-    public final static String TAG_BOT_SEARCH = "usaBottoneRicerca";
-    public final static String TAG_BOT_SHOW = "usaBottoneShow";
-    public final static String TAG_BOT_ANNULLA = "usaBottoneAnnulla";
-    public final static String TAG_BOT_REVERT = "usaBottoneRevert";
-    public final static String TAG_BOT_SAVE = "usaBottoneRegistra";
+//    public final static String TAG_BOT_NEW = "usaBottoneNew";
+//    public final static String TAG_BOT_EDIT = "usaBottoneEdit";
+//    public final static String TAG_BOT_DELETE = "usaBottoneDelete";
+//    public final static String TAG_BOT_SEARCH = "usaBottoneRicerca";
+//    public final static String TAG_BOT_SHOW = "usaBottoneShow";
+//    public final static String TAG_BOT_ANNULLA = "usaBottoneAnnulla";
+//    public final static String TAG_BOT_BACK = "usaBottoneBack";
+//    public final static String TAG_BOT_REVERT = "usaBottoneRevert";
+//    public final static String TAG_BOT_SAVE = "usaBottoneRegistra";
+//    public final static String TAG_BOT_CONFERMA = "usaBottoneConferma";
 }// end of static class;

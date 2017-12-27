@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -128,13 +129,13 @@ public class TurnoService extends AlgosServiceImpl {
      * Properties obbligatorie
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
+     * @param giorno   di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
      * @param servizio di riferimento (obbligatorio)
-     * @param inizio   giorno, ora e minuto di inizio turno (obbligatorio)
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Turno newEntity(Servizio servizio, LocalDateTime inizio) {
-        return newEntity((Company) null, (LocalDate) null, servizio, inizio, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+    public Turno newEntity(LocalDate giorno, Servizio servizio) {
+        return newEntity((Company) null, giorno, servizio, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
     }// end of method
 
 
@@ -162,8 +163,16 @@ public class TurnoService extends AlgosServiceImpl {
             company = LibSession.getCompany();
         }// end of if cycle
 
-        if (giorno == null) {
+        if (giorno == null && inizio != null) {
             giorno = LibDate.localDateTimeToLocalDate(inizio);
+        }// end of if cycle
+
+        if (inizio == null && giorno != null) {
+            inizio = fixInizioDaServizio(giorno, servizio);
+        }// end of if cycle
+
+        if (fine == null && giorno != null) {
+            fine = fixFineDaServizio(giorno, servizio);
         }// end of if cycle
 
         if (company != null) {
@@ -187,6 +196,36 @@ public class TurnoService extends AlgosServiceImpl {
         return entity;
     }// end of method
 
+
+    /**
+     * Regola l'inizio del turno con gli orari previsti nel servizio
+     *
+     * @param giorno   di inizio turno (obbligatorio)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return giorno, ora e minuti di inizio del turno
+     */
+    public LocalDateTime fixInizioDaServizio(LocalDate giorno, Servizio servizio) {
+        int ora = servizio.getOraInizio();
+        int minuti = servizio.getMinutiInizio();
+
+        return LibDate.addTime(giorno,ora,minuti);
+    }// end of method
+
+    /**
+     * Regola la fine del turno con gli orari previsti nel servizio
+     *
+     * @param giorno   di inizio turno (obbligatorio)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return giorno, ora e minuti di fine del turno
+     */
+    public LocalDateTime fixFineDaServizio(LocalDate giorno, Servizio servizio) {
+        int ora = servizio.getOraFine();
+        int minuti = servizio.getMinutiFine();
+
+        return LibDate.addTime(giorno,ora,minuti);
+    }// end of method
 
     /**
      * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
@@ -305,6 +344,7 @@ public class TurnoService extends AlgosServiceImpl {
      *
      * @return entities filtrate
      */
+    @Override
     public List findAllByCompany(Company company) {
         if (company == null) {
             return findAll();

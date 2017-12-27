@@ -28,13 +28,14 @@ public class AlgosConfiguration {
     @Scope(value = "prototype")
     AButton getBottone(Class<? extends AButton> clazz) {
         AButton obj = null;
+
         try {
             obj = clazz.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
+        }// fine del blocco try-catch
 
         return obj;
     }// end of method
@@ -45,17 +46,19 @@ public class AlgosConfiguration {
         return obj -> getField(obj);
     }// end of method
 
+
     @Bean
     @Scope(value = "prototype")
     AField getField(Class<? extends AField> clazz) {
         AField obj = null;
+
         try {
             obj = clazz.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
+        }// fine del blocco try-catch
 
         return obj;
     }// end of method

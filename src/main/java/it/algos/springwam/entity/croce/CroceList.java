@@ -76,10 +76,10 @@ public class CroceList extends AlgosListImpl {
      * Inietta nei bottoni il parametro obbligatorio (source)
      *
      * @param source       dell'evento generato dal bottone
-     * @param listaBottoni da visualizzare
+     * @param typeButtons da visualizzare
      */
-    protected void inizializzaToolbar(ApplicationListener source, List<String> listaBottoni) {
-        toolbar.inizializza(source, listaBottoni);
+    protected void inizializzaToolbar(ApplicationListener source, List<AButtonType> typeButtons) {
+        toolbar.inizializza(source, typeButtons);
         if (LibSession.isDeveloper()) {
             this.addChangeCompanyButton();
             this.addCurrenteCompanyMigration(source);

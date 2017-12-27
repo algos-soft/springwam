@@ -116,7 +116,7 @@ public class StatoList extends AlgosListImpl {
      * @param source       dell'evento generato dal bottone
      * @param listaBottoni da visualizzare
      */
-    protected void inizializzaToolbar(ApplicationListener source, List<String> listaBottoni) {
+    protected void inizializzaToolbar(ApplicationListener source, List<AButtonType> listaBottoni) {
         super.inizializzaToolbar(source, listaBottoni);
         buttonImport = toolbar.creaAddButton(AButtonType.importa, source);
     }// end of method

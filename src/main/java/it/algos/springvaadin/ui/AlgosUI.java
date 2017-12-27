@@ -21,7 +21,6 @@ import it.algos.springvaadin.nav.AlgosNavView;
 import it.algos.springvaadin.view.AlgosView;
 import it.algos.springvaadin.view.AlgosViewImpl;
 import it.algos.springvaadin.view.ViewPlaceholder;
-import it.algos.springwam.turni.Generator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -198,9 +197,6 @@ public abstract class AlgosUI extends AlgosUIViews implements ViewDisplay {
             if (pref.isTrue(Cost.KEY_USE_DEBUG, false)) {
                 if (navView instanceof AlgosViewImpl) {
                     ((AlgosViewImpl) navView).setMargin(false);
-//                    ((AlgosViewImpl) navView).setWidth("100%");
-//                    ((AlgosViewImpl) navView).setHeight("100%");
-
                     ((AlgosViewImpl) navView).addStyleName("greenBg");
                 }// end of if cycle
             }// end of if cycle

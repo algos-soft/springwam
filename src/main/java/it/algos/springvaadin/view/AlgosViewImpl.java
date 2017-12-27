@@ -124,12 +124,11 @@ public abstract class AlgosViewImpl extends VerticalLayout implements AlgosView 
      * @param reflectedFields       campi del form da visualizzare
      *                              previsti nel modello dati della Entity
      *                              più eventuali aggiunte della sottoclasse
-     * @param usaSeparateFormDialog barra alternativa di bottoni per gestire il ritorno ad altro modulo
      */
     @Override
-    public void setForm(ApplicationListener source, AEntity entityBean, List<Field> reflectedFields, boolean usaSeparateFormDialog) {
+    public void setForm(ApplicationListener source, AEntity entityBean, List<Field> reflectedFields) {
         removeAllComponents();
-        form.restart(source, reflectedFields, entityBean, usaSeparateFormDialog);
+        form.restart(source, reflectedFields, entityBean);
         addComponent(form.getComponent());
         enableButtonForm(AButtonType.revert, false);
         enableButtonForm(AButtonType.registra, false);

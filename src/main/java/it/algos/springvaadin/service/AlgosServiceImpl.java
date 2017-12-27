@@ -1,6 +1,7 @@
 package it.algos.springvaadin.service;
 
 import com.vaadin.ui.Notification;
+import it.algos.springvaadin.bottone.AButtonType;
 import it.algos.springvaadin.entity.ACompanyEntity;
 import it.algos.springvaadin.entity.ACompanyRequired;
 import it.algos.springvaadin.entity.company.Company;
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -443,31 +445,35 @@ public abstract class AlgosServiceImpl implements AlgosService {
     }// end of method
 
 
+
     /**
      * Bottoni nella toolbar della Grid
      *
-     * @return lista di bottoni visibili nella toolbar
+     * @return lista di (tipi di) bottoni visibili nella toolbar
      */
-    public List<String> getListBottonNames() {
+    public List<AButtonType> getListTypeButtons() {
         ListButton listaBottoni = LibAnnotation.getListBotton(entityClass);
-        String[] matrice = null;
+        AButtonType[] matrice = null;
 
         if (listaBottoni != null) {
             switch (listaBottoni) {
                 case standard:
-                    matrice = new String[]{Cost.TAG_BOT_NEW, Cost.TAG_BOT_EDIT, Cost.TAG_BOT_DELETE, Cost.TAG_BOT_SEARCH};
+                    matrice = new AButtonType[]{AButtonType.create, AButtonType.edit, AButtonType.delete, AButtonType.search};
                     break;
                 case noSearch:
-                    matrice = new String[]{Cost.TAG_BOT_NEW, Cost.TAG_BOT_EDIT, Cost.TAG_BOT_DELETE};
+                    matrice = new AButtonType[]{AButtonType.create, AButtonType.edit, AButtonType.delete};
                     break;
                 case noCreate:
-                    matrice = new String[]{Cost.TAG_BOT_EDIT, Cost.TAG_BOT_SEARCH};
+                    matrice = new AButtonType[]{ AButtonType.edit, AButtonType.delete};
                     break;
                 case edit:
-                    matrice = new String[]{Cost.TAG_BOT_EDIT};
+                    matrice = new AButtonType[]{ AButtonType.edit};
                     break;
                 case show:
-                    matrice = new String[]{Cost.TAG_BOT_SHOW};
+                    matrice = new AButtonType[]{ AButtonType.show};
+                    break;
+                case noButtons:
+                    matrice = new AButtonType[]{};
                     break;
                 default:
                     log.warn("Switch - caso non definito");
@@ -475,26 +481,30 @@ public abstract class AlgosServiceImpl implements AlgosService {
             } // end of switch statement
         }// end of if cycle
 
-        return LibArray.fromString(matrice);
+        return Arrays.asList(matrice);
     }// end of method
+
 
 
     /**
      * Bottoni nella toolbar del Form
      *
-     * @return lista di bottoni visibili nella toolbar
+     * @return lista di (tipi di) bottoni visibili nella toolbar
      */
-    public List<String> getFormBottonNames() {
+    public List<AButtonType> getFormTypeButtons() {
         FormButton listaBottoni = LibAnnotation.getFormBotton(entityClass);
-        String[] matrice = null;
+        AButtonType[] matrice = null;
 
         if (listaBottoni != null) {
             switch (listaBottoni) {
                 case standard:
-                    matrice = new String[]{Cost.TAG_BOT_ANNULLA, Cost.TAG_BOT_REVERT, Cost.TAG_BOT_SAVE};
+                    matrice = new AButtonType[]{AButtonType.annulla, AButtonType.revert, AButtonType.registra};
                     break;
                 case show:
-                    matrice = new String[]{Cost.TAG_BOT_ANNULLA};
+                    matrice = new AButtonType[]{AButtonType.annulla};
+                    break;
+                case conferma:
+                    matrice = new AButtonType[]{AButtonType.annulla, AButtonType.revert, AButtonType.conferma};
                     break;
                 default:
                     log.warn("Switch - caso non definito");
@@ -502,7 +512,7 @@ public abstract class AlgosServiceImpl implements AlgosService {
             } // end of switch statement
         }// end of if cycle
 
-        return LibArray.fromString(matrice);
+        return Arrays.asList(matrice);
     }// end of method
 
 

@@ -187,6 +187,16 @@ public class VersioneSpringvaadinBoot extends VersioneBoot {
                     PrefEffect.subito);
         }// fine del blocco if
 
+        //--crea una nuova preferenza, globale per tutte le company e replicabile per ogni singola company
+        if (service.versioneNonAncoraUsata(PROGETTO, ++k)) {
+            creaPreferenzaAndVersione(
+                    PROGETTO,
+                    Cost.KEY_USE_FORM_ALL_SCREEN,
+                    PrefType.bool,
+                    "Presenta i form a tutto schermo",
+                    true);
+        }// fine del blocco if
+
     }// end of method
 
     /**

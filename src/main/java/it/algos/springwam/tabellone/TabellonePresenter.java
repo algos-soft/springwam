@@ -1,13 +1,23 @@
 package it.algos.springwam.tabellone;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.entity.preferenza.PreferenzaService;
+import it.algos.springvaadin.event.*;
+import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.lib.Cost;
 import it.algos.springvaadin.lib.LibAnnotation;
+import it.algos.springvaadin.lib.LibText;
 import it.algos.springvaadin.presenter.AlgosPresenterImpl;
 import it.algos.springvaadin.service.AlgosService;
 import it.algos.springvaadin.view.AlgosView;
 import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.riga.Riga;
+import it.algos.springwam.entity.turno.TurnoPresenter;
+import it.algos.springwam.entity.turno.TurnoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationListener;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -25,6 +35,12 @@ import java.util.*;
 @Qualifier(AppCost.TAG_TAB)
 public class TabellonePresenter extends AlgosPresenterImpl {
 
+
+    @Autowired
+    protected TurnoPresenter turnoPresenter;
+
+    @Autowired
+    protected PreferenzaService pref;
 
     private TabelloneView view;
     private TabelloneService service;
@@ -75,6 +91,28 @@ public class TabellonePresenter extends AlgosPresenterImpl {
 
     public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
         return service.creaRighe(giornoInizio, giorni);
+    }// end of method
+
+
+    protected void turnoNewAndEdit(AEntity entityBean) {
+        if (pref.isTrue(Cost.KEY_USE_FORM_ALL_SCREEN, true)) {
+        } else {
+            turnoPresenter.editLink(this, entityBean, null, null);
+        }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Handle an action event
+     * Vedi enum TypeAction
+     *
+     * @param type       Obbligatorio specifica del tipo di evento
+     * @param entityBean Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
+     */
+    @Override
+    protected void onGridAction(TypeAction type, AEntity entityBean) {
+        if (type == TypeAction.click) {
+            turnoNewAndEdit(entityBean);
+        }// end of if cycle
     }// end of method
 
 }// end of class

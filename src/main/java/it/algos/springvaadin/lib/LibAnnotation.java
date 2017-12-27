@@ -1989,21 +1989,21 @@ public abstract class LibAnnotation {
      */
     @SuppressWarnings("all")
     public static FormButton getFormBotton(final Class<? extends AEntity> clazz) {
-        FormButton listaNomi = FormButton.standard;
+        FormButton listaNomiBottoni = FormButton.standard;
 
         if (LibSession.isDeveloper()) {
-            listaNomi = getFormBottonDev(clazz);
+            listaNomiBottoni = getFormBottonDev(clazz);
         } else {
             if (LibSession.isAdmin()) {
-                listaNomi = getFormBottonAdmin(clazz);
+                listaNomiBottoni = getFormBottonAdmin(clazz);
             } else {
                 if (true) {
-                    listaNomi = getFormBottonUser(clazz);
+                    listaNomiBottoni = getFormBottonUser(clazz);
                 }// end of if cycle
             }// end of if/else cycle
         }// end of if/else cycle
 
-        return listaNomi;
+        return listaNomiBottoni;
     }// end of static method
 
     /**
@@ -2015,7 +2015,7 @@ public abstract class LibAnnotation {
      */
     @SuppressWarnings("all")
     public static FormButton getFormBottonDev(final Class<? extends AEntity> clazz) {
-        FormButton listaNomiBottoni = null;
+        FormButton listaNomiBottoni = FormButton.standard;
         AIForm annotation = getFormAnnotation(clazz);
 
         if (annotation != null) {
@@ -2034,7 +2034,7 @@ public abstract class LibAnnotation {
      */
     @SuppressWarnings("all")
     public static FormButton getFormBottonAdmin(final Class<? extends AEntity> clazz) {
-        FormButton listaNomiBottoni = null;
+        FormButton listaNomiBottoni = FormButton.standard;
         AIForm annotation = getFormAnnotation(clazz);
 
         if (annotation != null) {
@@ -2053,7 +2053,7 @@ public abstract class LibAnnotation {
      */
     @SuppressWarnings("all")
     public static FormButton getFormBottonUser(final Class<? extends AEntity> clazz) {
-        FormButton listaNomiBottoni = null;
+        FormButton listaNomiBottoni = FormButton.standard;
         AIForm annotation = getFormAnnotation(clazz);
 
         if (annotation != null) {

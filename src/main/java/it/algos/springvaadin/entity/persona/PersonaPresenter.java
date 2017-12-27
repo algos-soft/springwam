@@ -44,13 +44,13 @@ public class PersonaPresenter extends AlgosPresenterImpl {
      }// end of Spring constructor
 
 
-    @Override
-    protected List<Field> getFormFieldsLink() {
-        List<Field> reflectedFields = service.getFormFieldsLink();
-        reflectedFields.remove(0); //--rimuove il campo idKey
-        reflectedFields.remove(0); //--rimuove il campo company
-
-        return reflectedFields;
-    }// end of method
+//    @Override
+//    protected List<Field> getFormFieldsLink() {
+//        List<Field> reflectedFields = service.getFormFieldsLink();
+//        reflectedFields.remove(0); //--rimuove il campo idKey
+//        reflectedFields.remove(0); //--rimuove il campo company
+//
+//        return reflectedFields;
+//    }// end of method
 
 }// end of class

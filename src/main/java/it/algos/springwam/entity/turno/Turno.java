@@ -6,6 +6,7 @@ import it.algos.springvaadin.entity.ACompanyRequired;
 import it.algos.springvaadin.field.AFieldType;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.field.FieldAccessibility;
+import it.algos.springvaadin.form.FormButton;
 import it.algos.springvaadin.lib.Cost;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.login.ARoleType;
@@ -46,7 +47,8 @@ import java.util.List;
 @Document(collection = AppCost.TAG_TUR)
 @AIEntity(roleTypeVisibility = ARoleType.developer, company = ACompanyRequired.obbligatoria)
 @AIList(columns = {"giorno", "servizio"}, dev = ListButton.standard)
-@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni", "titoloExtra", "localitaExtra"})
+@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni"},
+        buttonsDev = FormButton.conferma, buttonsAdmin = FormButton.conferma, buttonsUser = FormButton.conferma)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -75,7 +77,7 @@ public class Turno extends ACompanyEntity {
      */
     @NotNull
     @DBRef
-    @AIField(type = AFieldType.link, clazz = ServizioPresenter.class)
+    @AIField(type = AFieldType.combo, clazz = Servizio.class)
     @AIColumn()
     private Servizio servizio;
 

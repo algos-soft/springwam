@@ -134,7 +134,6 @@ public class AButton extends Button {
      */
     private void regolaParametri() {
         super.setCaption(type.getCaption());
-        super.setCaption(type.getCaption());
         super.setIcon(type.getIcon());
         super.setEnabled(type.isEnabled());
         super.setWidth(type.getWidth());

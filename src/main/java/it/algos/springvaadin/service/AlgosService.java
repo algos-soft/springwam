@@ -1,5 +1,6 @@
 package it.algos.springvaadin.service;
 
+import it.algos.springvaadin.bottone.AButtonType;
 import it.algos.springvaadin.entity.ACompanyEntity;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.lib.LibParams;
@@ -169,20 +170,22 @@ public interface AlgosService {
     public List<Field> getFormFieldsLink();
 
 
-    /**
-     * Bottoni nella toolbar della Grid
-     *
-     * @return lista di bottoni visibili nella toolbar
-     */
-    public List<String> getListBottonNames();
-
 
     /**
      * Bottoni nella toolbar della Grid
      *
-     * @return lista di bottoni visibili nella toolbar
+     * @return lista di (tipi di) bottoni visibili nella toolbar
      */
-    public List<String> getFormBottonNames();
+    public List<AButtonType> getListTypeButtons();
+
+
+    /**
+     * Bottoni nella toolbar del Form
+     *
+     * @return lista di (tipi di) bottoni visibili nella toolbar
+     */
+    public List<AButtonType> getFormTypeButtons();
+
 
     /**
      * Flag per visualizzare il field company

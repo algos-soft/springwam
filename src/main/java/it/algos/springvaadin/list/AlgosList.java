@@ -117,4 +117,4 @@ public interface AlgosList {
 
     public void setPresenter(AlgosPresenterImpl presenter);
 
-}// end of interfacev
+}// end of interface

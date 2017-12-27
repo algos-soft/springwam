@@ -13,4 +13,5 @@ import lombok.extern.slf4j.Slf4j;
 public enum FormButton {
     standard,   //--annulla, revert, registra
     show,       //--annulla
+    conferma,       //--back, conferma
 }// end of enum

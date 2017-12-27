@@ -5,6 +5,7 @@ import it.algos.springvaadin.entity.ACompanyEntity;
 import it.algos.springvaadin.entity.ACompanyRequired;
 import it.algos.springvaadin.field.AFieldType;
 import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.list.ListButton;
 import it.algos.springvaadin.login.ARoleType;
 import it.algos.springwam.application.AppCost;
 import it.algos.springwam.entity.servizio.Servizio;
@@ -32,7 +33,7 @@ import java.util.List;
 @SpringComponent
 @Document(collection = AppCost.TAG_RIG)
 @AIEntity(roleTypeVisibility = ARoleType.developer, company = ACompanyRequired.obbligatoria)
-@AIList()
+@AIList(dev = ListButton.noButtons, admin = ListButton.noButtons, user = ListButton.noButtons)
 @AIForm()
 @Data
 @NoArgsConstructor
@@ -67,14 +68,12 @@ public class Riga extends ACompanyEntity {
     private Servizio servizio;
 
 
-
     /**
      * turni effettuati (facoltativi, di norma 7)
      */
     @AIField(type = AFieldType.text)
     @AIColumn()
     private List<Turno> turni;
-
 
 
 }// end of entity class

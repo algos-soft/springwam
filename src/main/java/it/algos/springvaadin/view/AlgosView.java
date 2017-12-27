@@ -48,9 +48,8 @@ public interface AlgosView extends View {
      *
      * @param entityBean            istanza da elaborare
      * @param reflectFields         campi del form da visualizzare
-     * @param usaSeparateFormDialog barra alternativa di bottoni per gestire il ritorno ad altro modulo
      */
-    public void setForm(ApplicationListener source, AEntity entityBean, List<Field> reflectFields, boolean usaSeparateFormDialog);
+    public void setForm(ApplicationListener source, AEntity entityBean, List<Field> reflectFields);
 
 
     /**

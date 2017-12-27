@@ -55,10 +55,16 @@ public abstract class AToolbarImpl extends VerticalLayout implements AToolbar {
      * Aggiunge i bottoni al contenitore grafico
      * Inietta nei bottoni il parametro obbligatorio (source)
      *
-     * @param source       dell'evento generato dai bottoni
-     * @param listaBottoni da visualizzare
+     * @param source  dell'evento generato dai bottoni
+     * @param typeButtons da visualizzare
      */
-    public void inizializza(ApplicationListener source, List<String> listaBottoni) {
+    public void inizializza(ApplicationListener source, List<AButtonType> typeButtons) {
+        this.deleteAllButtons();
+
+        for (AButtonType singleTypeButton : typeButtons) {
+            creaAddButton(singleTypeButton, source);
+        }// end of for cycle
+
     }// end of method
 
 

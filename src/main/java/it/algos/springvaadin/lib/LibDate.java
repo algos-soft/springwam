@@ -349,6 +349,19 @@ public abstract class LibDate {
         return getLong(dateToLocalDate(date));
     }// end of static method
 
+    /**
+     * Costruisce una LocalDateTime partendo da una LocalDate a cui aggiunge ora e minuti
+     *
+     * @param localDate di partenza
+     * @param ora       da aggiungere
+     * @param minuti    da aggiungere
+     *
+     * @return la data con ora e minuti
+     */
+    public static LocalDateTime addTime(LocalDate localDate, int ora, int minuti) {
+        LocalTime tempo = LocalTime.of(ora, minuti);
+        return LocalDateTime.of(localDate, tempo);
+    }// end of static method
 
     /**
      * Converte una data in stringa nel formato dd-MMMM-YYYY

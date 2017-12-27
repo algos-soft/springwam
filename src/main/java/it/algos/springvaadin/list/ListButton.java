@@ -13,5 +13,6 @@ public enum ListButton {
     noSearch,   //--new, edit, delete
     noCreate,   //--edit, delete
     edit,       //--edit
-    show        //--showAll
+    show,       //--showAll
+    noButtons   //--nessuno
 }// end of enum

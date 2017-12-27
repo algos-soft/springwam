@@ -43,36 +43,5 @@ public class ListToolbar extends AToolbarImpl {
     }// end of @Autowired constructor
 
 
-    /**
-     * Metodo invocato da restart() di Form e List
-     * Seleziona i bottoni da mostrare nella toolbar
-     * Crea i bottoni (iniettandogli il publisher)
-     * Aggiunge i bottoni al contenitore grafico
-     * Inietta nei bottoni il parametro obbligatorio (source)
-     *
-     * @param source       dell'evento generato dai bottoni
-     * @param listaBottoni da visualizzare
-     */
-    @Override
-    public void inizializza(ApplicationListener source, List<String> listaBottoni) {
-        super.deleteAllButtons();
-
-        if (listaBottoni.contains(Cost.TAG_BOT_NEW)) {
-            super.creaAddButton(AButtonType.create, source);
-        }// end of if cycle
-        if (listaBottoni.contains(Cost.TAG_BOT_EDIT)) {
-            super.creaAddButton(AButtonType.edit, source);
-        }// end of if cycle
-        if (listaBottoni.contains(Cost.TAG_BOT_DELETE)) {
-            super.creaAddButton(AButtonType.delete, source);
-        }// end of if cycle
-        if (listaBottoni.contains(Cost.TAG_BOT_SEARCH)) {
-            super.creaAddButton(AButtonType.search, source);
-        }// end of if cycle
-        if (listaBottoni.contains(Cost.TAG_BOT_SHOW)) {
-            super.creaAddButton(AButtonType.show, source);
-        }// end of if cycle
-
-    }// end of method
 
 }// end of class

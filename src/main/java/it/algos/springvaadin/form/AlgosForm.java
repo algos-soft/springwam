@@ -27,9 +27,8 @@ public interface AlgosForm {
      * @param source                presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param reflectedFields       previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      * @param entityBean            nuova istanza da creare, oppure istanza esistente da modificare
-     * @param usaSeparateFormDialog barra alternativa di bottoni per gestire il ritorno ad altro modulo
      */
-    public void restart(ApplicationListener source, List<Field> reflectedFields, AEntity entityBean, boolean usaSeparateFormDialog);
+    public void restart(ApplicationListener source, List<Field> reflectedFields, AEntity entityBean);
 
     /**
      * Creazione del form di un altro modulo/collezione

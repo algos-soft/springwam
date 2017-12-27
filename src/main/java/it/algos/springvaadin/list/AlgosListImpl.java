@@ -166,8 +166,8 @@ public abstract class AlgosListImpl extends VerticalLayout implements AlgosList 
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();
-        List<String> listaBottoni = service.getListBottonNames();
-        inizializzaToolbar(source, listaBottoni);
+        List<AButtonType> typeButtons = service.getListTypeButtons();
+        inizializzaToolbar(source, typeButtons);
         fixToolbar();
 
         if (pref.isTrue(Cost.KEY_USE_DEBUG)) {
@@ -216,10 +216,10 @@ public abstract class AlgosListImpl extends VerticalLayout implements AlgosList 
      * Inietta nei bottoni il parametro obbligatorio (source)
      *
      * @param source       dell'evento generato dal bottone
-     * @param listaBottoni da visualizzare
+     * @param typeButtons da visualizzare
      */
-    protected void inizializzaToolbar(ApplicationListener source, List<String> listaBottoni) {
-        toolbar.inizializza(source, listaBottoni);
+    protected void inizializzaToolbar(ApplicationListener source, List<AButtonType> typeButtons) {
+        toolbar.inizializza(source, typeButtons);
     }// end of method
 
 

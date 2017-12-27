@@ -34,7 +34,6 @@
     <property name="tagFrameworkProperties" value="Properties"/>
     <property name="tagFrameworkMailProperties" value="Mail"/>
     <property name="tagProjectProperties" value="application.properties"/>
-    <property name="tagProjectMailProperties" value="mail.properties"/>
     <property name="tagPackage" value="newPackage"/>
     <property name="tagOldProject" value="newProject"/>
     <property name="tagNewProject" value="updateProject"/>
@@ -97,9 +96,6 @@
 
         <property name="srcProperties" value="${pathSourcesFramework}/${tagFrameworkProperties}${tagTxt}"/>
         <property name="destProperties" value="${pathResourcesProject}/${tagProjectProperties}"/>
-
-        <property name="srcMailProperties" value="${pathSourcesFramework}/${tagFrameworkMailProperties}${tagTxt}"/>
-        <property name="destMailProperties" value="${pathResourcesProject}/${tagProjectMailProperties}"/>
 
         <property name="dirOldApp" value="${pathJavaProject}/${nomeProgettoMinuscolo}"/>
 
@@ -242,10 +238,6 @@
     </target>
 
     <target name="resVuoto" depends="init" unless="${fileResValido}">
-        <antcall target="creaSingoloFile">
-            <param name="srcFile" value="${srcMailProperties}"/>
-            <param name="destFile" value="${destMailProperties}"/>
-        </antcall>
         <antcall target="creaSingoloFile">
             <param name="srcFile" value="${srcProperties}"/>
             <param name="destFile" value="${destProperties}"/>
