@@ -2,345 +2,110 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6397ac32-0237-4492-bc00-7fe042bb92a5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIView.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/app/AppProperties.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AAction.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AActionAttach.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AActionClick.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AActionDoppioClick.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AActionMultiSelection.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AActionSingleClick.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AActionSingleSelection.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/IAAction.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bootstrap/ABoot.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/button/AButton.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/button/AButtonFactory.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/button/IAButtonFactory.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/data/AData.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/AConfirmDialog.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/ADialog.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/ACEntity.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/Address.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/AddressForm.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/AddressList.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/AddressPresenter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/AddressRepository.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/AddressService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/Logtype.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/LogtypeData.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/LogtypeForm.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/LogtypeList.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/LogtypePresenter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/LogtypeRepository.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/logtype/LogtypeService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAAttribute.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAButtonType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EACompanyRequired.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAFieldAccessibility.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAFieldType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAFirstChar.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAFormButton.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAListButton.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EALogLevel.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EALogType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EALoginTypes.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EAPrefType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EARoleType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EATypeAction.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EATypeEnabled.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/enumeration/EATypeField.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/error/AErrorView.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/ALoginEvent.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/ALogoutEvent.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/AProfileChangeEvent.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/IAListener.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/IAFieldFactory.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/footer/AFooter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/form/AForm.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/form/IAForm.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/AGrid.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/AGridToolSet.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/IAGrid.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/home/AHomeView.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/ACost.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/AList.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/IAList.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/listener/ALoginListener.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/listener/ALogoutListener.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/listener/AProfileChangeListener.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALogin.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginButton.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginForm.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/DALoginForm.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/IAUser.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/menu/MenuHome.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/panel/APanel.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/APresenter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/APresenterEvents.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/IAPresenter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/repository/ARepository.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/repository/IARepository.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AAnnotationService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AArrayService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AColumnService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AFieldService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AHtmlService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AMongoService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AReflectionService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AResourceService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/ASessionService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/ATextService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/IAService.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/ADialogToolbar.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/AFormToolbar.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/AListToolbar.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/IAToolbar.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/ui/AUI.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/ui/AUIParams.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/ui/AUIViews.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/AView.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/IAView.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CompanyData.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/UserData.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/VAADIN/img/amb3.jpg" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/scripts/projectUpdate.xml" afterPath="$PROJECT_DIR$/scripts/projectUpdate.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIColumn.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIEntity.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AISearch.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/ATypeEnabled.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/app/AlgosApp.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/app/AlgosConfiguration.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/app/StaticContextAccessor.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/Azione.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AzioneAttach.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AzioneClick.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AzioneDoppioClick.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AzioneMultiSelection.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/azione/AzioneSingleSelection.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bootstrap/AlgosBoot.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bootstrap/CompanySprringgBot.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bootstrap/README.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bootstrap/VersioneBoot.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bootstrap/VersioneSpringvaadinBoot.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bottone/AButton.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bottone/AButtonFactory.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bottone/AButtonFactoryImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/bottone/AButtonType.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/controller/AlgosController.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/controller/AppErrorController.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/converter/AlgosConverter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/converter/FirstCapitalConverter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/converter/LowerConverter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/converter/UpperConverter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/data/AlgosData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/data/README.md" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/AlertDialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/BaseDialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/ConfirmDialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/DialogToolbar.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/Edit2Dialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/EditDialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/ImageDialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/ACompanyEntity.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/ACompanyRequired.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/AEntity.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/Company.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/Indirizzo.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/indirizzo/IndirizzoView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/Log.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogLevel.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogType.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/LogView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/Persona.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PrefEffect.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PrefType.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/Preferenza.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/Role.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RolePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/Stato.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/User.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/Versione.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersioneForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersioneList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersioneNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersionePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersioneRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersioneService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/versione/VersioneView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/AActionEvent.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/AButtonEvent.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/AEvent.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/AFieldEvent.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/FormListener.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/GridListener.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/ListListener.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/README.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/Recipient.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/Shuttle.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/TypeAction.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/event/TypeField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/exception/CompanyException.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/exception/DuplicateCodeCompanyException.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/exception/NotCompanyEntityException.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/exception/NullCodeCompanyException.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/exception/NullCompanyException.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ACheckBoxField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AComboField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ADateField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ADateNotEnabledField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ADateTimeField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldFactory.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldFactoryImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldType.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AIconField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AIdField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AImageField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AIntegerField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AJSonField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ALinkField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ARadioField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ATextAreaField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/ATextField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AlgosField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/FieldAccessibility.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/footer/AlgosFooter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/form/AlgosForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/form/AlgosFormImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/form/FormButton.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/AlgosGrid.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/GridToolSet.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/help/HelpNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/help/HelpView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/home/HomeForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/home/HomeList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/home/HomeNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/home/HomePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/home/HomeView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/label/LabelBold.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/label/LabelRosso.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/label/LabelVerde.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/ByteStreamResource.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/Cost.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/DateConvertUtils.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibAnnotation.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibArray.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibAvviso.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibByte.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibColumn.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibDate.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibFile.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibImage.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibMongo.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibNum.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibParams.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibReflection.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibResource.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibSession.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibSpring.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibSql.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibText.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibTime.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/LibVaadin.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/lib/MeseEnum.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/AlgosList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/AlgosListImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/ListButton.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ARoleType.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/Login.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/UserIF.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/mail/SpringEmailService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/menu/AIMenu.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/menu/AlgosMenuBar.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/menu/MenuCommand.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/menu/MenuLayout.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/menu/MenuPlaceholder.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/nav/AlgosNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/AlgosPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/AlgosPresenterEvents.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/AlgosPresenterImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/renderer/AlgosBooleanRenderer.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/renderer/ByteStringRenderer.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/renderer/IconRenderer.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/repository/AlgosMongoRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/repository/AlgosRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/repository/AlgosRepository2.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/repository/SpringMongoConfiguration.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/search/AlgosSearch.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AlgosService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AlgosServiceImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AlgosStartService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/FieldService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/servlet/MySpringServlet.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/AToolbar.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/AToolbarImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/FormToolbar.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/LinkToolbar.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/toolbar/ListToolbar.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/ui/AlgosUI.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/ui/AlgosUIParams.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/ui/AlgosUIViews.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosEmailValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosLetterOnlyValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosNotNullValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosNumberNotNullValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosNumberNotZeroValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosNumberOnlyValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosStringLengthValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/validator/AlgosUniqueValidator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/AlgosView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/AlgosViewImpl.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/DefaultView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/ErrorView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/ViewField.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/ViewPlaceholder.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/application/SpringwamApplication.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/application/SpringwamApplication.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CompanyDataOld.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/DemoData.java" afterPath="" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/VersioneWamBoot.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/Croce.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CrocePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/Organizzazione.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzionePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/SelectIconDialog.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/Iscrizione.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizioneForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizioneList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizioneNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizionePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizioneRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizioneService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/iscrizione/IscrizioneView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/riga/Riga.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/riga/RigaService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/Servizio.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioColorPicker.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioData.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioFieldFunzioni.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/servizio/ServizioView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/Turno.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoPresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/Utente.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteFieldFunzioni.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtentePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteRepository.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/CroceAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/CroceAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/FunzioneAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/FunzioneAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/Migration.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MiliteFunzioneAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MiliteFunzioneAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/ServizioAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/ServizioAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UserAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UserAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UtenteAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UtenteAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UtenteRuoloAmb.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UtenteRuoloAmb_.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabelloneForm.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabelloneList.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabelloneMenuLayout.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabelloneNavView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabellonePresenter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabelloneService.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/tabellone/TabelloneView.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/turni/Generator.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/ui/SpringwamUI.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/ui/SpringwamUI.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -359,50 +124,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="updateProject.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/updateProject.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="855">
-              <caret line="57" column="69" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="projectUpdate.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/projectUpdate.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="62" lean-forward="false" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="persistence.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AppCost.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/application/AppCost.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="22" lean-forward="false" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="SpringwamApplication.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/application/SpringwamApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
+            <state relative-caret-position="0">
               <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
               <folding />
             </state>
@@ -431,11 +156,71 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpringwamBoot.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SpringwamBoot.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+            <state relative-caret-position="265">
+              <caret line="60" column="21" lean-forward="true" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ALoginForm.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginForm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="164">
+              <caret line="72" column="43" lean-forward="true" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DALoginForm.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/DALoginForm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="239">
+              <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="194">
+              <caret line="277" column="0" lean-forward="false" selection-start-line="277" selection-start-column="0" selection-end-line="277" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JdkDynamicAopProxy.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.11.RELEASE/spring-aop-4.3.11.RELEASE.jar!/org/springframework/aop/framework/JdkDynamicAopProxy.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserData.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/UserData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="431">
+              <caret line="94" column="0" lean-forward="true" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CompanyData.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CompanyData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -495,8 +280,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteService.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/Utente.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/turno/TurnoList.java" />
@@ -545,6 +328,8 @@
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/VersioneWamBoot.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/application/SpringwamApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/ui/SpringwamUI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/UserData.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CompanyData.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java" />
       </list>
     </option>
@@ -652,8 +437,17 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="algos" type="462c0819:PsiDirectoryNode" />
               <item name="springvaadin" type="462c0819:PsiDirectoryNode" />
-              <item name="entity" type="462c0819:PsiDirectoryNode" />
-              <item name="address" type="462c0819:PsiDirectoryNode" />
+              <item name="listener" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="algos" type="462c0819:PsiDirectoryNode" />
+              <item name="springvaadin" type="462c0819:PsiDirectoryNode" />
+              <item name="login" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
@@ -673,6 +467,17 @@
               <item name="algos" type="462c0819:PsiDirectoryNode" />
               <item name="springwam" type="462c0819:PsiDirectoryNode" />
               <item name="bootstrap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="algos" type="462c0819:PsiDirectoryNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="bootstrap" type="462c0819:PsiDirectoryNode" />
+              <item name="CompanyData" type="1a9f42e2:ClassTreeNode" />
             </path>
             <path>
               <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
@@ -684,6 +489,17 @@
               <item name="springwam" type="462c0819:PsiDirectoryNode" />
               <item name="bootstrap" type="462c0819:PsiDirectoryNode" />
               <item name="SpringwamBoot" type="1a9f42e2:ClassTreeNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="algos" type="462c0819:PsiDirectoryNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="bootstrap" type="462c0819:PsiDirectoryNode" />
+              <item name="UserData" type="1a9f42e2:ClassTreeNode" />
             </path>
             <path>
               <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
@@ -720,6 +536,30 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="META-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="VAADIN" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="VAADIN" type="462c0819:PsiDirectoryNode" />
+              <item name="img" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -762,11 +602,11 @@
       <recent name="it.algos.springwam.entity.funzione" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/webapp/VAADIN/img" />
       <recent name="$PROJECT_DIR$/scripts" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/java" />
       <recent name="$PROJECT_DIR$/src/META-INF" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/VAADIN/themes" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1020,7 +860,7 @@
       <workItem from="1515234392569" duration="5410000" />
       <workItem from="1515306645169" duration="1541000" />
       <workItem from="1515420307916" duration="6237000" />
-      <workItem from="1515488266968" duration="191000" />
+      <workItem from="1515488266968" duration="1977000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <created>1509822884890</created>
@@ -1106,11 +946,18 @@
       <option name="project" value="LOCAL" />
       <updated>1515427309525</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="...">
+      <created>1515488465489</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1515488465489</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="746466000" />
+    <option name="totallyTimeSpent" value="748252000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1123,7 +970,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="190" y="63" width="1671" height="975" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43467122" sideWeight="0.50172496" order="7" side_tool="true" content_ui="tabs" />
@@ -1135,8 +981,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18477593" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3046944" sideWeight="0.498275" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30454546" sideWeight="0.498275" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296328" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31704545" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1146,7 +993,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947463" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3228975" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3228975" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1156,7 +1003,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31798053" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.322807" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1189,7 +1035,7 @@
           <option name="timeStamp" value="788" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="791" />
+      <option name="time" value="792" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1206,23 +1052,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="37" column="40" lean-forward="false" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyData.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/exception/NotCompanyEntityException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/PersonaList.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaList.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PreferenzaService.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/Preferenza.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/Company.java">
@@ -1279,13 +1108,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AImageField.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/ImageDialog.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2355">
-          <caret line="169" column="40" lean-forward="false" selection-start-line="169" selection-start-column="40" selection-end-line="169" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/preferenza/PrefType.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/log/Log.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1308,6 +1130,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2280">
           <caret line="167" column="19" lean-forward="false" selection-start-line="167" selection-start-column="19" selection-end-line="167" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1325,6 +1148,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="24" column="22" lean-forward="false" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1349,6 +1173,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1373,7 +1198,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/CroceAmb_.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/application/SpringwamApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
+        <state relative-caret-position="0">
           <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
           <folding />
         </state>
@@ -1397,10 +1222,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/UserData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="94" column="0" lean-forward="true" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CompanyData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+        <state relative-caret-position="265">
+          <caret line="60" column="21" lean-forward="true" selection-start-line="60" selection-start-column="21" selection-end-line="60" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.11.RELEASE/spring-aop-4.3.11.RELEASE.jar!/org/springframework/aop/framework/JdkDynamicAopProxy.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="277" column="0" lean-forward="false" selection-start-line="277" selection-start-column="0" selection-end-line="277" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/DALoginForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="72" column="43" lean-forward="true" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="43" />
           <folding />
         </state>
       </provider>

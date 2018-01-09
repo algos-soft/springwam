@@ -29,6 +29,17 @@ import org.springframework.context.event.EventListener;
 public class SpringwamBoot extends ABoot {
 
 
+    @Autowired
+    protected CompanyData company;
+
+
+    /**
+     * Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    public UserData user;
+
+
     /**
      * Running logic after the Spring context has been initialized
      * Any class that use this @EventListener annotation,
@@ -55,6 +66,8 @@ public class SpringwamBoot extends ABoot {
      */
     protected void iniziaData() {
         super.iniziaDataStandard();
+        this.company.findOrCrea();
+        this.user.findOrCrea();
     }// end of method
 
 
