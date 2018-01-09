@@ -1,9 +1,10 @@
 package it.algos.springvaadin.event;
 
 
-import it.algos.springvaadin.bottone.AButtonType;
-import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.context.ApplicationListener;
 
 /**
@@ -17,8 +18,8 @@ public class AButtonEvent extends AEvent {
     /**
      * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che ha generato l'evento
      */
-    public AButtonEvent(ApplicationListener source) {
-        this(AButtonType.annulla, source, source);
+    public AButtonEvent(IAListener source) {
+        this(EAButtonType.annulla, source, source);
     }// end of constructor
 
 
@@ -27,7 +28,7 @@ public class AButtonEvent extends AEvent {
      * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che ha generato l'evento
      * @param target Obbligatorio (presenter, form, field, window, dialog,... ) a cui indirizzare l'evento
      */
-    public AButtonEvent(AButtonType type, ApplicationListener source, ApplicationListener target) {
+    public AButtonEvent(EAButtonType type, IAListener source, IAListener target) {
         this(type, source, target, (AEntity) null);
     }// end of constructor
 
@@ -38,7 +39,7 @@ public class AButtonEvent extends AEvent {
      * @param target     Obbligatorio (presenter, form, field, window, dialog,... ) a cui indirizzare l'evento
      * @param entityBean Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AButtonEvent(AButtonType type, ApplicationListener source, ApplicationListener target, AEntity entityBean) {
+    public AButtonEvent(EAButtonType type, IAListener source, IAListener target, AEntity entityBean) {
         this(type, source, target, entityBean, (AField) null);
     }// end of constructor
 
@@ -50,13 +51,13 @@ public class AButtonEvent extends AEvent {
      * @param entityBean  Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      * @param sourceField Opzionale (field) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AButtonEvent(AButtonType type, ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField) {
+    public AButtonEvent(EAButtonType type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
         super(type, source, target, entityBean, sourceField);
     }// end of constructor
 
 
-    public AButtonType getType() {
-        return (AButtonType) type;
+    public EAButtonType getType() {
+        return (EAButtonType) type;
     }// end of method
 
 

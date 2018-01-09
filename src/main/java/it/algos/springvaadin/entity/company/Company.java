@@ -1,47 +1,54 @@
 package it.algos.springvaadin.entity.company;
 
-import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.entity.ACompanyRequired;
-import it.algos.springvaadin.entity.indirizzo.Indirizzo;
-import it.algos.springvaadin.entity.indirizzo.IndirizzoPresenter;
-import it.algos.springvaadin.entity.persona.Persona;
-import it.algos.springvaadin.entity.persona.PersonaPresenter;
-import it.algos.springvaadin.field.AFieldType;
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.field.FieldAccessibility;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.list.ListButton;
-import it.algos.springvaadin.login.ARoleType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.Size;
+import org.springframework.context.annotation.Scope;
+import lombok.*;
+import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.enumeration.EACompanyRequired;
+import it.algos.springvaadin.enumeration.EAFieldAccessibility;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.entity.AEntity;
 
 /**
- * Created by gac on 01/06/17
- * <p>
+ * Created by gac on 11-nov-17
+ * Estende la Entity astratta AEntity che contiene la key property ObjectId
  * Annotated with @SpringComponent (obbligatorio)
+ * Annotated with @Document (facoltativo) per avere un nome della collection (DB Mongo) diverso dal nome della Entity
+ * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Data (Lombok) for automatic use of Getter and Setter
  * Annotated with @NoArgsConstructor (Lombok) for JavaBean specifications
  * Annotated with @AllArgsConstructor (Lombok) per usare il costruttore completo nel Service
- * Estende la Entity astratta AEntity che contiene la key property ObjectId
+ * Annotated with @Builder (Lombok) lets you automatically produce the code required to have your class
+ * be instantiable with code such as: Person.builder().name("Adam Savage").city("San Francisco").build();
+ * Annotated with @EqualsAndHashCode (facoltativo) per ???
+ * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIEntity (facoltativo) per alcuni parametri generali del modulo
+ * Annotated with @AIList (facoltativo) per le colonne della Lista e loro visibilità/accessibilità relativa all'utente
+ * Annotated with @AIForm (facoltativo) per i fields del Form e loro visibilità/accessibilità relativa all'utente
+ * Inserisce SEMPRE la versione di serializzazione che viene poi filtrata per non mostrarla in List e Form
+ * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
  */
 @SpringComponent
-@Document()
-@AIEntity(roleTypeVisibility = ARoleType.admin, company = ACompanyRequired.nonUsata)
-@AIList(columns = {"code", "descrizione", "contatto", "telefono", "email"}, admin = ListButton.edit)
-@AIForm()
+@Document(collection = "company")
+@Scope("session")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EqualsAndHashCode(callSuper = false)
+@Qualifier(ACost.TAG_COM)
+@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.nonUsata)
+@AIList( dev = EAListButton.standard, admin = EAListButton.noSearch)
+@AIForm()
 public class Company extends AEntity {
 
     /**
@@ -51,58 +58,36 @@ public class Company extends AEntity {
 
 
     /**
-     * codice di riferimento interno (obbligatorio ed unico)
+     * codice di riferimento (obbligatorio)
      */
-    @NotEmpty(message = "La sigla interna è obbligatoria")
+    @NotEmpty
     @Size(min = 2, max = 20)
-    @AIField(type = AFieldType.text, widthEM = 8, focus = true, name = "Sigla", help = "Codice interno unico", admin = FieldAccessibility.showOnly)
-    @AIColumn(name = "Sigla", width = 100)
+    @Indexed()
+    @AIField(
+            type = EAFieldType.text,
+            required = true,
+            focus = true,
+            name = "Codice",
+            widthEM = 9,
+            admin = EAFieldAccessibility.allways,
+            user = EAFieldAccessibility.showOnly)
+    @AIColumn(name = "Code", width = 120)
     private String code;
 
 
+
     /**
-     * ragione sociale o descrizione della company (obbligatoria, non unica)
+     * descrizione (facoltativa)
      */
-    @NotEmpty(message = "La descrizione è obbligatoria")
-    @Size(min = 2, max = 50)
-    @AIField(type = AFieldType.text, firstCapital = true, widthEM = 24, help = "Descrizione della company", admin = FieldAccessibility.allways)
-    @AIColumn(width = 370)
+    @AIField(
+            type = EAFieldType.text,
+            required = true,
+            name = "Descrizione completa",
+            widthEM = 26,
+            admin = EAFieldAccessibility.allways,
+            user = EAFieldAccessibility.showOnly)
+    @AIColumn(name = "Descrizione", width = 500)
     private String descrizione;
-
-
-    /**
-     * persona di riferimento (facoltativo)
-     * riferimento statico SENZA @DBRef
-     */
-    @AIField(type = AFieldType.link, clazz = PersonaPresenter.class, help = "Riferimento", admin = FieldAccessibility.allways)
-    @AIColumn(width = 220, name = "Riferimento")
-    private Persona contatto;
-
-
-    /**
-     * telefono (facoltativo)
-     */
-    @AIField(type = AFieldType.text, admin = FieldAccessibility.allways)
-    @AIColumn(width = 170)
-    private String telefono;
-
-
-    /**
-     * posta elettronica (facoltativo)
-     */
-    @Email
-    @AIField(type = AFieldType.email, widthEM = 24, admin = FieldAccessibility.allways)
-    @AIColumn(width = 350, name = "Mail")
-    private String email;
-
-
-    /**
-     * indirizzo (facoltativo)
-     * riferimento statico SENZA @DBRef
-     */
-    @AIField(type = AFieldType.link, clazz = IndirizzoPresenter.class, help = "Indirizzo", admin = FieldAccessibility.allways)
-    @AIColumn(width = 400, name = "Indirizzo", roleTypeVisibility = ARoleType.nobody)
-    private Indirizzo indirizzo;
 
 
     /**
@@ -113,4 +98,5 @@ public class Company extends AEntity {
         return getCode();
     }// end of method
 
-}// end of class
+
+}// end of entity class

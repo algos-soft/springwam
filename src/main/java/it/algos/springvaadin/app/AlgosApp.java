@@ -1,6 +1,5 @@
 package it.algos.springvaadin.app;
 
-import it.algos.springvaadin.entity.company.Company;
 
 import javax.servlet.ServletContext;
 import java.nio.file.Path;
@@ -45,12 +44,30 @@ public abstract class AlgosApp {
      */
     public final static String DEMODATA_FOLDER_NAME = "demo/";
 
+
     /**
      * Costante globale dell'applicazione. Non modificabile.
      * Usando SpringBoot, la cartella deve (DEVE) essere contenuta nella directory 'webapp'
      * Name of the base folder for images.<br>
      */
-    public final static String IMG_FOLDER_NAME = "VAADIN/img/";
+    public final static String RESOURCES_FOLDER_NAME = "./src/main/resources/static/";
+
+
+    /**
+     * Costante globale dell'applicazione. Non modificabile.
+     * Usando SpringBoot, la cartella deve (DEVE) essere contenuta nella directory 'webapp'
+     * Name of the base folder for images.<br>
+     */
+    public final static String IMG_FOLDER_NAME = "./src/main/webapp/VAADIN/img/";
+
+
+    /**
+     * Costante globale dell'applicazione. Business logic. Modificabile.
+     * Fixed in AlgosSpringBoot.afterPropertiesSet()
+     * Will be overwritten at the end of BootStrap
+     */
+    public static boolean SETUP_TIME;
+
 
     /**
      * Costante globale dell'applicazione. Business logic. Modificabile.
@@ -135,13 +152,6 @@ public abstract class AlgosApp {
      */
     public static boolean USE_PREF;
 
-
-    /**
-     * Costante globale dell'applicazione. Non modificabile.
-     * Name of the folder for temporary uploaded files<br>
-     * The folder is located in the context folder of the container
-     */
-    public static Company COMPANY_PROVVISORIA ;
 
     /**
      * Servlet context<br>

@@ -1,13 +1,9 @@
 package it.algos.springvaadin.field;
 
-import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.TextField;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibAvviso;
-import it.algos.springvaadin.lib.LibText;
-import it.algos.springvaadin.presenter.AlgosPresenterImpl;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.service.ATextService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
@@ -23,9 +19,12 @@ import org.springframework.context.annotation.Scope;
  */
 @SpringComponent
 @Scope("prototype")
-@Qualifier(Cost.FIELD_INTEGER)
+@Qualifier(ACost.FIELD_INTEGER)
 public class AIntegerField extends AField {
 
+
+    @Autowired
+    public ATextService text;
 
     /**
      * Regola i parametri base per la visualizzazione del field nel form
@@ -62,7 +61,7 @@ public class AIntegerField extends AField {
         if (textField != null) {
             textValue = textField.getValue();
             if (textValue != null && textValue.length() > 0) {
-                if (LibText.isNumber(textValue)) {
+                if (text.isNumber(textValue)) {
                     return Integer.decode(textValue);
                 } else {
                     return null;

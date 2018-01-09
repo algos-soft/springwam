@@ -1,7 +1,7 @@
 package it.algos.springvaadin.annotation;
 
-import it.algos.springvaadin.field.FieldAccessibility;
-import it.algos.springvaadin.form.FormButton;
+import it.algos.springvaadin.enumeration.EAFieldAccessibility;
+import it.algos.springvaadin.enumeration.EAFormButton;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -19,11 +19,11 @@ import java.lang.annotation.Target;
 public @interface AIForm {
 
 
-    /**
-     * (Optional) Status (shows the ID property field) .
-     * Defaults to false.
-     */
-    boolean showsID() default false;
+//    /**
+//     * (Optional) Status (shows the ID property field) .
+//     * Defaults to false.
+//     */
+//    boolean showsID() default false;
 
 
     /**
@@ -47,7 +47,7 @@ public @interface AIForm {
      * Specific for developer role
      * Defaults to allways.
      */
-    FieldAccessibility fieldsDev() default FieldAccessibility.allways;
+    EAFieldAccessibility fieldsDev() default EAFieldAccessibility.allways;
 
     /**
      * (Optional) Status (field visible and/or enabled in form) of all the fields in Form.
@@ -55,7 +55,7 @@ public @interface AIForm {
      * Specific for admin role
      * Defaults to showOnly.
      */
-    FieldAccessibility fieldsAdmin() default FieldAccessibility.showOnly;
+    EAFieldAccessibility fieldsAdmin() default EAFieldAccessibility.showOnly;
 
     /**
      * (Optional) Status (field visible and/or enabled in form) of all the fields in Form.
@@ -63,27 +63,27 @@ public @interface AIForm {
      * Specific for user role
      * Defaults to never.
      */
-    FieldAccessibility fieldsUser() default FieldAccessibility.never;
+    EAFieldAccessibility fieldsUser() default EAFieldAccessibility.never;
 
     /**
      * (Optional) List of buttom on bottom
      * Specific for developer role
      * Defaults to standard.
      */
-    FormButton buttonsDev() default FormButton.standard;
+    EAFormButton buttonsDev() default EAFormButton.standard;
 
     /**
      * (Optional) List of buttom on bottom
      * Specific for admin role
      * Defaults to standard.
      */
-    FormButton buttonsAdmin() default FormButton.standard;
+    EAFormButton buttonsAdmin() default EAFormButton.standard;
 
     /**
      * (Optional) List of buttom on bottom
      * Specific for user role
      * Defaults to show.
      */
-    FormButton buttonsUser() default FormButton.show;
+    EAFormButton buttonsUser() default EAFormButton.show;
 
 }// end of interface annotation

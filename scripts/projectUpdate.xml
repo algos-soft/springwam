@@ -10,49 +10,49 @@
     <!--Fine dei valori modificati da questo script-->
 
     <!--Tag varii-->
-    <property name="tagXml" value=".xml"/>
-    <property name="tagTxt" value=".txt"/>
-    <property name="tagJava" value=".java"/>
-    <property name="dirApp" value="application"/>
-    <property name="dirBoot" value="bootstrap"/>
-    <property name="dirUI" value="ui"/>
-    <property name="tagApp" value="Application"/>
-    <property name="tagCost" value="AppCost"/>
-    <property name="tagBoot" value="Boot"/>
-    <property name="tagUI" value="UI"/>
-    <property name="tagPom" value="pom"/>
-    <property name="tagRes" value="spring.datasource"/>
-    <property name="tagRead" value="README${tagTxt}"/>
-    <property name="tagFrameworkProperties" value="Properties"/>
-    <property name="tagFrameworkMailProperties" value="Mail"/>
-    <property name="tagProjectProperties" value="application.properties"/>
-    <property name="tagPackage" value="newPackage"/>
-    <property name="tagOldProject" value="newProject"/>
-    <property name="tagNewProject" value="updateProject"/>
+    <!--<property name="tagXml" value=".xml"/>-->
+    <!--<property name="tagTxt" value=".txt"/>-->
+    <!--<property name="tagJava" value=".java"/>-->
+    <!--<property name="dirApp" value="application"/>-->
+    <!--<property name="dirBoot" value="bootstrap"/>-->
+    <!--<property name="dirUI" value="ui"/>-->
+    <!--<property name="tagApp" value="Application"/>-->
+    <!--<property name="tagCost" value="AppCost"/>-->
+    <!--<property name="tagBoot" value="Boot"/>-->
+    <!--<property name="tagUI" value="UI"/>-->
+    <!--<property name="tagPom" value="pom"/>-->
+    <!--<property name="tagRes" value="spring.datasource"/>-->
+    <!--<property name="tagRead" value="README${tagTxt}"/>-->
+    <!--<property name="tagFrameworkProperties" value="Properties"/>-->
+    <!--<property name="tagFrameworkMailProperties" value="Mail"/>-->
+    <!--<property name="tagProjectProperties" value="application.properties"/>-->
+    <!--<property name="tagPackage" value="newPackage"/>-->
+    <!--<property name="tagOldProject" value="newProject"/>-->
+    <!--<property name="tagNewProject" value="updateProject"/>-->
     <property name="tagMain" value="src/main"/>
     <property name="tagIdea" value="${tagMain}/java"/>
     <property name="tagAlgos" value="it/algos"/>
     <property name="tagPathJava" value="${tagIdea}/${tagAlgos}"/>
-    <property name="tagWebapp" value="webapp"/>
-    <property name="tagStatic" value="resources/static"/>
-    <property name="tagScripts" value="templates/scripts"/>
-    <property name="tagProjectScripts" value="scripts"/>
-    <property name="tagSources" value="templates/sources"/>
+    <!--<property name="tagWebapp" value="webapp"/>-->
+    <!--<property name="tagStatic" value="resources/static"/>-->
+    <!--<property name="tagScripts" value="templates/scripts"/>-->
+    <!--<property name="tagProjectScripts" value="scripts"/>-->
+    <!--<property name="tagSources" value="templates/sources"/>-->
     <!--Fine dei tag-->
 
 
     <!--Valori recuperati automaticamente da Ant-->
     <property name="pathBaseProject" value="${basedir}${risalita}"/>
-    <property name="pathResourcesProject" value="${pathBaseProject}/${tagMain}/resources"/>
-    <property name="pathWebappProject" value="${pathBaseProject}/${tagMain}/${tagWebapp}"/>
-    <property name="pathStaticProject" value="${pathBaseProject}/${tagMain}/${tagStatic}"/>
+    <!--<property name="pathResourcesProject" value="${pathBaseProject}/${tagMain}/resources"/>-->
+    <!--<property name="pathWebappProject" value="${pathBaseProject}/${tagMain}/${tagWebapp}"/>-->
+    <!--<property name="pathStaticProject" value="${pathBaseProject}/${tagMain}/${tagStatic}"/>-->
     <property name="projectsIdea" value="${basedir}/..${risalita}"/>
     <property name="pathBaseFramework" value="${projectsIdea}/${nomeBaseFramework}"/>
     <property name="pathJavaFramework" value="${pathBaseFramework}/${tagPathJava}/${nomeBaseFramework}"/>
-    <property name="pathWebappFramework" value="${pathBaseFramework}/${tagMain}/${tagWebapp}"/>
-    <property name="pathStaticFramework" value="${pathBaseFramework}/${tagMain}/${tagStatic}"/>
-    <property name="pathScriptsFramework" value="${pathBaseFramework}/${tagScripts}"/>
-    <property name="pathSourcesFramework" value="${pathBaseFramework}/${tagSources}"/>
+    <!--<property name="pathWebappFramework" value="${pathBaseFramework}/${tagMain}/${tagWebapp}"/>-->
+    <!--<property name="pathStaticFramework" value="${pathBaseFramework}/${tagMain}/${tagStatic}"/>-->
+    <!--<property name="pathScriptsFramework" value="${pathBaseFramework}/${tagScripts}"/>-->
+    <!--<property name="pathSourcesFramework" value="${pathBaseFramework}/${tagSources}"/>-->
     <!--Fine dei valori di Ant-->
 
 

@@ -1,41 +1,50 @@
 package it.algos.springvaadin.entity.stato;
 
-import it.algos.springvaadin.entity.company.Company;
-import it.algos.springvaadin.entity.indirizzo.Indirizzo;
-import it.algos.springvaadin.entity.persona.Persona;
-import it.algos.springvaadin.entity.preferenza.Preferenza;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibAvviso;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.lib.LibFile;
-import it.algos.springvaadin.lib.LibResource;
-import it.algos.springvaadin.service.AlgosServiceImpl;
+import it.algos.springvaadin.entity.role.Role;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.service.AService;
+import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Created by gac on 10-ago-17
- * Annotated with @Service (obbligatorio)
- * Annotated with @Qualifier, per individuare la classe specifica da iniettare come annotation
+ * Created by gac on TIMESTAMP
+ * Estende la Entity astratta AService. Layer di collegamento tra il Presenter e la Repository.
+ * Annotated with @@Slf4j (facoltativo) per i logs automatici
+ * Annotated with @SpringComponent (obbligatorio)
+ * Annotated with @Service (ridondante)
+ * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  */
-@Service
-@Qualifier(Cost.TAG_STA)
 @Slf4j
-public class StatoService extends AlgosServiceImpl {
+@SpringComponent
+@Service
+@Scope("singleton")
+@Qualifier(ACost.TAG_STA)
+public class StatoService extends AService {
 
-    private final static String DEFAULT_3166 = "Italia";
-    private final static String DEFAULT_3166_1 = "IT";
-    private final static String DEFAULT_3166_2 = "ITA";
 
-    public StatoRepository repository;
+    @Autowired
+    public ATextService text;
+
+
+    /**
+     * La repository viene iniettata dal costruttore, in modo che sia disponibile nella superclasse,
+     * dove viene usata l'interfaccia MongoRepository
+     * Spring costruisce al volo, quando serve, una implementazione di RoleRepository (come previsto dal @Qualifier)
+     * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
+     */
+    private StatoRepository repository;
+
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -43,37 +52,36 @@ public class StatoService extends AlgosServiceImpl {
      * Si usa un @Qualifier(), per avere la sottoclasse specifica
      * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
      */
-    public StatoService(@Qualifier(Cost.TAG_STA) MongoRepository repository) {
+    public StatoService(@Qualifier(ACost.TAG_STA) MongoRepository repository) {
         super(repository);
-        this.repository = (StatoRepository) repository; //casting per uso locale
+        super.entityClass = Stato.class;
+        this.repository = (StatoRepository) repository;
     }// end of Spring constructor
 
 
     /**
-     * Ricerca e nuovo di una entity (la crea se non la trova)
+     * Ricerca di una entity (la crea se non la trova)
      * Properties obbligatorie
      *
-     * @param nome    corrente completo, non ufficiale (obbligatorio ed unico)
-     * @param alfaDue codice alfabetico di 2 cifre (obbligatorio, unico)
-     * @param alfaTre codice alfabetico di 3 cifre (obbligatorio, unico). Codifica ISO 3166-1 alpha-3
+     * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
      *
      * @return la entity trovata o appena creata
      */
-    public Stato findOrCrea(String nome, String alfaDue, String alfaTre) {
-        return findOrCrea(0, nome, alfaDue, alfaTre, "", (byte[]) null);
+    public Stato findOrCrea(String nome) {
+        return findOrCrea(0, nome, "", "", "", (byte[]) null);
     }// end of method
 
 
     /**
-     * Ricerca e nuovo di una entity (la crea se non la trova)
+     * Ricerca di una entity (la crea se non la trova)
      * All properties
      *
-     * @param ordine   di nuovo (obbligatorio, unico, con controllo automatico prima del save se è zero, non modificabile)
+     * @param ordine   di presentazione (obbligatorio, unico, con inserimento automatico se è zero, non modificabile)
      * @param nome     corrente completo, non ufficiale (obbligatorio ed unico)
      * @param alfaDue  codice alfabetico di 2 cifre (obbligatorio, unico)
      * @param alfaTre  codice alfabetico di 3 cifre (obbligatorio, unico). Codifica ISO 3166-1 alpha-3
      * @param numerico codice numerico di 3 cifre numeriche (facoltativo, vuoto oppure unico). Codifica ISO 3166-1 numerico
-     * @param bandiera immagine bandiera (facoltativo, unico).
+     * @param bandiera immagine (facoltativo, unico).
      *
      * @return la entity trovata o appena creata
      */
@@ -86,7 +94,7 @@ public class StatoService extends AlgosServiceImpl {
                 return null;
             }// fine del blocco try-catch
         } else {
-            return repository.findByNome(nome);
+            return findByNome(nome);
         }// end of if/else cycle
     }// end of method
 
@@ -100,7 +108,22 @@ public class StatoService extends AlgosServiceImpl {
      */
     @Override
     public Stato newEntity() {
-        return newEntity(0, "", "", "", "", (byte[]) null);
+        return newEntity("");
+    }// end of method
+
+
+    /**
+     * Creazione in memoria di una nuova entity che NON viene salvata
+     * Eventuali regolazioni iniziali delle property
+     * Properties obbligatorie
+     * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
+     *
+     * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
+     *
+     * @return la nuova entity appena creata (non salvata)
+     */
+    public Stato newEntity(String nome) {
+        return newEntity(0, nome, "", "", "", (byte[]) null);
     }// end of method
 
 
@@ -110,17 +133,37 @@ public class StatoService extends AlgosServiceImpl {
      * All properties
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
-     * @param ordine   di nuovo (obbligatorio, unico, con controllo automatico prima del save se è zero, non modificabile)
+     * @param ordine   di presentazione (obbligatorio, unico, con inserimento automatico se è zero, non modificabile)
      * @param nome     corrente completo, non ufficiale (obbligatorio ed unico)
      * @param alfaDue  codice alfabetico di 2 cifre (obbligatorio, unico)
      * @param alfaTre  codice alfabetico di 3 cifre (obbligatorio, unico). Codifica ISO 3166-1 alpha-3
      * @param numerico codice numerico di 3 cifre numeriche (facoltativo, vuoto oppure unico). Codifica ISO 3166-1 numerico
-     * @param bandiera immagine bandiera (facoltativo, unico).
+     * @param bandiera immagine (facoltativo, unico).
      *
      * @return la nuova entity appena creata (non salvata)
      */
     public Stato newEntity(int ordine, String nome, String alfaDue, String alfaTre, String numerico, byte[] bandiera) {
-        return new Stato(ordine == 0 ? this.getNewOrdine() : ordine, nome, alfaDue, alfaTre, numerico, bandiera);
+        Stato entity = null;
+
+        if (nonEsiste(nome)) {
+            entity = Stato.builder().ordine(ordine != 0 ? ordine : this.getNewOrdine()).nome(nome).alfaDue(alfaDue).alfaTre(alfaTre).numerico(numerico).bandiera(bandiera).build();
+        } else {
+            return findByNome(nome);
+        }// end of if/else cycle
+
+        return entity;
+    }// end of method
+
+
+    /**
+     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
+     *
+     * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
+     *
+     * @return vero se esiste, false se non trovata
+     */
+    public boolean esiste(String nome) {
+        return findByNome(nome) != null;
     }// end of method
 
 
@@ -129,11 +172,12 @@ public class StatoService extends AlgosServiceImpl {
      *
      * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
      *
-     * @return vero se esiste, false se non trovata
+     * @return vero se non esiste, false se trovata
      */
     public boolean nonEsiste(String nome) {
         return findByNome(nome) == null;
     }// end of method
+
 
     /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
@@ -149,23 +193,14 @@ public class StatoService extends AlgosServiceImpl {
 
     /**
      * Returns all instances of the type
-     * Non usa MultiCompany, quindi senza filtri
+     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
      * Lista ordinata
      *
      * @return lista ordinata di tutte le entities
      */
+    @Override
     public List findAll() {
         return repository.findByOrderByOrdineAsc();
-    }// end of method
-
-
-    /**
-     * Find the default state.
-     *
-     * @return the entity
-     */
-    public Stato findDefault() {
-        return findOrCrea(DEFAULT_3166, DEFAULT_3166_1, DEFAULT_3166_2);
     }// end of method
 
 
@@ -180,44 +215,28 @@ public class StatoService extends AlgosServiceImpl {
      */
     @Override
     public AEntity save(AEntity entityBean) throws Exception {
-        boolean nuovaEntity = entityBean.id == null || entityBean.id.equals("");
+        String code = ((Stato) entityBean).getNome();
 
-        if (nuovaEntity) {
-            String nomeOriginale = ((Stato) entityBean).getNome();
-            String nome = nomeOriginale.toLowerCase();
-            String sigla = ((Stato) entityBean).getAlfaTre().toLowerCase();
-            if (sigla.equals("")) {
-                int k = 3;
-                do {
-                    sigla = nome.substring(0, k++);
-                }// end of do cycle
-                while (repository.exists(sigla) && sigla.length() < 6);// end of while cycle
-            }// end of if cycle
-
-            if (repository.exists(sigla)) {
-                LibAvviso.error(nomeOriginale + " non è stato creato, perché l'ID risultante esiste già");
-                return entityBean;
-            }// end of if cycle
-
-            if (sigla.length() > 5) {
-                LibAvviso.warn("Controlla l'ultimo stato inserito, perché l'ID sembra eccessivamente lungo");
-            }// end of if cycle
-
-            boolean esiste = entityBean.id != null && repository.exists(entityBean.id);
-            if (!esiste) {
-                entityBean.id = sigla;
-            }// end of if cycle
+        if (entityBean == null) {
+            return null;
         }// end of if cycle
 
-        return super.save(entityBean);
+        if (text.isValid(entityBean.id)) {
+            return super.save(entityBean);
+        } else {
+            if (nonEsiste(code)) {
+                return super.save(entityBean);
+            } else {
+                log.error("Ha cercato di salvare una entity già esistente, ma unica");
+                return null;
+            }// end of if/else cycle
+        }// end of if/else cycle
     }// end of method
 
 
-
-
-
     /**
-     * L'ordine di presentazione (obbligatorio, unico per tutte le company), viene calcolato in automatico prima del persist
+     * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),
+     * viene calcolato in automatico prima del persist sul database
      * Recupera il valore massimo della property
      * Incrementa di uno il risultato
      */
@@ -231,68 +250,5 @@ public class StatoService extends AlgosServiceImpl {
 
         return ordine + 1;
     }// end of method
-
-    /**
-     * Creazione di una collezione di stati
-     */
-    public void creaStati() {
-        String fileName = "Stati";
-        List<String> righe = LibFile.readResources(fileName);
-        this.deleteAll();
-
-        for (String riga : righe) {
-            creaStato(riga);
-        }// end of for cycle
-    }// end of method
-
-
-    /**
-     * Creazione di un singolo stato
-     */
-    private boolean creaStato(String riga) {
-        String[] parti = riga.split(",");
-        Stato stato;
-        int ordine = 0;
-        String nome = "";
-        String alfaDue = "";
-        String alfaTre = "";
-        String numerico = "";
-        byte[] bandiera = null;
-
-        if (parti.length > 0) {
-            nome = parti[0];
-        }// end of if cycle
-        if (parti.length > 1) {
-            alfaDue = parti[1];
-        }// end of if cycle
-        if (parti.length > 2) {
-            alfaTre = parti[2];
-            bandiera = LibResource.getImgBytes(alfaTre.toUpperCase() + ".png");
-        }// end of if cycle
-        if (parti.length > 3) {
-            numerico = parti[3];
-        }// end of if cycle
-
-        stato = this.newEntity(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
-
-        try { // prova ad eseguire il codice
-            stato = (Stato) this.save(stato);
-            if (bandiera == null || bandiera.length == 0) {
-                log.warn("Stato: " + riga + " - Manca la bandiera");
-            } else {
-                log.info("Stato: " + riga + " - Tutto OK");
-            }// end of if/else cycle
-        } catch (Exception unErrore) { // intercetta l'errore
-            try { // prova ad eseguire il codice
-                stato = this.newEntity(ordine, nome, alfaDue, alfaTre, numerico, new byte[0]);
-                log.warn("Stato: " + riga + " - Dimensioni bandiera eccessive");
-            } catch (Exception unErrore2) { // intercetta l'errore
-                log.error("Stato: " + riga + " - Non sono riuscito a crearlo");
-            }// fine del blocco try-catch
-        }// fine del blocco try-catch
-
-        return stato != null;
-    }// end of method
-
 
 }// end of class

@@ -1,7 +1,6 @@
 package it.algos.springvaadin.exception;
 
 import it.algos.springvaadin.entity.AEntity;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Project springvaadin

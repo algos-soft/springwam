@@ -1,19 +1,17 @@
 package it.algos.springvaadin.field;
 
 import com.vaadin.data.HasValue;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import it.algos.springvaadin.bottone.AButton;
-import it.algos.springvaadin.event.AFieldEvent;
-import it.algos.springvaadin.event.TypeField;
-import it.algos.springvaadin.lib.LibText;
+import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.presenter.AlgosPresenterImpl;
+import it.algos.springvaadin.event.AFieldEvent;
+import it.algos.springvaadin.enumeration.EATypeField;
+import it.algos.springvaadin.event.IAListener;
+import it.algos.springvaadin.service.ATextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
@@ -43,16 +41,19 @@ import javax.annotation.PostConstruct;
 public abstract class AField<T> extends CustomField<Object> {
 
 
+    @Autowired
+    public ATextService text;
+
     //--Obbligatorio publicFieldName
     protected String name;
 
 
     //--Obbligatorio presenter che gestisce l'evento
-    protected ApplicationListener source;
+    protected IAListener source;
 
 
     //--Opzionale (window, dialog, presenter) a cui indirizzare l'evento
-    protected ApplicationListener target;
+    protected IAListener target;
 
 
     //--Opzionale (entityBean) in elaborazione
@@ -100,6 +101,7 @@ public abstract class AField<T> extends CustomField<Object> {
      */
     public TextField textField;
 
+
     /**
      * Costruttore base senza parametri
      * Viene utilizzato dalla Funzione -> FieldFactory in AlgosConfiguration
@@ -117,13 +119,13 @@ public abstract class AField<T> extends CustomField<Object> {
 
 
     /**
-     * Metodo invocato da parte di AFieldFactory subito dopo la nuovo del field
+     * Metodo invocato da parte di AFieldFactory subito dopo la creazione del field
      * Non parte dal costruttore, perché AFieldFactory usa un costruttore SENZA parametri
      *
      * @param publicFieldName nome visibile del field
      * @param source          del presenter che gestisce questo field
      */
-    public void inizializza(String publicFieldName, ApplicationListener source) {
+    public void inizializza(String publicFieldName, IAListener source) {
         this.creaContent();
         this.setName(publicFieldName);
         this.setSource(source);
@@ -166,7 +168,7 @@ public abstract class AField<T> extends CustomField<Object> {
      */
     @Override
     public void doSetValue(Object value) {
-        if (textField != null && LibText.isValid((String) value)) {
+        if (textField != null && text.isValid((String) value)) {
             textField.setValue((String) value);
         }// end of if cycle
     }// end of method
@@ -193,10 +195,10 @@ public abstract class AField<T> extends CustomField<Object> {
         this.name = name;
     }// end of method
 
-
-    public AlgosPresenterImpl getFormPresenter() {
-        return null;
-    }// end of method
+    //@todo RIMETTERE
+//    public AlgosPresenterImpl getFormPresenter() {
+//        return null;
+//    }// end of method
 
 
     public void setWidth(String width) {
@@ -217,7 +219,7 @@ public abstract class AField<T> extends CustomField<Object> {
     }// end of method
 
 
-    public void setSource(ApplicationListener source) {
+    public void setSource(IAListener source) {
         this.source = source;
         if (button != null) {
             if (source != null) {
@@ -230,7 +232,7 @@ public abstract class AField<T> extends CustomField<Object> {
         }// end of if cycle
     }// end of method
 
-    public void setTarget(ApplicationListener target) {
+    public void setTarget(IAListener target) {
         this.target = target;
         if (button != null) {
             if (target != null) {
@@ -287,7 +289,7 @@ public abstract class AField<T> extends CustomField<Object> {
      */
     public void publish() {
         if (source != null) {
-            publisher.publishEvent(new AFieldEvent(TypeField.valueChanged, source, target, entityBean,this));
+            publisher.publishEvent(new AFieldEvent(EATypeField.valueChanged, source, target, entityBean,this));
         }// end of if cycle
     }// end of method
 

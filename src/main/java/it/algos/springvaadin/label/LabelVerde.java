@@ -3,7 +3,6 @@ package it.algos.springvaadin.label;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Label;
-import it.algos.springvaadin.lib.LibText;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -17,12 +16,18 @@ import lombok.extern.slf4j.Slf4j;
 public class LabelVerde extends Label {
 
 
+    public LabelVerde() {
+        this("");
+    }// end of constructor
+
+
     public LabelVerde(VaadinIcons icona) {
         this(icona.getHtml());
     }// end of constructor
 
+
     public LabelVerde(String text) {
-        super(LibText.setVerdeBold(text), ContentMode.HTML);
+        super(text, ContentMode.HTML);
         this.addStyleName("verde");
     }// end of constructor
 

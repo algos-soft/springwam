@@ -1,7 +1,7 @@
 package it.algos.springvaadin.annotation;
 
-import it.algos.springvaadin.field.AFieldType;
-import it.algos.springvaadin.login.ARoleType;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.enumeration.EARoleType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,7 +27,8 @@ public @interface AIColumn {
      * Se manca (valore di default), prende quello indicato in AIField
      * Se manca anche in AIField, prende il valore di default di AIField
      */
-    AFieldType type() default AFieldType.ugualeAlField;
+    EAFieldType type() default EAFieldType.ugualeAlField;
+
 
     /**
      * (Optional) The name of the field.
@@ -35,17 +36,19 @@ public @interface AIColumn {
      */
     String name() default "";
 
+
     /**
      * (Optional) The width of the field.
-     * Defaults to 150
+     * Defaults to 0
+     * Viene regolato in AColumnService.add()
      */
-    int width() default 150;
+    int width() default 0;
 
 
-    /**
-     * (Optional) Visibilità a secondo del ruolo dell'User collegato
-     * Defaults to guest.
-     */
-    ARoleType roleTypeVisibility() default ARoleType.guest;
+//    /**
+//     * (Optional) Visibilità a secondo del ruolo dell'User collegato
+//     * Defaults to guest.
+//     */
+//    EARoleType roleTypeVisibility() default EARoleType.guest;
 
 }// end of interface annotation

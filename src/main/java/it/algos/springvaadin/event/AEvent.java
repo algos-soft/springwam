@@ -1,8 +1,11 @@
 package it.algos.springvaadin.event;
 
-import it.algos.springvaadin.bottone.AButtonType;
-import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EATypeAction;
+import it.algos.springvaadin.enumeration.EATypeField;
+import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
@@ -27,7 +30,7 @@ public abstract class AEvent extends ApplicationEvent {
 
 
     //--Obbligatorio (presenter, form, field, window, dialog,... ) a cui indirizzare l'evento
-    protected ApplicationListener target;
+    protected IAListener target;
 
 
     //--Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
@@ -44,7 +47,7 @@ public abstract class AEvent extends ApplicationEvent {
      * @param entityBean  Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      * @param sourceField Opzionale (field) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AEvent(Object type, ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField) {
+    public AEvent(Object type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
         super(source);
         this.type = type;
         this.target = target;
@@ -69,32 +72,32 @@ public abstract class AEvent extends ApplicationEvent {
     }// end of method
 
 
-    public ApplicationListener getTarget() {
+    public IAListener getTarget() {
         return target;
     }// end of method
 
 
-    public AButtonType getButtonType() {
-        if (type != null && type instanceof AButtonType) {
-            return (AButtonType) type;
+    public EAButtonType getButtonType() {
+        if (type != null && type instanceof EAButtonType) {
+            return (EAButtonType) type;
         } else {
             return null;
         }// end of if/else cycle
     }// end of method
 
 
-    public TypeAction getActionType() {
-        if (type != null && type instanceof TypeAction) {
-            return (TypeAction) type;
+    public EATypeAction getActionType() {
+        if (type != null && type instanceof EATypeAction) {
+            return (EATypeAction) type;
         } else {
             return null;
         }// end of if/else cycle
     }// end of method
 
 
-    public TypeField getFieldType() {
-        if (type != null && type instanceof TypeField) {
-            return (TypeField) type;
+    public EATypeField getFieldType() {
+        if (type != null && type instanceof EATypeField) {
+            return (EATypeField) type;
         } else {
             return null;
         }// end of if/else cycle

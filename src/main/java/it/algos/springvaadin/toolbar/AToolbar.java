@@ -1,29 +1,53 @@
 package it.algos.springvaadin.toolbar;
 
 import com.vaadin.ui.Component;
-import it.algos.springvaadin.bottone.AButton;
-import it.algos.springvaadin.bottone.AButtonType;
-import it.algos.springvaadin.field.AField;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+import it.algos.springvaadin.button.AButton;
+import it.algos.springvaadin.button.AButtonFactory;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.event.IAListener;
+import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.context.ApplicationListener;
 
 import java.util.List;
 
 /**
- * Project springvaadin
- * Created by Algos
- * User: gac
- * Date: ven, 08-set-2017
- * Time: 22:46
- * <p>
- * Interfaccia per le barre di comando con bottoni
+ * Created by gac on 03/06/17.
+ * .
+ * Superclasse astratta per le barre di comando con bottoni
  * Nel ciclo restart() di Form e List, le toolbar costruiscono i bottoni ("prototype") usando la factory AButtonFactory
  * Viene poi iniettato il parametro obbligatorio (source)
  * Ulteriori parametri (target, entityBean), vengono iniettati direttamente solo in alcuni bottoni
- * Eventuali bottoni aggiuntivi, oltre quelli standard, possono essere aggiunti sovrascrivendo AListImpl.toolbarInizializza()
+ * Eventuali bottoni aggiuntivi, oltre quelli standard, possono essere aggiunti sovrascrivendo AListImpl.inizializzaToolbar()
  * Tutti i bottoni possono essere abilitati/disabilitati
+ * Sono previste due righe di bottoni: la prima standard, la seconda per bottoni extra specifici
  */
-public interface AToolbar {
+public abstract class AToolbar extends VerticalLayout implements IAToolbar {
+
+    protected HorizontalLayout primaRiga = new HorizontalLayout();
+    protected HorizontalLayout secondaRiga = new HorizontalLayout();
+
+    /**
+     * Factory per la nuovo dei bottoni
+     * Autowired nel costruttore
+     */
+    private AButtonFactory buttonFactory;
+
+    /**
+     * Costruttore @Autowired (nella sottoclasse concreta)
+     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation.
+     * L' @Autowired (esplicito o implicito) funziona SOLO per UN costruttore
+     * Se ci sono DUE o più costruttori, va in errore
+     * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
+     */
+    public AToolbar(AButtonFactory buttonFactory) {
+        this.buttonFactory = buttonFactory;
+        this.setMargin(false);
+        this.addComponent(primaRiga);
+    }// end of @Autowired constructor
 
 
     /**
@@ -33,10 +57,17 @@ public interface AToolbar {
      * Aggiunge i bottoni al contenitore grafico
      * Inietta nei bottoni il parametro obbligatorio (source)
      *
-     * @param source       dell'evento generato dai bottoni
+     * @param source  dell'evento generato dai bottoni
      * @param typeButtons da visualizzare
      */
-    public void inizializza(ApplicationListener source, List<AButtonType> typeButtons);
+    public void inizializza(IAPresenter source, List<EAButtonType> typeButtons) {
+        this.deleteAllButtons();
+
+        for (EAButtonType singleTypeButton : typeButtons) {
+            creaAddButton(singleTypeButton, source);
+        }// end of for cycle
+
+    }// end of method
 
 
     /**
@@ -46,9 +77,12 @@ public interface AToolbar {
      * Inietta nei bottoni il parametro obbligatorio (source)
      *
      * @param source      dell'evento generato dal bottone
+     * @param target
      * @param sourceField di un altro modulo che ha richiesto, tramite bottone, la visualizzazione del form
      */
-    public void inizializza(ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField);
+//    @Override
+    public void inizializza(ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField) {
+    }// end of method
 
 
     /**
@@ -59,7 +93,10 @@ public interface AToolbar {
      * @param type   del bottone, secondo la Enumeration AButtonType
      * @param source dell'evento generato dal bottone
      */
-    public AButton creaAddButton(AButtonType type, ApplicationListener source);
+//    @Override
+    public AButton creaAddButton(EAButtonType type, IAPresenter source) {
+        return creaAddButton(type, source, source, (AEntity) null, (AField) null);
+    }// end of method
 
 
     /**
@@ -67,12 +104,18 @@ public interface AToolbar {
      * Inietta nei bottoni il parametro obbligatorio (source)
      * Aggiunge il bottone alla prima riga (default) del contenitore grafico
      *
-     * @param type        del bottone, secondo la Enumeration AButtonType
-     * @param source      dell'evento generato dal bottone
      * @param sourceField di un altro modulo che ha richiesto, tramite bottone, la visualizzazione del form
      */
-    public AButton creaAddButton(AButtonType type, ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField);
+//    @Override
+    public AButton creaAddButton(EAButtonType type, IAPresenter source, IAListener target, AEntity entityBean, AField sourceField) {
+        AButton button = buttonFactory.crea(type, source, target, sourceField, entityBean);
 
+        if (button != null) {
+            primaRiga.addComponent(button);
+        }// end of if cycle
+
+        return button;
+    }// end of method
 
     /**
      * Crea il bottone nella factory AButtonFactory (iniettandogli il publisher)
@@ -82,7 +125,14 @@ public interface AToolbar {
      * @param type   del bottone, secondo la Enumeration AButtonType
      * @param source dell'evento generato dal bottone
      */
-    public AButton creaAddButtonSecondaRiga(AButtonType type, ApplicationListener source);
+//    @Override
+    public AButton creaAddButtonSecondaRiga(EAButtonType type, IAListener source) {
+        if (this.getComponentCount() == 1) {
+            this.addComponent(secondaRiga);
+        }// end of if cycle
+
+        return creaAddButtonSecondaRiga(type, source, source, (AEntity) null, (AField) null);
+    }// end of method
 
 
     /**
@@ -90,12 +140,26 @@ public interface AToolbar {
      * Inietta nei bottoni il parametro obbligatorio (source)
      * Aggiunge il bottone alla seconda riga (opzionale) del contenitore grafico
      *
-     * @param type        del bottone, secondo la Enumeration AButtonType
-     * @param source      dell'evento generato dal bottone
      * @param sourceField di un altro modulo che ha richiesto, tramite bottone, la visualizzazione del form
      */
-    public AButton creaAddButtonSecondaRiga(AButtonType type, ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField);
+//    @Override
+    public AButton creaAddButtonSecondaRiga(EAButtonType type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
+        AButton button = buttonFactory.crea(type, source, target, sourceField, entityBean);
 
+        if (button != null) {
+            secondaRiga.addComponent(button);
+        }// end of if cycle
+
+        return button;
+    }// end of method
+
+    /**
+     * Cancella tutti i bottoni
+     */
+    public void deleteAllButtons() {
+        primaRiga.removeAllComponents();
+        secondaRiga.removeAllComponents();
+    }// end of method
 
     /**
      * Inietta nel bottone il parametro
@@ -103,7 +167,9 @@ public interface AToolbar {
      *
      * @param entityBean in elaborazione
      */
-    public void inizializzaEdit(AEntity entityBean);
+//    @Override
+    public void inizializzaEdit(AEntity entityBean) {
+    }// end of method
 
 
     /**
@@ -113,7 +179,29 @@ public interface AToolbar {
      * @param entityBean in elaborazione
      * @param target     (window, dialog, presenter) a cui indirizzare l'evento
      */
-    public void inizializzaEditLink(AEntity entityBean, ApplicationListener target);
+//    @Override
+    public void inizializzaEditLink(AEntity entityBean, ApplicationListener target) {
+    }// end of method
+
+
+    /**
+     * Aggiunge un componente (di solito un Button) alla prima riga (default) del contenitore grafico
+     *
+     * @param component da aggiungere
+     */
+    public void addComp(Component component) {
+        primaRiga.addComponent(component);
+    }// end of method
+
+
+    /**
+     * Aggiunge un componente (di solito un Button) alla prima riga (default) del contenitore grafico
+     *
+     * @param component da aggiungere
+     */
+    public void addCompSecondaRiga(Component component) {
+        secondaRiga.addComponent(component);
+    }// end of method
 
 
     /**
@@ -122,23 +210,48 @@ public interface AToolbar {
      * @param type   del bottone, secondo la Enumeration AButtonType
      * @param status abilitare o disabilitare
      */
-    public void enableButton(AButtonType type, boolean status);
+    public void enableButton(EAButtonType type, boolean status) {
+        AButton button = this.getButton(type);
+
+        if (button != null) {
+            button.setEnabled(status);
+        }// end of if cycle
+    }// end of method
 
 
     /**
-     * Aggiunge un componente (di solito un Button) alla prima riga (default) del contenitore grafico
+     * Recupera il bottone del tipo specifico
+     * Ce ne può essere uno solo per questa toolbar
      *
-     * @param component da aggiungere
+     * @param type del bottone, secondo la Enumeration AButtonType
      */
-    public void addComp(Component component);
+    @Override
+    public AButton getButton(EAButtonType type) {
+        Component comp = null;
+        AButton button = null;
 
+        for (int k = 0; k < primaRiga.getComponentCount(); k++) {
+            comp = primaRiga.getComponent(k);
+            if (comp != null && comp instanceof AButton) {
+                button = (AButton) comp;
+                if (button.getType() == type) {
+                    return button;
+                }// end of if cycle
+            }// end of if cycle
+        }// end of for cycle
 
-    /**
-     * Aggiunge un componente (di solito un Button) alla prima riga (default) del contenitore grafico
-     *
-     * @param component da aggiungere
-     */
-    public void addCompSecondaRiga(Component component);
+        for (int k = 0; k < secondaRiga.getComponentCount(); k++) {
+            comp = secondaRiga.getComponent(k);
+            if (comp != null && comp instanceof AButton) {
+                button = (AButton) comp;
+                if (button.getType() == type) {
+                    return button;
+                }// end of if cycle
+            }// end of if cycle
+        }// end of for cycle
+
+        return button;
+    }// end of method
 
 
     /**
@@ -146,7 +259,8 @@ public interface AToolbar {
      *
      * @return il componente concreto di questa interfaccia
      */
-    public AToolbarImpl get();
+    public AToolbar get() {
+        return this;
+    }// end of method
 
-
-}// end of interface
+}// end of class

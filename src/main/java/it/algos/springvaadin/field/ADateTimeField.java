@@ -1,12 +1,12 @@
 package it.algos.springvaadin.field;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.*;
-import it.algos.springvaadin.lib.Cost;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.DateTimeField;
+import it.algos.springvaadin.lib.ACost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @SpringComponent
 @Scope("prototype")
-@Qualifier(Cost.FIELD_DATE_TIME)
+@Qualifier(ACost.FIELD_DATE_TIME)
 public class ADateTimeField extends AField {
 
 

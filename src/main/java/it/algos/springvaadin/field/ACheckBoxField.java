@@ -1,12 +1,10 @@
 package it.algos.springvaadin.field;
 
 import com.vaadin.data.HasValue;
-import com.vaadin.event.MouseEvents;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomField;
-import it.algos.springvaadin.lib.Cost;
+import it.algos.springvaadin.lib.ACost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -21,10 +19,39 @@ import org.springframework.context.annotation.Scope;
 @Slf4j
 @SpringComponent
 @Scope("prototype")
-@Qualifier(Cost.FIELD_CHEK_BOX)
+@Qualifier(ACost.FIELD_CHEK_BOX)
 public class ACheckBoxField extends AField<Boolean> {
 
     private CheckBox checkBox = null;
+
+    /**
+     * Costruttore @Autowired
+     */
+    public ACheckBoxField() {
+    }// end of Spring constructor
+
+
+    /**
+     * Constructor
+     */
+    public ACheckBoxField(boolean status) {
+        super();
+        if (checkBox != null) {
+            checkBox.setValue(status);
+        }// end of if cycle
+    }// end of constructor
+
+
+    /**
+     * Constructor
+     */
+    public ACheckBoxField(String caption) {
+        super();
+        if (checkBox != null) {
+            checkBox.setCaption(caption);
+        }// end of if cycle
+    }// end of constructor
+
 
     /**
      * Crea (o ricrea dopo una clonazione) il componente base

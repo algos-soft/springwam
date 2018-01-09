@@ -4,9 +4,9 @@ import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibText;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.service.ATextService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -24,8 +24,12 @@ import org.springframework.context.annotation.Scope;
 @SpringComponent
 @Configurable("ATextField")
 @Scope("prototype")
-@Qualifier(Cost.FIELD_TEXT_AREA)
+@Qualifier(ACost.FIELD_TEXT_AREA)
 public class ATextAreaField extends ATextField {
+
+
+    @Autowired
+    public ATextService text;
 
     private final static int STANDARD_ROWS = 3;
 
@@ -79,7 +83,7 @@ public class ATextAreaField extends ATextField {
      */
     @Override
     public void doSetValue(Object value) {
-        if (textField != null && LibText.isValid((String) value)) {
+        if (textField != null && text.isValid(value)) {
             textField.setValue((String) value);
         }// end of if cycle
     }// end of method

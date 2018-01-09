@@ -1,8 +1,7 @@
 package it.algos.springvaadin.annotation;
 
-import it.algos.springvaadin.entity.ACompanyRequired;
-import it.algos.springvaadin.login.ARoleType;
-import lombok.extern.slf4j.Slf4j;
+import it.algos.springvaadin.enumeration.EACompanyRequired;
+import it.algos.springvaadin.enumeration.EARoleType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,7 +23,8 @@ public @interface AIEntity {
      * (Optional) Visibilità a secondo del ruolo dell'User collegato
      * Defaults to guest.
      */
-    ARoleType roleTypeVisibility() default ARoleType.guest;
+    EARoleType roleTypeVisibility() default EARoleType.guest;
 
-    ACompanyRequired company() default ACompanyRequired.nonUsata;
+    EACompanyRequired company() default EACompanyRequired.nonUsata;
+
 }// end of interface annotation

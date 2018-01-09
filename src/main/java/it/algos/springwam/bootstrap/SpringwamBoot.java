@@ -2,40 +2,32 @@ package it.algos.springwam.bootstrap;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.app.AlgosApp;
-import it.algos.springvaadin.bootstrap.AlgosBoot;
-import it.algos.springvaadin.entity.company.Company;
-import it.algos.springvaadin.entity.company.CompanyData;
-import it.algos.springvaadin.entity.company.CompanyService;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springwam.entity.croce.Croce;
-import it.algos.springwam.entity.croce.CroceData;
-import it.algos.springwam.entity.croce.CroceService;
-import it.algos.springwam.entity.funzione.FunzioneData;
-import it.algos.springwam.entity.servizio.ServizioData;
+import it.algos.springvaadin.bootstrap.ABoot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 /**
- * Created by gac on @TODAY@
- * .
+ * Created by gac on 12/06/17.
+ * Regolazione di flag specifici dell'applicazione
+ * <p>
+ * Setup non-UI logic here
+ * This class will be executed on container startup when the application is ready to server requests.
+ * Classe eseguita solo quando l'applicazione viene caricata/parte nel server (Tomcat)
+ * Eseguita quindi ad ogni avvio/attivazione del server e NON ad ogni sessione
+ * <p>
+ * In order to create a class that acts like a bootstrap for the application,
+ * that class needs to implements the @EventListener annotation
+ * Any class that implements the @EventListener annotation will be executed before the application is up
+ * and its onApplicationEvent method will be called
+ * <p>
+ * ATTENZIONE: in questa fase NON sono disponibili le Librerie e le classi che dipendono dalla UI e dalla Session
  */
-@SpringComponent
 @Slf4j
-public class SpringwamBoot extends AlgosBoot {
+@SpringComponent
+public class SpringwamBoot extends ABoot {
 
-    @Autowired
-    protected CroceData croceData;
-
-    @Autowired
-    protected CroceService croceService;
-
-    @Autowired
-    protected FunzioneData funzioneData;
-
-    @Autowired
-    protected ServizioData servizioData;
 
     /**
      * Running logic after the Spring context has been initialized
@@ -51,9 +43,18 @@ public class SpringwamBoot extends AlgosBoot {
      * Stampa a video (productionMode) i valori per controllo
      */
     @EventListener
-    @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        this.inizializzaValoriDefault();
+        super.inizializzaValoriDefault();
+        this.iniziaData();
+        this.inizializzaValori();
+    }// end of method
+
+
+    /**
+     * Inizializzazione dei dati standard di alcune collections sul DB
+     */
+    protected void iniziaData() {
+        super.iniziaDataStandard();
     }// end of method
 
 
@@ -62,39 +63,41 @@ public class SpringwamBoot extends AlgosBoot {
      * Una eventuale sottoclasse, dopo aver controllato che il metodo inizializzaValoriDefault()
      * sia stato eseguito una ed una sola volta, può modificare le impostazioni/regolazioni di base
      */
-    @Override
-    protected void inizializzaValoriDefault() {
-
-        if (super.classeAlgosBootAncoraDaEseguire) {
-            super.inizializzaValoriDefault();
-        }// end of if cycle
+//    @Override
+    protected void inizializzaValori() {
+//        if (super.classeAlgosBootAncoraDaEseguire) {
+//            super.inizializzaValoriDefault();
+//        }// end of if cycle
 
         this.printBefore(Boot.specifico);
         this.specificFixAndPrint();
         this.printAfter(Boot.specifico);
     }// end of method
 
+
     /**
      * Regola alcuni flag dell'applicazione
-     * Valori specifici che modificano quelli di default della supeclasse
+     * Valori specifici
      * Stampa a video (productionMode) i valori per controllo
      */
-    private void specificFixAndPrint() {
+    protected void specificFixAndPrint() {
+        AlgosApp.SETUP_TIME = false;
+        log.info("AlgosApp.SETUP_TIME: " + AlgosApp.SETUP_TIME);
+
         AlgosApp.USE_DEBUG = false;
         log.debug("AlgosApp.USE_DEBUG: " + AlgosApp.USE_DEBUG);
 
-        AlgosApp.USE_SECURITY = true;
+        AlgosApp.USE_SECURITY = true;//@todo RIMETTERE a TRUE
         log.debug("AlgosApp.USE_SECURITY: " + AlgosApp.USE_SECURITY);
 
         AlgosApp.USE_MULTI_COMPANY = true;
         log.debug("AlgosApp.USE_MULTI_COMPANY: " + AlgosApp.USE_MULTI_COMPANY);
 
-        AlgosApp.USE_VERS = true;
+        AlgosApp.USE_VERS = false;//@todo RIMETTERE a TRUE;
         log.debug("AlgosApp.USE_VERS: " + AlgosApp.USE_VERS);
 
-        AlgosApp.USE_LOG = true;
+        AlgosApp.USE_LOG = false;//@todo RIMETTERE a TRUE;
         log.debug("AlgosApp.USE_LOG: " + AlgosApp.USE_LOG);
-        System.out.println("AlgosApp.USE_LOG: " + AlgosApp.USE_LOG);
     }// end of method
 
 }// end of class

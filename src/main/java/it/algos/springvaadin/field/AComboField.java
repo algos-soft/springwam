@@ -4,15 +4,11 @@ import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.TextField;
-import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EATypeField;
 import it.algos.springvaadin.event.AFieldEvent;
-import it.algos.springvaadin.event.TypeField;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.presenter.AlgosPresenterImpl;
+import it.algos.springvaadin.lib.ACost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 
 import java.util.List;
@@ -30,7 +26,7 @@ import java.util.List;
 @SpringComponent
 @Slf4j
 @Scope("prototype")
-@Qualifier(Cost.FIELD_COMBO)
+@Qualifier(ACost.FIELD_COMBO)
 public class AComboField extends AField {
 
     protected ComboBox combo = null;
@@ -139,8 +135,8 @@ public class AComboField extends AField {
      */
     public void publish() {
         if (source != null) {
-            publisher.publishEvent(new AFieldEvent(TypeField.valueChanged, source, target, entityBean, this));
-            publisher.publishEvent(new AFieldEvent(TypeField.fieldModificato, source, target, entityBean, this));
+            publisher.publishEvent(new AFieldEvent(EATypeField.valueChanged, source, target, entityBean, this));
+            publisher.publishEvent(new AFieldEvent(EATypeField.fieldModificato, source, target, entityBean, this));
         }// end of if cycle
     }// end of method
 

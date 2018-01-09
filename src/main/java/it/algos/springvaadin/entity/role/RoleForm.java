@@ -1,40 +1,57 @@
 package it.algos.springvaadin.entity.role;
 
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.field.AField;
-import it.algos.springvaadin.field.AImageField;
-import it.algos.springvaadin.form.AlgosFormImpl;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.toolbar.AToolbar;
-import it.algos.springvaadin.toolbar.FormToolbar;
-import it.algos.springvaadin.service.AlgosService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.Label;
+import it.algos.springvaadin.annotation.AIView;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.form.AForm;
+import it.algos.springvaadin.grid.IAGrid;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.toolbar.IAToolbar;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 
 /**
- * Created by gac on 11-nov-17
+ * Project springvaadin
+ * Created by Algos
+ * User: gac
+ * Date: gio, 07-dic-2017
+ * Time: 23:18
+ * Estende la Entity astratta AForm di tipo AView per visualizzare i fields
  * Annotated with @SpringComponent (obbligatorio)
- * Annotated with @Qualifier, per individuare la classe specifica da iniettare come interfaccia
+ * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
-@Qualifier(Cost.TAG_ROL)
-public class RoleForm extends AlgosFormImpl {
+@Scope("session")
+@Qualifier(ACost.TAG_ROL)
+@SpringView(name = ACost.VIEW_ROL_FORM)
+public class RoleForm extends AForm {
 
 
-     /**
-      * Costruttore @Autowired (nella superclasse)
-      * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
-      *
-      * @param service     iniettata da Spring
-      * @param toolbar     iniettata da Spring
-      * @param toolbarLink iniettata da Spring
-      */
-     public RoleForm(@Qualifier(Cost.TAG_ROL) AlgosService service,
-                        @Qualifier(Cost.BAR_FORM) AToolbar toolbar,
-                        @Qualifier(Cost.BAR_LINK) AToolbar toolbarLink) {
-         super(service, toolbar, toolbarLink);
-     }// end of Spring constructor
+    /**
+     * Costruttore @Autowired
+     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
+     * Si usa un @Qualifier(), per avere la sottoclasse specifica
+     * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
+     * Use @Lazy to avoid the Circular Dependency
+     * A simple way to break the cycle is saying Spring to initialize one of the beans lazily.
+     * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
+     * The injected bean will only be fully created when it’s first needed.
+     *
+     * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     */
+    public RoleForm(@Lazy @Qualifier(ACost.TAG_ROL) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+        super(presenter, toolbar);
+    }// end of Spring constructor
 
 
 }// end of class
-

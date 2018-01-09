@@ -1,8 +1,8 @@
 package it.algos.springvaadin.annotation;
 
-import it.algos.springvaadin.field.AFieldType;
-import it.algos.springvaadin.field.FieldAccessibility;
-import it.algos.springvaadin.login.ARoleType;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.enumeration.EAFieldAccessibility;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,7 +30,7 @@ public @interface AIField {
      * (Required) The type of the field.
      * Defaults to the text type.
      */
-    AFieldType type() default AFieldType.text;
+    EAFieldType type() default EAFieldType.text;
 
 
     /**
@@ -67,7 +67,7 @@ public @interface AIField {
      * (Optional) Visibilità a secondo del ruolo dell'User collegato
      * Defaults to guest.
      */
-    ARoleType roleTypeVisibility() default ARoleType.guest;
+    EARoleType roleTypeVisibility() default EARoleType.asEntity;
 
 
     /**
@@ -76,7 +76,7 @@ public @interface AIField {
      * Specific for developer role
      * Defaults to Form value.
      */
-    FieldAccessibility dev() default FieldAccessibility.asForm;
+    EAFieldAccessibility dev() default EAFieldAccessibility.asForm;
 
     /**
      * (Optional) Status (field visible and/or enabled in form) of the field.
@@ -84,7 +84,7 @@ public @interface AIField {
      * Specific for buttonAdmin role
      * Defaults to Form value.
      */
-    FieldAccessibility admin() default FieldAccessibility.asForm;
+    EAFieldAccessibility admin() default EAFieldAccessibility.asForm;
 
     /**
      * (Optional) Status (field visible and/or enabled in form) of the field.
@@ -92,7 +92,7 @@ public @interface AIField {
      * Specific for buttonUser role
      * Defaults to Form value.
      */
-    FieldAccessibility user() default FieldAccessibility.asForm;
+    EAFieldAccessibility user() default EAFieldAccessibility.asForm;
 
 
     /**
@@ -147,7 +147,7 @@ public @interface AIField {
 
     /**
      * (Optional) Status (allowed null selection in popup) of the the field.
-     * Meaning sense only for AFieldType.combo.
+     * Meaning sense only for EAFieldType.combo.
      * Defaults to false.
      */
     boolean nullSelectionAllowed() default false;
@@ -155,7 +155,7 @@ public @interface AIField {
 
     /**
      * (Optional) Status (allowed new selection in popup) of the the field.
-     * Meaning sense only for AFieldType.combo.
+     * Meaning sense only for EAFieldType.combo.
      * Defaults to false.
      */
     boolean newItemsAllowed() default false;

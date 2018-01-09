@@ -1,132 +1,75 @@
 package it.algos.springvaadin.entity.stato;
-
-import com.vaadin.data.ValueProvider;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Image;
-import it.algos.springvaadin.bottone.AButton;
-import it.algos.springvaadin.bottone.AButtonType;
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.grid.AlgosGrid;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibArray;
-import it.algos.springvaadin.lib.LibResource;
-import it.algos.springvaadin.lib.LibSession;
-import it.algos.springvaadin.list.AlgosListImpl;
-import it.algos.springvaadin.presenter.AlgosPresenterImpl;
-import it.algos.springvaadin.service.AlgosService;
-import it.algos.springvaadin.toolbar.ListToolbar;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Resource;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.list.AList;
+import it.algos.springvaadin.annotation.AIView;
+import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.toolbar.IAToolbar;
+import it.algos.springvaadin.enumeration.EARoleType;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gac on 10-ago-17
+ * Created by gac on TIMESTAMP
+ * Estende la Entity astratta AList di tipo AView per visualizzare la Grid
  * Annotated with @SpringComponent (obbligatorio)
- * Annotated with @Qualifier, per individuare la classe specifica da iniettare come annotation
+ * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Annotated with @AIView (facoltativo) per selezionarne la 'visibilità' secondo il ruolo dell'User collegato
+ * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
-@Qualifier(Cost.TAG_STA)
-public class StatoList extends AlgosListImpl {
-
-
-    private AButton buttonImport;
+@Scope("session")
+@Qualifier(ACost.TAG_STA)
+@SpringView(name = ACost.VIEW_STA_LIST)
+@AIView(roleTypeVisibility = EARoleType.developer)
+public class StatoList extends AList {
 
 
     /**
-     * Costruttore @Autowired (nella superclasse)
+     * Label del menu (facoltativa)
+     * SpringNavigator usa il 'name' della Annotation @SpringView per identificare (internamente) e recuperare la view
+     * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
+     * Se manca il MENU_NAME, di default usa il 'name' della view
      */
-    public StatoList(@Qualifier(Cost.TAG_STA) AlgosService service, AlgosGrid grid, ListToolbar toolbar) {
-        super(service, grid, toolbar);
+    public static final String MENU_NAME = ACost.TAG_STA;
+
+
+    /**
+     * Icona visibile nel menu (facoltativa)
+     * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
+     * Se manca il MENU_NAME, di default usa il 'name' della view
+     */
+    public static final Resource VIEW_ICON = VaadinIcons.ASTERISK;
+
+
+    /**
+     * Costruttore @Autowired
+     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
+     * Si usa un @Qualifier(), per avere la sottoclasse specifica
+     * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
+     * Use @Lazy to avoid the Circular Dependency
+     * A simple way to break the cycle is saying Spring to initialize one of the beans lazily.
+     * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
+     * The injected bean will only be fully created when it’s first needed.
+     *
+     * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     */
+    public StatoList(
+            @Lazy @Qualifier(ACost.TAG_STA) IAPresenter presenter,
+            @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
+        super(presenter, toolbar);
     }// end of Spring constructor
 
-
-    /**
-     * Creazione della grid
-     * Ricrea tutto ogni volta che diventa attivo
-     *
-     * @param source      di riferimento per gli eventi
-     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
-     * @param columns     visibili ed ordinate della Grid
-     * @param items       da visualizzare nella Grid
-     */
-    @Override
-    public void restart(AlgosPresenterImpl source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
-        super.restart(source, entityClazz, columns, items);
-        columnBandiera();
-    }// end of method
-
-    /**
-     * Chiamato ogni volta che la finestra diventa attiva
-     * Può essere sovrascritto per un'intestazione (caption) della grid
-     */
-    @Override
-    protected void fixCaption(String className, List items) {
-        if (LibSession.isDeveloper()) {
-            caption = "Elenco di " + items.size() + " schede che valgono per tutte le company";
-            caption += "</br>Lista visibile solo al developer";
-            caption += "</br>NON usa la company";
-            caption += "</br>La key property ID utilizza la property alfaTre";
-            caption += "</br>Le property nome, alfaDue e alfaTre sono uniche e non possono essere nulle";
-            caption += "</br>La property numerico può essere nulla";
-        }// end of if cycle
-    }// end of method
-
-
-    /**
-     * Crea la colonna (di tipo Component) per visualizzare la bandiera
-     */
-    private void columnBandiera() {
-        Grid.Column colBandiera = grid.addComponentColumn(stato -> {
-            byte[] bytes = ((Stato) stato).getBandiera();
-            Image image = LibResource.getImage(bytes);
-            image.setWidth("3em");
-            image.setHeight("1.5em");
-            return image;
-        });//end of lambda expressions
-
-        float lar = grid.getWidth();
-        grid.setWidth(lar + 100, Unit.PIXELS);
-
-        colBandiera.setCaption("Icon");
-        colBandiera.setId("Icon");
-        List<Grid.Column> listaColonne = grid.getColumns();
-        ArrayList lista = new ArrayList();
-        for (Grid.Column col : listaColonne) {
-            lista.add(col.getId());
-        }// end of for cycle
-        lista.remove("Icon");
-        lista.add(1,"Icon");
-        grid.setColumnOrder((String[])lista.toArray(new String[lista.size()]));
-    }// end of metho
-
-    /**
-     * Prepara la toolbar
-     * <p>
-     * Seleziona i bottoni da mostrare nella toolbar
-     * Crea i bottoni (iniettandogli il publisher)
-     * Aggiunge i bottoni al contenitore grafico
-     * Inietta nei bottoni il parametro obbligatorio (source)
-     *
-     * @param source       dell'evento generato dal bottone
-     * @param listaBottoni da visualizzare
-     */
-    protected void inizializzaToolbar(ApplicationListener source, List<AButtonType> listaBottoni) {
-        super.inizializzaToolbar(source, listaBottoni);
-        buttonImport = toolbar.creaAddButton(AButtonType.importa, source);
-    }// end of method
-
-
-    public void enableImport(boolean status) {
-        if (buttonImport != null) {
-            buttonImport.setEnabled(status);
-        }// end of if cycle
-    }// end of method
 
 
 }// end of class

@@ -504,8 +504,8 @@ public abstract class LibArray {
             textBuffer.append(sep);
         } // fine del ciclo for-each
         testo = textBuffer.toString();
-        testo = LibText.levaCoda(testo, sep);
-
+//        testo = LibText.levaCoda(testo, sep);
+//@todo RIMETTERE
         return testo;
     }// end of static method
 

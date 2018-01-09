@@ -1,48 +1,57 @@
 package it.algos.springvaadin.entity.stato;
 
-import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.entity.ACompanyRequired;
-import it.algos.springvaadin.field.AFieldType;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.field.FieldAccessibility;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.login.ARoleType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.context.annotation.Scope;
+import lombok.*;
+import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.enumeration.EACompanyRequired;
+import it.algos.springvaadin.enumeration.EAFieldAccessibility;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.entity.AEntity;
+
 /**
- * Created by gac on 10-ago-17
+ * Created by gac on 11-nov-17
+ * Estende la Entity astratta AEntity che contiene la key property ObjectId
  * Annotated with @SpringComponent (obbligatorio)
+ * Annotated with @Document (facoltativo) per avere un nome della collection (DB Mongo) diverso dal nome della Entity
+ * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Data (Lombok) for automatic use of Getter and Setter
  * Annotated with @NoArgsConstructor (Lombok) for JavaBean specifications
  * Annotated with @AllArgsConstructor (Lombok) per usare il costruttore completo nel Service
- * Estende la Entity astratta AEntity che contiene la key property ObjectId
- * <p>
- * Gli stati vengono classificati secondo la norma ISO 3166
- *
- * @https://it.wikipedia.org/wiki/ISO_3166
+ * Annotated with @Builder (Lombok) lets you automatically produce the code required to have your class
+ * be instantiable with code such as: Person.builder().name("Adam Savage").city("San Francisco").build();
+ * Annotated with @EqualsAndHashCode (facoltativo) per ???
+ * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIEntity (facoltativo) per alcuni parametri generali del modulo
+ * Annotated with @AIList (facoltativo) per le colonne della Lista e loro visibilità/accessibilità relativa all'utente
+ * Annotated with @AIForm (facoltativo) per i fields del Form e loro visibilità/accessibilità relativa all'utente
+ * Inserisce SEMPRE la versione di serializzazione che viene poi filtrata per non mostrarla in List e Form
+ * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
  */
 @SpringComponent
-@Document()
-@AIEntity(company = ACompanyRequired.nonUsata)
-@AIList(showsID = true, widthID = 80, columns = {"ordine", "nome", "prova", "alfaDue", "alfaTre", "numerico"})
-@AIForm(showsID = true, widthIDEM = 4)
-@AISearch(fields = {"nome", "alfaDue"})
+@Document(collection = "stato")
+@Scope("session")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EqualsAndHashCode(callSuper = false)
+@Qualifier(ACost.TAG_STA)
+@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.nonUsata)
+@AIList(dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIForm()
 public class Stato extends AEntity {
-
 
     /**
      * versione della classe per la serializzazione
@@ -57,7 +66,7 @@ public class Stato extends AEntity {
      */
     @NotNull
     @Indexed(unique = true)
-    @AIField(type = AFieldType.integer, help = "Ordine di stato. Unico e normalmente progressivo", dev = FieldAccessibility.showOnly)
+    @AIField(type = EAFieldType.integer, help = "Ordine di stato. Unico e normalmente progressivo")
     @AIColumn(name = "#", width = 55)
     private int ordine;
 
@@ -68,7 +77,7 @@ public class Stato extends AEntity {
     @NotEmpty
     @Indexed(unique = true)
     @Size(min = 4)
-    @AIField(type = AFieldType.text, required = true, focus = true, firstCapital = true, help = "Codifica ISO 3166/MA")
+    @AIField(type = EAFieldType.text, required = true, focus = true, firstCapital = true, help = "Codifica ISO 3166/MA")
     @AIColumn(width = 250)
     private String nome;
 
@@ -80,7 +89,7 @@ public class Stato extends AEntity {
     @NotEmpty
     @Indexed(unique = true)
     @Size(min = 2, max = 2)
-    @AIField(type = AFieldType.text, widthEM = 6, allUpper = true, onlyLetter = true, help = "Codifica ISO 3166-1 alpha-2")
+    @AIField(type = EAFieldType.text, widthEM = 6, allUpper = true, onlyLetter = true, help = "Codifica ISO 3166-1 alpha-2")
     @AIColumn(width = 100)
     private String alfaDue;
 
@@ -92,7 +101,7 @@ public class Stato extends AEntity {
     @NotEmpty
     @Indexed(unique = true)
     @Size(min = 3, max = 3)
-    @AIField(type = AFieldType.text, widthEM = 6, allUpper = true, onlyLetter = true, help = "Codifica ISO 3166-1 alpha-3")
+    @AIField(type = EAFieldType.text, widthEM = 6, allUpper = true, onlyLetter = true, help = "Codifica ISO 3166-1 alpha-3")
     @AIColumn(width = 100)
     private String alfaTre;
 
@@ -103,7 +112,7 @@ public class Stato extends AEntity {
      */
     @Indexed(unique = false)
     @Size(min = 3, max = 3)
-    @AIField(type = AFieldType.text, widthEM = 6, onlyNumber = true, help = "Codifica ISO 3166-1 numerico")
+    @AIField(type = EAFieldType.text, widthEM = 6, onlyNumber = true, help = "Codifica ISO 3166-1 numerico")
     @AIColumn(width = 100, name = "Code")
     private String numerico;
 
@@ -112,7 +121,7 @@ public class Stato extends AEntity {
      * immagine bandiera (facoltativo, unico).
      */
     @Indexed(unique = false)
-    @AIField(type = AFieldType.image, widthEM = 8)
+    @AIField(type = EAFieldType.image, widthEM = 8)
     @AIColumn(width = 100)
     private byte[] bandiera;
 

@@ -6,8 +6,6 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
-import it.algos.springvaadin.nav.AlgosNavView;
-import it.algos.springvaadin.presenter.AlgosPresenterImpl;
 
 import java.io.File;
 
@@ -16,39 +14,6 @@ import java.io.File;
  * Accessing UI, Page, Session, and Service
  */
 public class LibVaadin {
-
-    /**
-     * Get the current View
-     */
-    public static AlgosPresenterImpl getCurrentPresenter() {
-        AlgosPresenterImpl presenter = null;
-        AlgosNavView view = getCurrentView();
-
-        if (view != null) {
-            presenter = view.getPresenter();
-        }// end of if cycle
-
-        return presenter;
-    }// end of static method
-
-    /**
-     * Get the current View
-     */
-    public static AlgosNavView getCurrentView() {
-        AlgosNavView algosView = null;
-        View vaadinView = null;
-        Navigator navigator = getNavigator();
-
-        if (navigator != null) {
-            vaadinView = navigator.getCurrentView();
-            if (vaadinView instanceof AlgosNavView) {
-                algosView = (AlgosNavView) vaadinView;
-            }// end of if cycle
-        }// end of if cycle
-
-        return algosView;
-    }// end of static method
-
 
     /**
      * Get the Navigator

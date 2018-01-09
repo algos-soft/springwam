@@ -1,9 +1,23 @@
 package it.algos.springvaadin.entity.stato;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.entity.stato.StatoService;
+import it.algos.springvaadin.data.AData;
+import it.algos.springvaadin.entity.role.RoleService;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.lib.LibResource;
+import it.algos.springvaadin.service.AArrayService;
+import it.algos.springvaadin.service.AResourceService;
+import it.algos.springvaadin.service.ATextService;
+import it.algos.springvaadin.service.IAService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * Project springvaadin
@@ -12,34 +26,122 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Date: sab, 14-ott-2017
  * Time: 09:40
  */
-@SpringComponent
 @Slf4j
-public class StatoData {
+@SpringComponent
+@Scope("singleton")
+public class StatoData extends AData {
+
+
+    /**
+     * Il service iniettato dal costruttore, in modo che sia disponibile nella superclasse,
+     * dove viene usata l'interfaccia IAService
+     * Spring costruisce al volo, quando serve, una implementazione di IAService (come previsto dal @Qualifier)
+     * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
+     */
+    private StatoService service;
 
     @Autowired
-    private StatoService service;
+    public AResourceService resource;
+
+    @Autowired
+    public AArrayService array;
+
+    /**
+     * Costruttore @Autowired
+     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
+     * Si usa un @Qualifier(), per avere la sottoclasse specifica
+     * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
+     *
+     * @param service iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     */
+    public StatoData(@Qualifier(ACost.TAG_STA) IAService service) {
+        super(service);
+        this.service = (StatoService) service;
+    }// end of Spring constructor
 
 
     /**
      * Creazione di una collezione
+     * Solo se non ci sono records
      */
-    public void creaAll() {
-        if (recordsInsufficienti()) {
-            service.creaStati();
+    public void findOrCrea() {
+        int numRec = 0;
+
+        if (nessunRecordEsistente()) {
+            creaStati();
+            numRec = service.count();
+            log.warn("Algos - Creazione dati iniziali @EventListener ABoot.onApplicationEvent() -> iniziaDataStandard() -> StatoData.findOrCrea(): " + numRec + " schede");
         } else {
-            log.info("La collezione di stati è presente");
+            numRec = service.count();
+            log.info("Algos - Data. La collezion Stato è presente: " + numRec + " schede");
         }// end of if/else cycle
     }// end of method
 
 
     /**
-     * Controlla se la collezione esiste già
-     * Controlla se esiste solo la scheda di default (Italia)
+     * Creazione di una collezione di stati
      */
-    private boolean recordsInsufficienti() {
-        return service.count() < 2;
+    private void creaStati() {
+        String fileName = "Stati";
+        List<String> righe = resource.readText(fileName);
+
+        if (array.isValid(righe)) {
+            service.deleteAll();
+            for (String riga : righe) {
+                creaStato(riga);
+            }// end of for cycle
+        }// end of if cycle
+
     }// end of method
 
 
+    /**
+     * Creazione di un singolo stato
+     */
+    private boolean creaStato(String riga) {
+        String[] parti = riga.split(",");
+        Stato stato;
+        int ordine = 0;
+        String nome = "";
+        String alfaDue = "";
+        String alfaTre = "";
+        String numerico = "";
+        byte[] bandiera = null;
+        String suffix = ".png";
+
+        if (parti.length > 0) {
+            nome = parti[0];
+        }// end of if cycle
+        if (parti.length > 1) {
+            alfaDue = parti[1];
+        }// end of if cycle
+        if (parti.length > 2) {
+            alfaTre = parti[2];
+            bandiera = resource.getImgBytes(alfaTre.toUpperCase() + suffix);
+        }// end of if cycle
+        if (parti.length > 3) {
+            numerico = parti[3];
+        }// end of if cycle
+
+        stato = service.newEntity(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
+
+        try { // prova ad eseguire il codice
+            stato = (Stato) service.save(stato);
+            if (bandiera == null || bandiera.length == 0) {
+                log.warn("Stato: " + riga + " - Manca la bandiera");
+            } else {
+                log.info("Stato: " + riga + " - Tutto OK");
+            }// end of if/else cycle
+        } catch (Exception unErrore) { // intercetta l'errore
+            try { // prova ad eseguire il codice
+                stato = service.newEntity(ordine, nome, alfaDue, alfaTre, numerico, new byte[0]);
+                log.warn("Stato: " + riga + " - Dimensioni bandiera eccessive");
+            } catch (Exception unErrore2) { // intercetta l'errore
+                log.error("Stato: " + riga + " - Non sono riuscito a crearlo");
+            }// fine del blocco try-catch
+        }// fine del blocco try-catch
+
+        return stato != null;
+    }// end of method
 
 }// end of class

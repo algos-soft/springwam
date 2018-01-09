@@ -1,102 +1,75 @@
 package it.algos.springvaadin.entity.company;
-
-import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.ComboBox;
-import it.algos.springvaadin.grid.AlgosGrid;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.lib.LibSession;
-import it.algos.springvaadin.list.AlgosListImpl;
-import it.algos.springvaadin.service.AlgosService;
-import it.algos.springvaadin.toolbar.AToolbarImpl;
-import it.algos.springvaadin.toolbar.ListToolbar;
-import it.algos.springvaadin.ui.AlgosUI;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Resource;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.list.AList;
+import it.algos.springvaadin.annotation.AIView;
+import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.toolbar.IAToolbar;
+import it.algos.springvaadin.enumeration.EARoleType;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
- * Created by gac on 13/06/17.
+ * Created by gac on TIMESTAMP
+ * Estende la Entity astratta AList di tipo AView per visualizzare la Grid
  * Annotated with @SpringComponent (obbligatorio)
- * Annotated with @Qualifier, per individuare la classe specifica da iniettare come annotation
+ * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Annotated with @AIView (facoltativo) per selezionarne la 'visibilità' secondo il ruolo dell'User collegato
+ * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
-@Qualifier(Cost.TAG_COMP)
-public class CompanyList extends AlgosListImpl {
+@Scope("session")
+@Qualifier(ACost.TAG_COM)
+@SpringView(name = ACost.VIEW_COM_LIST)
+@AIView(roleTypeVisibility = EARoleType.admin)
+public class CompanyList extends AList {
 
-    @Autowired
-    private CompanyService service;
 
     /**
-     * Costruttore @Autowired (nella superclasse)
+     * Label del menu (facoltativa)
+     * SpringNavigator usa il 'name' della Annotation @SpringView per identificare (internamente) e recuperare la view
+     * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
+     * Se manca il MENU_NAME, di default usa il 'name' della view
      */
-    public CompanyList(@Qualifier(Cost.TAG_COMP) AlgosService service, AlgosGrid grid, ListToolbar toolbar) {
-        super(service, grid, toolbar);
+    public static final String MENU_NAME = ACost.TAG_COM;
+
+
+    /**
+     * Icona visibile nel menu (facoltativa)
+     * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
+     * Se manca il MENU_NAME, di default usa il 'name' della view
+     */
+    public static final Resource VIEW_ICON = VaadinIcons.ASTERISK;
+
+
+    /**
+     * Costruttore @Autowired
+     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
+     * Si usa un @Qualifier(), per avere la sottoclasse specifica
+     * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
+     * Use @Lazy to avoid the Circular Dependency
+     * A simple way to break the cycle is saying Spring to initialize one of the beans lazily.
+     * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
+     * The injected bean will only be fully created when it’s first needed.
+     *
+     * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     */
+    public CompanyList(
+            @Lazy @Qualifier(ACost.TAG_COM) IAPresenter presenter,
+            @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
+        super(presenter, toolbar);
     }// end of Spring constructor
 
 
-    /**
-     * Chiamato ogni volta che la finestra diventa attiva
-     * Può essere sovrascritto per un'intestazione (caption) della grid
-     */
-    @Override
-    protected void fixCaption(String className, List items) {
-        if (LibSession.isDeveloper()) {
-            super.fixCaption(className, items);
-            super.caption += "</br>Lista visibile solo all'admin. Filtrata su una sola company";
-            super.caption += "</br>NON usa la company (ovvio)";
-            super.caption += "</br>Usabile direttamente, ma anche estendendo la classe";
-            super.caption += "</br>Solo il developer vede queste note";
-        } else {
-            super.caption = "Company di riferimento";
-        }// end of if/else cycle
-    }// end of method
-
-
-    protected void fixToolbar() {
-        if (LibSession.isDeveloper()) {
-            this.addChangeCompanyButton();
-        }// end of if cycle
-    }// end of method
-
-
-    protected void addChangeCompanyButton() {
-        List companyList = service.findAllAll();
-
-        if (companyList == null) {
-            return;
-        }// end of if cycle
-        companyList.add(0, "tutte");
-
-        final ComboBox companies = new ComboBox("Seleziona", companyList);
-        companies.setEmptySelectionAllowed(false);
-        if (LibSession.isCompanyValida()) {
-            Company company = LibSession.getCompany();
-            companies.setValue(company);
-        } else {
-            companies.setValue("tutte");
-        }// end of if/else cycle
-        ((AToolbarImpl) toolbar).addComponent(companies);
-
-        companies.addValueChangeListener(new HasValue.ValueChangeListener<String>() {
-            @Override
-            public void valueChange(HasValue.ValueChangeEvent<String> valueChangeEvent) {
-                Object event = valueChangeEvent.getValue();
-
-                if (event != null && event instanceof Company) {
-                    LibSession.setCompany((Company) event);
-                } else {
-                    LibSession.setCompany(null);
-                }// end of if/else cycle
-
-                Object ui = getUI();
-                if (ui instanceof AlgosUI) {
-                    ((AlgosUI) ui).footer.setAppMessage("SpringVaadin 1.0");
-                }// end of if cycle
-
-            }// end of inner method
-        });// end of anonymous inner class
-    }// end of method
 
 }// end of class

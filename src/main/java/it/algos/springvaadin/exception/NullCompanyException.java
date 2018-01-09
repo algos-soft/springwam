@@ -1,6 +1,6 @@
 package it.algos.springvaadin.exception;
 
-import lombok.extern.slf4j.Slf4j;
+import com.vaadin.ui.Notification;
 
 /**
  * Project springvaadin
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 public class NullCompanyException extends CompanyException {
 
-    private final static String MESSAGE = "Entity non creata perché manca la company che è obbligatoria";
+    public final static String MESSAGE = "Entity non creata perché manca la company che è obbligatoria";
 
     /**
      * Constructor for NullCompanyException.

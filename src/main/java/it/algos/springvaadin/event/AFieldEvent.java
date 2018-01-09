@@ -1,7 +1,8 @@
 package it.algos.springvaadin.event;
 
-import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EATypeField;
+import it.algos.springvaadin.field.AField;
 import org.springframework.context.ApplicationListener;
 
 /**
@@ -15,16 +16,18 @@ import org.springframework.context.ApplicationListener;
 public class AFieldEvent extends AEvent {
 
 
-    //--Obbligatorio specifica del tipo di evento
-    //--Valore modificato oppure link verso un target diverso dal field
-    private TypeField type;
+    /**
+     * Specifica del tipo di evento (obbligatorio)
+     * Valore modificato oppure link verso un target diverso dal field
+     */
+    private EATypeField type;
 
 
     /**
      * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che che ha generato l'evento
      */
-    public AFieldEvent(ApplicationListener source) {
-        this(TypeField.valueChanged, source);
+    public AFieldEvent(IAListener source) {
+        this(EATypeField.valueChanged, source);
     }// end of constructor
 
 
@@ -32,8 +35,8 @@ public class AFieldEvent extends AEvent {
      * @param type   Obbligatorio specifica del tipo di evento
      * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che che ha generato l'evento
      */
-    public AFieldEvent(TypeField type, ApplicationListener source) {
-        this(type, source, (ApplicationListener) null, (AEntity) null);
+    public AFieldEvent(EATypeField type, IAListener source) {
+        this(type, source, (IAListener) null, (AEntity) null);
     }// end of constructor
 
 
@@ -43,7 +46,7 @@ public class AFieldEvent extends AEvent {
      * @param target     Opzionale (window, dialog, presenter) a cui indirizzare l'evento
      * @param entityBean Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AFieldEvent(TypeField type, ApplicationListener source, ApplicationListener target, AEntity entityBean) {
+    public AFieldEvent(EATypeField type, IAListener source, IAListener target, AEntity entityBean) {
         this(type, source, target, entityBean, (AField) null);
     }// end of constructor
 
@@ -55,12 +58,12 @@ public class AFieldEvent extends AEvent {
      * @param entityBean  Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      * @param sourceField Opzionale (field) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AFieldEvent(TypeField type, ApplicationListener source, ApplicationListener target, AEntity entityBean, AField sourceField) {
+    public AFieldEvent(EATypeField type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
         super(type, source, target, entityBean, sourceField);
     }// end of constructor
 
 
-    public TypeField getType() {
+    public EATypeField getType() {
         return type;
     }// end of method
 

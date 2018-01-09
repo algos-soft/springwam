@@ -1,16 +1,12 @@
 package it.algos.springvaadin.field;
 
-import com.vaadin.data.HasValue;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.*;
-import it.algos.springvaadin.lib.Cost;
-import it.algos.springvaadin.presenter.AlgosPresenterImpl;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.toolbar.IAToolbar;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Project springvaadin
@@ -25,8 +21,26 @@ import javax.annotation.PostConstruct;
 @SpringComponent
 @Configurable("ATextField")
 @Scope("prototype")
-@Qualifier(Cost.FIELD_TEXT)
+@Qualifier(ACost.FIELD_TEXT)
 public class ATextField extends AField {
+
+
+    /**
+     * Costruttore @Autowired
+     */
+    public ATextField() {
+    }// end of Spring constructor
+
+
+    /**
+     * Constructor
+     */
+    public ATextField(String value) {
+        super();
+        if (textField != null) {
+            textField.setValue(value);
+        }// end of if cycle
+    }// end of constructor
 
 
     /**

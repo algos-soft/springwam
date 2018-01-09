@@ -1,6 +1,7 @@
 package it.algos.springvaadin.app;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -9,9 +10,9 @@ import javax.annotation.PostConstruct;
 
 /**
  * Created by gac on 01/07/17
- * .
  */
 @Component
+@Slf4j
 public class StaticContextAccessor {
 
     private static StaticContextAccessor instance;
@@ -21,6 +22,7 @@ public class StaticContextAccessor {
 
     @PostConstruct
     public void registerInstance() {
+        log.info("Algos - Crea uno StaticContext.");
         instance = this;
     }// end of method
 

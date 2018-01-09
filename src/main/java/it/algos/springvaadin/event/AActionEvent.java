@@ -2,6 +2,7 @@ package it.algos.springvaadin.event;
 
 
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EATypeAction;
 import org.springframework.context.ApplicationListener;
 
 /**
@@ -13,14 +14,14 @@ public class AActionEvent extends AEvent {
 
 
     //--Obbligatorio specifica del tipo di evento
-    private TypeAction type;
+    private EATypeAction type;
 
 
     /**
      * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che che ha generato l'evento
      */
-    public AActionEvent(ApplicationListener source) {
-        this(TypeAction.click, source);
+    public AActionEvent(IAListener source) {
+        this(EATypeAction.click, source);
     }// end of constructor
 
 
@@ -28,8 +29,18 @@ public class AActionEvent extends AEvent {
      * @param type   Obbligatorio specifica del tipo di evento
      * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che che ha generato l'evento
      */
-    public AActionEvent(TypeAction type, ApplicationListener source) {
-        this(type, source, (ApplicationListener) null, (AEntity) null);
+    public AActionEvent(EATypeAction type, IAListener source) {
+        this(type, source, (IAListener) null, (AEntity) null);
+    }// end of constructor
+
+
+    /**
+     * @param type   Obbligatorio specifica del tipo di evento
+     * @param source Obbligatorio (presenter, form, field, window, dialog,... ) che che ha generato l'evento
+     * @param target Opzionale (window, dialog, presenter) a cui indirizzare l'evento
+     */
+    public AActionEvent(EATypeAction type, IAListener source, IAListener target) {
+        this(type, source, target, null);
     }// end of constructor
 
 
@@ -39,12 +50,12 @@ public class AActionEvent extends AEvent {
      * @param target     Opzionale (window, dialog, presenter) a cui indirizzare l'evento
      * @param entityBean Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AActionEvent(TypeAction type, ApplicationListener source, ApplicationListener target, AEntity entityBean) {
-        super(type,source, target, entityBean,null);
+    public AActionEvent(EATypeAction type, IAListener source, IAListener target, AEntity entityBean) {
+        super(type, source, target, entityBean, null);
     }// end of constructor
 
 
-    public TypeAction getType() {
+    public EATypeAction getType() {
         return type;
     }// end of method
 
