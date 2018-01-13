@@ -4,8 +4,12 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.company.CompanyList;
+import it.algos.springvaadin.entity.log.LogList;
+import it.algos.springvaadin.entity.logtype.LogtypeList;
 import it.algos.springvaadin.entity.role.RoleForm;
 import it.algos.springvaadin.entity.role.RoleList;
+import it.algos.springvaadin.entity.stato.Stato;
+import it.algos.springvaadin.entity.stato.StatoList;
 import it.algos.springvaadin.entity.user.UserList;
 import it.algos.springvaadin.home.AHomeView;
 import it.algos.springvaadin.menu.MenuLayout;
@@ -93,15 +97,16 @@ public abstract class AUIViews extends AUIParams {
 //            menuLayout.addView(Versione.class, VersioneNavView.class);
 //        }// end of if cycle
 //        menuLayout.addView(Preferenza.class, PreferenzaNavView.class);
-//        menuLayout.addView(Stato.class, StatoNavView.class);
+        menuLayout.addView(Stato.class, StatoList.class);
 //        menuLayout.addView(Indirizzo.class, IndirizzoNavView.class);
 //        menuLayout.addView(Persona.class, PersonaNavView.class);
-//        if (LibParams.useLog()) {
-//            menuLayout.addView(Log.class, LogNavView.class);
-//        }// end of if cycle
-//        if (LibParams.useMultiCompany()) {
-//            menuLayout.addView(Company.class, CompanyNavView.class);
-//        }// end of if cycle
+        if (AlgosApp.USE_LOG) {
+            menuLayout.addView(LogList.class);
+        }// end of if cycle
+        menuLayout.addView(LogtypeList.class);
+        if (AlgosApp.USE_MULTI_COMPANY) {
+            menuLayout.addView(CompanyList.class);
+        }// end of if cycle
     }// end of method
 
     /**

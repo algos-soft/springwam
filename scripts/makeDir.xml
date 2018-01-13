@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<project name="makeDir" default="creaDir">
+
+    <!-- Target #1. Set property value depends on check result -->
+    <target name="check-dir">
+        <available property="no.dir" file="c:/asjava" type="dir"/>
+    </target>
+
+    <!-- target #2. Create dir 'asjava' if doesn't exist -->
+    <target name="creaDir" depends="check-dir" unless="no.dir">
+        <mkdir dir="${dir}"/>
+    </target>
+</project>

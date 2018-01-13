@@ -1,10 +1,12 @@
-package it.algos.springvaadin.entity.log;
+package it.algos.springwam.entity.funzione;
+
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+import javax.annotation.PostConstruct;
+import java.util.List;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -13,12 +15,15 @@ import it.algos.springvaadin.enumeration.EARoleType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springwam.application.AppCost;
 
 /**
- * Created by gac on TIMESTAMP
+ * Project springwam
+ * Created by Algos
+ * User: gac
+ * Date: 2018-01-13_17:07:10
  * Estende la Entity astratta AList di tipo AView per visualizzare la Grid
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
@@ -29,10 +34,11 @@ import java.util.List;
  */
 @SpringComponent
 @Scope("session")
-@Qualifier(ACost.TAG_LOG)
-@SpringView(name = ACost.VIEW_LOG_LIST)
-@AIView(roleTypeVisibility = EARoleType.admin)
-public class LogList extends AList {
+@Qualifier(AppCost.TAG_FUN)
+@SpringView(name = AppCost.VIEW_FUN_LIST)
+@AIView(roleTypeVisibility = EARoleType.user)
+@AIScript(sovrascrivibile = true)
+public class FunzioneList extends AList {
 
 
     /**
@@ -41,7 +47,7 @@ public class LogList extends AList {
      * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
      * Se manca il MENU_NAME, di default usa il 'name' della view
      */
-    public static final String MENU_NAME = ACost.TAG_LOG;
+    public static final String MENU_NAME = AppCost.TAG_FUN;
 
 
     /**
@@ -65,11 +71,12 @@ public class LogList extends AList {
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-    public LogList(
-            @Lazy @Qualifier(ACost.TAG_LOG) IAPresenter presenter,
+    public FunzioneList(
+            @Lazy @Qualifier(AppCost.TAG_FUN) IAPresenter presenter,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
         super(presenter, toolbar);
     }// end of Spring constructor
+
 
 
     /**
@@ -80,11 +87,9 @@ public class LogList extends AList {
     protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
         super.fixCaption(entityClazz, items);
         if (login.isDeveloper()) {
-            caption += "</br>Lista visibile solo all'admin che vede SOLO le schede della sua company";
-            caption += "</br>Usa la company (se AlgosApp.USE_MULTI_COMPANY=true) che è obbligatoria";
+            caption += "</br>Lista visibile a tutti";
             caption += "</br>Solo il developer vede queste note";
         }// end of if cycle
     }// end of method
-
 
 }// end of class

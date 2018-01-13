@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
  * Time: 12:14
  */
 @Getter
-public class ACEntity extends AEntity {
+public abstract class ACEntity extends AEntity {
 
 
     /**

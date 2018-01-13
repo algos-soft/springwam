@@ -2,21 +2,15 @@ package it.algos.springvaadin.entity.stato;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.data.AData;
-import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.LibResource;
 import it.algos.springvaadin.service.AArrayService;
 import it.algos.springvaadin.service.AResourceService;
-import it.algos.springvaadin.service.ATextService;
 import it.algos.springvaadin.service.IAService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -82,7 +76,7 @@ public class StatoData extends AData {
      * Creazione di una collezione di stati
      */
     private void creaStati() {
-        String fileName = "Stati";
+        String fileName = "stati";
         List<String> righe = resource.readText(fileName);
 
         if (array.isValid(righe)) {

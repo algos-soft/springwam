@@ -8,13 +8,8 @@ package it.algos.springwam.application;
  */
 public abstract class AppCost {
 
-    public final static String TAG_FUN = "funzione";
-	public final static String TAG_SER = "servizio";
-	public final static String TAG_CRO = "croce";
-	public final static String TAG_TAB = "tabellone";
-	public final static String TAG_TUR = "turno";
-	public final static String TAG_UTE = "utente";
-	public final static String TAG_RIG = "riga";
-	public final static String TAG_ISC = "iscrizione";
-	public final static String TAG_GEN = "generator";
+	public final static String TAG_FUN = "funzione";
+	public final static String VIEW_FUN_LIST = "funzionelist";
+	public final static String VIEW_FUN_FORM = "funzioneform";
+
 }// end of static class

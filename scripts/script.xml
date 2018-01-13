@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project name="script">
+
+
+    <!-- Using Javascript functions to convert the string -->
+    <!-- To lower case -->
+    <scriptdef language="javascript" name="lower">
+        <attribute name="text"/>
+        <attribute name="to"/>
+        project.setProperty(attributes.get("to"),attributes.get("text").toLowerCase());
+    </scriptdef>
+
+
+    <!-- Using Javascript functions to convert the string -->
+    <!-- To upper case -->
+    <scriptdef language="javascript" name="upper">
+        <attribute name="text"/>
+        <attribute name="to"/>
+        project.setProperty(attributes.get("to"),attributes.get("text").toUpperCase());
+    </scriptdef>
+
+
+    <!-- Using Javascript functions to convert the string -->
+    <!-- Primi tre caratteri della stringa -->
+    <scriptdef language="javascript" name="trechars">
+        <attribute name="text"/>
+        <attribute name="to"/>
+        project.setProperty(attributes.get("to"),attributes.get("text").substring(0,3).toUpperCase());
+    </scriptdef>
+
+
+    <scriptdef language="javascript" name="ucfirst">
+        <attribute name="text" />
+        <attribute name="to" />
+        var the_string = attributes.get( "text" );
+        project.setProperty( attributes.get( "to" ),
+        the_string.substr(0,1).toUpperCase() + the_string.substr(1).toLowerCase() );
+    </scriptdef>
+
+</project>

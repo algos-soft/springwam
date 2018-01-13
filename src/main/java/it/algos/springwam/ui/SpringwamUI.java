@@ -1,5 +1,6 @@
 package it.algos.springwam.ui;
 
+import it.algos.springwam.entity.funzione.FunzioneList;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.address.AddressList;
 import it.algos.springvaadin.entity.company.CompanyList;
@@ -47,13 +48,7 @@ public class SpringwamUI extends AUI {
      * La vista viene aggiunta allo SpringViewProvider usato da SpringNavigator
      */
     protected void addVisteSpecifiche() {
-        menuLayout.addView(AddressList.class);
-        menuLayout.addView(LogtypeList.class);
-        menuLayout.addView(LogList.class);
-        menuLayout.addView(StatoList.class);
-        if (AlgosApp.USE_MULTI_COMPANY) {
-            menuLayout.addView(CompanyList.class);
-        }// end of if cycle
+		menuLayout.addView(FunzioneList.class);
     }// end of method
 
     /**

@@ -3,6 +3,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
@@ -70,6 +71,20 @@ public class LogtypeList extends AList {
         super(presenter, toolbar);
     }// end of Spring constructor
 
+
+    /**
+     * Crea la scritta esplicativa
+     * Può essere sovrascritto per un'intestazione specifica (caption) della grid
+     */
+    @Override
+    protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
+        super.fixCaption(entityClazz, items);
+        if (login.isDeveloper()) {
+            caption += "</br>Lista visibile solo al developer";
+            caption += "</br>Alcuni valori sono standard. Ogni progetto può aggiungerne altri specifici";
+            caption += "</br>Solo il developer vede queste note";
+        }// end of if cycle
+    }// end of method
 
 
 }// end of class

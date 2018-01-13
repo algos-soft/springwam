@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<project name="packageProject" default="packageSenzaCompany">
+    <import file="tags.xml">
+    </import>
+    <import file="script.xml">
+    </import>
+    <import file="makeDir.xml">
+    </import>
+    <import file="addTag.xml">
+    </import>
+    <import file="copyFile.xml">
+    </import>
+
+    <tstamp>
+        <format property="date" pattern="yyyy-MM-dd_HH:mm:ss"/>
+    </tstamp>
+
+    <!--Valori sicuramente da regolare in un nuovo modulo-->
+    <input
+            message="Nome del progetto corrente (tutto minuscolo)"
+            addproperty="nomeBaseProject"
+            defaultvalue="springwam"
+    />
+
+    <input
+            message="Nome del nuovo package (iniziale maiuscola) da inserire nel progetto corrente:"
+            addproperty="newPackageRaw"
+            defaultvalue="Prova"
+    />
+    <!--Fine dei valori obbligatori-->
+
+    <!--Valori probabilmente accettabili in un nuovo modulo-->
+    <property name="nomeBaseFrameworkRaw" value="springvaadin"/>
+    <!--Fine dei valori facoltativi-->
+
+
+    <target name="init" description="Regolazioni generali (sempre valide)">
+        <ucfirst text="${nomeBaseFrameworkRaw}" to="nomeBaseFrameworkUpper"/>
+        <lower text="${nomeBaseFrameworkRaw}" to="nomeBaseFrameworkLower"/>
+        <lower text="${nomeBaseProject}" to="projectLower"/>
+
+        <ucfirst text="${newPackageRaw}" to="newEntity"/>
+        <lower text="${newPackageRaw}" to="newPackage"/>
+        <trechars text="${newPackageRaw}" to="newTag"/>
+
+        <property name="risalita" value="/../.."/>
+        <property name="pathBaseFramework" value="${basedir}${risalita}/${nomeBaseFrameworkLower}"/>
+        <property name="pathBaseProject" value="${basedir}${risalita}/${nomeBaseProject}"/>
+        <property name="pathSrc" value="${pathBaseFramework}/${tagSrc}"/>
+        <property name="pathAlgos" value="${pathBaseProject}/${tagPathJava}"/>
+        <property name="pathEntity" value="${pathAlgos}/${nomeBaseProject}/${dirEntity}"/>
+        <property name="pathApplication" value="${pathAlgos}/${nomeBaseProject}/${dirApplication}"/>
+        <property name="pathPack" value="${pathEntity}/${newPackage}"/>
+    </target>
+
+
+    <target name="fixVaadin" description="Valori delle property validi per un package di SprinVaadin">
+        <property name="nomeBaseFrameworkLower" value="nomeBaseProject"/>
+        <property name="thisProject" value="thisProject"/>
+        <property name="newPackage" value="newPackage"/>
+        <property name="newEntiy" value="newEntiy"/>
+        <property name="companyRequired" value="companyRequired"/>
+        <property name="tag" value="AppCost.TAG_${newTag}"/>
+        <property name="tagView" value="AppCost.VIEW_${newTag}"/>
+        <property name="tagView" value="${newTag}"/>
+        <property name="TIMESTAMP" value="TIMESTAMP"/>
+        <property name="importCost" value="import it.algos.${projectLower}.application.AppCost;"/>
+        <property name="destCost" value="${pathApplication}/${tagAppCost}${tagJava}"/>
+        <lower text="${nomeBaseProject}" to="newTest"/>
+        <ucfirst text="${nomeBaseProject}" to="newTestUpper"/>
+        <property name="pathBaseTest" value="${pathAlgos}/${nomeBaseProject}"/>
+        <property name="pathTestUI" value="${pathBaseTest}/ui"/>
+        <property name="destUI" value="${pathTestUI}/${newTestUpper}UI${tagJava}"/>
+        <property name="regexImportMenu" value="import it\.algos\.${projectLower}\.${dirEntity}\.${newPackage}\.${newEntity}List;"/>
+        <property name="tagImportMenu" value="import it.algos.${projectLower}.${dirEntity}.${newPackage}.${newEntity}List;"/>
+        <property name="tagPackageUI" value="package it.algos.${newTest}.ui;&#10;"/>
+    </target>
+
+
+    <target name="creaDir" depends="init" description="Crea la directory per il package">
+        <property name="dir" value="${pathPack}"/>
+        <ant antfile="makeDir.xml" target="creaDir"/>
+        <echo message="dir = ${dir}"/>
+    </target>
+
+
+    <target name="cost" depends="init,fixVaadin">
+        <antcall target="addCost">
+            <param name="file" value="${destCost}"/>
+            <param name="findRegex" value=" TAG_${newTag} "/>
+            <param name="token" value="${tagFindEndFile}"/>
+            <param name="value"
+                   value="&#10;&#009;${tagAddCost}TAG_${newTag} = &quot;${newPackage}&quot;;${tagFindEndFile}"/>
+        </antcall>
+
+        <antcall target="addCost">
+            <param name="file" value="${destCost}"/>
+            <param name="findRegex" value="VIEW_${newTag}_LIST"/>
+            <param name="token" value="${tagFindEndFile}"/>
+            <param name="value"
+                   value="&#10;&#009;${tagAddCost}VIEW_${newTag}_LIST = &quot;${newPackage}list&quot;;${tagFindEndFile}"/>
+        </antcall>
+
+        <antcall target="addCost">
+            <param name="file" value="${destCost}"/>
+            <param name="findRegex" value="VIEW_${newTag}_FORM"/>
+            <param name="token" value="${tagFindEndFile}"/>
+            <param name="value"
+                   value="&#10;&#009;${tagAddCost}VIEW_${newTag}_FORM = &quot;${newPackage}form&quot;;${tagFindEndFile}"/>
+        </antcall>
+    </target>
+
+
+    <target name="menu" depends="init,fixVaadin">
+        <echo message="checkMenu - file = ${destUI}"/>
+        <echo message="checkMenu - findRegex = ${regexImportMenu}"/>
+        <echo message="checkMenu - findRegex = ${regexMenu}${newEntity}List\.class\)"/>
+        <echo message="checkMenu - token = ${tokenMenu}"/>
+        <echo message="checkMenu - value = ${tokenMenu}&#10;&#009;&#009;${replaceMenu}${newEntity}List.class);"/>
+
+        <antcall target="addCost">
+            <param name="file" value="${destUI}"/>
+            <param name="findRegex" value="${regexImportMenu}"/>
+            <param name="token" value="${tagPackageUI}"/>
+            <param name="value" value="${tagPackageUI}&#10;${tagImportMenu}"/>
+        </antcall>
+
+        <antcall target="addCost">
+            <param name="file" value="${destUI}"/>
+            <param name="findRegex" value="${regexMenu}${newEntity}List\.class\)"/>
+            <param name="token" value="${tokenMenu}"/>
+            <param name="value" value="${tokenMenu}&#10;&#009;&#009;${replaceMenu}${newEntity}List.class);"/>
+        </antcall>
+    </target>
+
+    <target name="entity" depends="init">
+        <property name="srcFile" value="${pathSrc}/${tagEntitySrc}${tagTxt}"/>
+        <property name="destFile" value="${pathPack}/${newEntity}${tagJava}"/>
+        <ant antfile="copyFile.xml" target="copy"/>
+    </target>
+
+    <target name="form" depends="init">
+        <property name="srcFile" value="${pathSrc}/${tagForm}${tagTxt}"/>
+        <property name="destFile" value="${pathPack}/${newEntity}${tagForm}${tagJava}"/>
+        <ant antfile="copyFile.xml" target="copy"/>
+    </target>
+
+    <target name="list" depends="init">
+        <property name="srcFile" value="${pathSrc}/${tagList}${tagTxt}"/>
+        <property name="destFile" value="${pathPack}/${newEntity}${tagList}${tagJava}"/>
+        <ant antfile="copyFile.xml" target="copy"/>
+    </target>
+
+    <target name="presenter" depends="init">
+        <property name="srcFile" value="${pathSrc}/${tagPresenter}${tagTxt}"/>
+        <property name="destFile" value="${pathPack}/${newEntity}${tagPresenter}${tagJava}"/>
+        <ant antfile="copyFile.xml" target="copy"/>
+    </target>
+
+    <target name="repository" depends="init">
+        <property name="srcFile" value="${pathSrc}/${tagRepositorySrc}${tagTxt}"/>
+        <property name="destFile" value="${pathPack}/${newEntity}${tagRepository}${tagJava}"/>
+        <ant antfile="copyFile.xml" target="copy"/>
+    </target>
+
+    <target name="service" depends="init">
+        <property name="srcFile" value="${pathSrc}/${tagServiceSrc}${tagTxt}"/>
+        <property name="destFile" value="${pathPack}/${newEntity}${tagService}${tagJava}"/>
+        <ant antfile="copyFile.xml" target="copy"/>
+    </target>
+
+
+    <target name="creaFiles" depends="fixVaadin" description="Crea tutti i files">
+        <antcall target="entity">
+        </antcall>
+        <antcall target="form">
+        </antcall>
+        <antcall target="list">
+        </antcall>
+        <antcall target="presenter">
+        </antcall>
+        <antcall target="repository">
+        </antcall>
+        <antcall target="service">
+        </antcall>
+    </target>
+
+
+    <target name="packageSenzaCompany" depends="init,fixVaadin">
+        <property name="entitySuperclass" value="AEntity"/>
+        <property name="tagEntitySrc" value="${tagEntity}"/>
+        <property name="tagServiceSrc" value="${tagService}"/>
+        <property name="tagRepositorySrc" value="${tagRepository}"/>
+        <antcall target="creaDir">
+        </antcall>
+        <antcall target="cost">
+        </antcall>
+        <antcall target="menu">
+        </antcall>
+        <antcall target="creaFiles">
+        </antcall>
+    </target>
+
+
+    <target name="packageConCompany" depends="init,fixVaadin">
+        <property name="entitySuperclass" value="ACEntity"/>
+        <property name="tagEntitySrc" value="${tagEntity}Company"/>
+        <property name="tagServiceSrc" value="${tagService}Company"/>
+        <property name="tagRepositorySrc" value="${tagRepository}Company"/>
+        <antcall target="creaDir">
+        </antcall>
+        <antcall target="cost">
+        </antcall>
+        <antcall target="menu">
+        </antcall>
+        <antcall target="creaFiles">
+        </antcall>
+    </target>
+
+
+    <target name="test" depends="init,fixVaadin" description="Controllo della variabili">
+        <echo message="Test di packageProject"/>
+        <echo message=""/>
+        <echo message="nomeBaseFrameworkUpper = ${nomeBaseFrameworkUpper}"/>
+        <echo message="nomeBaseLower = ${nomeBaseLower}"/>
+        <echo message="newEntity = ${newEntity}"/>
+        <echo message="newPackage = ${newPackage}"/>
+
+        <echo message="risalita = ${risalita}"/>
+        <echo message="pathBaseFramework = ${pathBaseFramework}"/>
+        <echo message="pathAlgos = ${pathAlgos}"/>
+        <echo message="pathSrc = ${pathSrc}"/>
+        <echo message="pathEntity = ${pathEntity}"/>
+        <echo message="pathPack = ${pathPack}"/>
+        <echo message="tag = ${tag}"/>
+        <echo message="pathApplication = ${pathApplication}"/>
+        <echo message="destCost = ${destCost}"/>
+        <echo message="destUI = ${destUI}"/>
+        <echo message="tagImportMenu = ${tagImportMenu}"/>
+        <echo message="projectLower = ${projectLower}"/>
+        <echo message="importCost = import it.algos.${projectLower}.AppCost"/>
+        <echo message="pathApplication = ${pathApplication}"/>
+
+    </target>
+
+</project>

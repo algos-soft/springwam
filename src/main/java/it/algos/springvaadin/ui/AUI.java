@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Scope;
  * Costruisce un layout standard (modificabile nello specifico per la gioia di Alex)
  * Delega ad altre classi l'implementazione effettiva degli specifici layout
  */
-@SpringViewDisplay()
+//@SpringViewDisplay()
 @Slf4j
 public abstract class AUI extends AUIViews implements ViewDisplay {
 
@@ -68,6 +68,7 @@ public abstract class AUI extends AUIViews implements ViewDisplay {
     @Override
     protected void init(VaadinRequest request) {
         super.init(request);
+
 
 //        //--Controlla (se MultiUtenza) che sia stata selezionata una company valida
 //        //--Crea la User Interface

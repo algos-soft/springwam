@@ -15,29 +15,29 @@ import java.nio.file.Paths;
  */
 public abstract class LibResource {
 
-    /**
-     * Restituisce una immagine dalla directory di default come byte array.
-     * <p>
-     *
-     * @param name nome dell'immagine
-     *
-     * @return il corrispondente byte array.
-     */
-    public static byte[] getImgBytes(String name) {
-        return getImgBytes(AlgosApp.IMG_FOLDER_NAME, name);
-    }// end of static method
+//    /**
+//     * Restituisce una immagine dalla directory di default come byte array.
+//     * <p>
+//     *
+//     * @param name nome dell'immagine
+//     *
+//     * @return il corrispondente byte array.
+//     */
+//    public static byte[] getImgBytes(String name) {
+//        return getImgBytes(AlgosApp.IMG_FOLDER_NAME, name);
+//    }// end of static method
 
-    /**
-     * Restituisce una immagine dalla directory di default come resource.
-     * <p>
-     *
-     * @param name nome dell'immagine
-     *
-     * @return la Resource corrispondente.
-     */
-    public static Resource getImgResource(String name) {
-        return getImgResource(AlgosApp.IMG_FOLDER_NAME, name);
-    }// end of static method
+//    /**
+//     * Restituisce una immagine dalla directory di default come resource.
+//     * <p>
+//     *
+//     * @param name nome dell'immagine
+//     *
+//     * @return la Resource corrispondente.
+//     */
+//    public static Resource getImgResource(String name) {
+//        return getImgResource(AlgosApp.IMG_FOLDER_NAME, name);
+//    }// end of static method
 
     /**
      * Restituisce una immagine come byte array.
@@ -116,67 +116,67 @@ public abstract class LibResource {
     }// end of static method
 
 
-    /**
-     * Create an Image from a resource
-     * <p>
-     *
-     * @param resource the resource
-     *
-     * @return the image
-     */
-    public static Image getImage(final Resource resource) {
-        Image image = new Image(null, resource);
-        return image;
-    }// end of static method
+//    /**
+//     * Create an Image from a resource
+//     * <p>
+//     *
+//     * @param resource the resource
+//     *
+//     * @return the image
+//     */
+//    public static Image getImage(final Resource resource) {
+//        Image image = new Image(null, resource);
+//        return image;
+//    }// end of static method
 
-    /**
-     * Create an Image from a byte array
-     * <p>
-     *
-     * @param bytes the byte array
-     *
-     * @return the image
-     */
-    public static Image getImage(final byte[] bytes) {
-        Image image = new Image();
-        StreamResource resource = LibResource.getStreamResource(bytes);
-        image.setSource(resource);
-        return image;
-    }// end of static method
+//    /**
+//     * Create an Image from a byte array
+//     * <p>
+//     *
+//     * @param bytes the byte array
+//     *
+//     * @return the image
+//     */
+//    public static Image getImage(final byte[] bytes) {
+//        Image image = new Image();
+//        StreamResource resource = LibResource.getStreamResource(bytes);
+//        image.setSource(resource);
+//        return image;
+//    }// end of static method
 
 
-    /**
-     * Create an Image from a name
-     * <p>
-     *
-     * @param name nome dell'immagine
-     *
-     * @return the image
-     */
-    public static Image getImage(String name) {
-        Image image = null;
-        Resource res = LibResource.getImgResource(name);
+//    /**
+//     * Create an Image from a name
+//     * <p>
+//     *
+//     * @param name nome dell'immagine
+//     *
+//     * @return the image
+//     */
+//    public static Image getImage(String name) {
+//        Image image = null;
+//        Resource res = LibResource.getImgResource(name);
+//
+//        if (res != null) {
+//            image = new Image();
+//            image.setSource(res);
+//        }// end of if cycle
+//
+//        return image;
+//    }// end of static method
 
-        if (res != null) {
-            image = new Image();
-            image.setSource(res);
-        }// end of if cycle
-
-        return image;
-    }// end of static method
-
-    public static VaadinIcons getVaadinIcon(int codePoint) {
-        VaadinIcons icona = null;
-        VaadinIcons[] icons = VaadinIcons.values();
-
-        for (VaadinIcons icon : icons) {
-            if (icon.getCodepoint() == codePoint) {
-                icona = icon;
-                break;
-            }// end of if cycle
-        }// end of for cycle
-
-        return icona;
-    }// end of static method
+//    public static VaadinIcons getVaadinIcon(int codePoint) {
+//        VaadinIcons icona = null;
+//        VaadinIcons[] icons = VaadinIcons.values();
+//
+//        for (VaadinIcons icon : icons) {
+//            if (icon.getCodepoint() == codePoint) {
+//                icona = icon;
+//                break;
+//            }// end of if cycle
+//        }// end of for cycle
+//
+//        return icona;
+//    }// end of static method
 
 }// end of abstract class

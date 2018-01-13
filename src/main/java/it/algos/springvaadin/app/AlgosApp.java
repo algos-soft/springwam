@@ -60,6 +60,22 @@ public abstract class AlgosApp {
      */
     public final static String IMG_FOLDER_NAME = "./src/main/webapp/VAADIN/img/";
 
+//    /**
+//     * Costante globale dell'applicazione. Non modificabile.
+//     * Usando SpringBoot, la cartella deve (DEVE) essere contenuta nella directory 'webapp'
+//     * Name of the base folder for images.<br>
+//     */
+//    public final static String RESOURCES_FOLDER_NAME = "./src/main/resources/static/";
+
+
+//    /**
+//     * Costante globale dell'applicazione. Non modificabile.
+//     * Usando SpringBoot, la cartella deve (DEVE) essere contenuta nella directory 'webapp'
+//     * Name of the base folder for images.<br>
+//     */
+////    public final static String IMG_FOLDER_NAME = "./src/main/webapp/VAADIN/img/";
+//    public final static String IMG_FOLDER_NAME = "./src/main/resources/static/img/";
+
 
     /**
      * Costante globale dell'applicazione. Business logic. Modificabile.

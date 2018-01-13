@@ -1,30 +1,17 @@
 package it.algos.springvaadin.service;
 
-import com.sun.deploy.panel.ExceptionListDialog;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Sizeable;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.renderers.DateRenderer;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.renderers.LocalDateTimeRenderer;
-import it.algos.springvaadin.annotation.AIColumn;
-import it.algos.springvaadin.annotation.AIField;
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.entity.user.User;
 import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.label.LabelRosso;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.renderer.ByteStringRenderer;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 /**

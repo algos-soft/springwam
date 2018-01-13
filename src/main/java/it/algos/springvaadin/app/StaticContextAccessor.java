@@ -1,17 +1,17 @@
 package it.algos.springvaadin.app;
 
 
+import com.vaadin.spring.annotation.SpringComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 /**
  * Created by gac on 01/07/17
  */
-@Component
+@SpringComponent
 @Slf4j
 public class StaticContextAccessor {
 

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project name="tags" >
+
+    <!--Tags-->
+    <property name="tagXml" value=".xml"/>
+    <property name="tagTxt" value=".txt"/>
+    <property name="tagJava" value=".java"/>
+    <property name="tagEntity" value="Entity"/>
+    <property name="tagForm" value="Form"/>
+    <property name="tagList" value="List"/>
+    <property name="tagPresenter" value="Presenter"/>
+    <property name="tagRepository" value="Repository"/>
+    <property name="tagEntity" value="Entity"/>
+    <property name="tagService" value="Service"/>
+    <property name="dirEntity" value="entity"/>
+    <property name="dirLib" value="lib"/>
+    <property name="dirApplication" value="application"/>
+    <property name="tagCost" value="ACost"/>
+    <property name="tagAppCost" value="AppCost"/>
+    <property name="tagSrc" value="templates/sources"/>
+    <property name="tagMain" value="src/main"/>
+    <property name="tagIdea" value="${tagMain}/java"/>
+    <property name="tagAlgos" value="it/algos"/>
+    <property name="tagPathJava" value="${tagIdea}/${tagAlgos}"/>
+    <property name="tagFindEndFile" value="&#10;}// end of static class"/>
+    <property name="tagAddCost" value="public final static String "/>
+    <property name="tokenMenu" value="addVisteSpecifiche() {"/>
+    <property name="regexMenu" value="menuLayout\.addView\("/>
+    <property name="replaceMenu" value="menuLayout.addView("/>
+
+    <!--Fine dei tags-->
+
+</project>
