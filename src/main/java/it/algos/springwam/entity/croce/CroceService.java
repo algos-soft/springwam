@@ -1,4 +1,4 @@
-package it.algos.springvaadin.entity.company;
+package it.algos.springwam.entity.croce;
 
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.address.Address;
@@ -8,17 +8,23 @@ import it.algos.springvaadin.service.AService;
 import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+
+import java.util.List;
+
 import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
-import java.util.List;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springwam.application.AppCost;
 
 /**
- * Created by gac on TIMESTAMP
+ * Project springwam
+ * Created by Algos
+ * User: gac
+ * Date: 2018-01-13_22:57:46
  * Estende la Entity astratta AService. Layer di collegamento tra il Presenter e la Repository.
  * Annotated with @@Slf4j (facoltativo) per i logs automatici
  * Annotated with @SpringComponent (obbligatorio)
@@ -30,8 +36,9 @@ import java.util.List;
 @SpringComponent
 @Service
 @Scope("singleton")
-@Qualifier(ACost.TAG_COM)
-public class CompanyService extends AService {
+@Qualifier(AppCost.TAG_CRO)
+@AIScript(sovrascrivibile = false)
+public class CroceService extends AService {
 
 
     @Autowired
@@ -44,7 +51,7 @@ public class CompanyService extends AService {
      * Spring costruisce al volo, quando serve, una implementazione di RoleRepository (come previsto dal @Qualifier)
      * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
      */
-    private CompanyRepository repository;
+    private CroceRepository repository;
 
 
     /**
@@ -53,10 +60,10 @@ public class CompanyService extends AService {
      * Si usa un @Qualifier(), per avere la sottoclasse specifica
      * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
      */
-    public CompanyService(@Qualifier(ACost.TAG_COM) MongoRepository repository) {
+    public CroceService(@Qualifier(AppCost.TAG_CRO) MongoRepository repository) {
         super(repository);
-        super.entityClass = Company.class;
-        this.repository = (CompanyRepository) repository;
+        super.entityClass = Croce.class;
+        this.repository = (CroceRepository) repository;
     }// end of Spring constructor
 
 
@@ -69,8 +76,8 @@ public class CompanyService extends AService {
      *
      * @return la entity trovata o appena creata
      */
-    public Company findOrCrea(String code, String descrizione) {
-        return findOrCrea(code, descrizione, (Persona) null, "", "", (Address) null);
+    public Croce findOrCrea(String code, String descrizione) {
+        return findOrCrea((EAOrganizzazione) null, (Persona) null, code, descrizione, (Persona) null, "", "", (Address) null);
     }// end of method
 
 
@@ -78,19 +85,21 @@ public class CompanyService extends AService {
      * Ricerca di una entity (la crea se non la trova)
      * All properties
      *
-     * @param code        di riferimento interno (obbligatorio ed unico)
-     * @param descrizione ragione sociale o descrizione della company (visibile - obbligatoria)
-     * @param contatto    persona di riferimento (facoltativo)
-     * @param telefono    della company (facoltativo)
-     * @param email       della company (facoltativo)
-     * @param indirizzo   della company (facoltativo)
+     * @param organizzazione (facoltativo)
+     * @param presidente     (facoltativo)
+     * @param code           di riferimento interno (obbligatorio ed unico)
+     * @param descrizione    ragione sociale o descrizione della company (visibile - obbligatoria)
+     * @param contatto       persona di riferimento (facoltativo)
+     * @param telefono       della company (facoltativo)
+     * @param email          della company (facoltativo)
+     * @param indirizzo      della company (facoltativo)
      *
      * @return la entity trovata o appena creata
      */
-    public Company findOrCrea(String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
+    public Croce findOrCrea(EAOrganizzazione organizzazione, Persona presidente, String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
         if (nonEsiste(code)) {
             try { // prova ad eseguire il codice
-                return (Company) save(newEntity(code, descrizione, contatto, telefono, email, indirizzo));
+                return (Croce) save(newEntity(organizzazione, presidente, code, descrizione, contatto, telefono, email, indirizzo));
             } catch (Exception unErrore) { // intercetta l'errore
                 log.error(unErrore.toString());
                 return null;
@@ -108,8 +117,25 @@ public class CompanyService extends AService {
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Company newEntity() {
-        return newEntity("", "", (Persona) null, "", "", (Address) null);
+    @Override
+    public Croce newEntity() {
+        return newEntity((EAOrganizzazione) null, (Persona) null, "", "", (Persona) null, "", "", (Address) null);
+    }// end of method
+
+
+    /**
+     * Creazione in memoria di una nuova entity che NON viene salvata
+     * Eventuali regolazioni iniziali delle property
+     * Properties obbligatorie
+     * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
+     *
+     * @param code        di riferimento interno (obbligatorio ed unico)
+     * @param descrizione ragione sociale o descrizione della company (visibile - obbligatoria)
+     *
+     * @return la nuova entity appena creata (non salvata)
+     */
+    public Croce newEntity(String code, String descrizione) {
+        return newEntity((EAOrganizzazione) null, (Persona) null, code, descrizione, (Persona) null, "", "", (Address) null);
     }// end of method
 
 
@@ -119,20 +145,28 @@ public class CompanyService extends AService {
      * All properties
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
-     * @param code        di riferimento interno (obbligatorio ed unico)
-     * @param descrizione ragione sociale o descrizione della company (visibile - obbligatoria)
-     * @param contatto    persona di riferimento (facoltativo)
-     * @param telefono    della company (facoltativo)
-     * @param email       della company (facoltativo)
-     * @param indirizzo   della company (facoltativo)
+     * @param organizzazione (facoltativo)
+     * @param presidente     (facoltativo)
+     * @param code           di riferimento interno (obbligatorio ed unico)
+     * @param descrizione    ragione sociale o descrizione della company (visibile - obbligatoria)
+     * @param contatto       persona di riferimento (facoltativo)
+     * @param telefono       della company (facoltativo)
+     * @param email          della company (facoltativo)
+     * @param indirizzo      della company (facoltativo)
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Company newEntity(String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
-        Company entity = null;
+    public Croce newEntity(EAOrganizzazione organizzazione, Persona presidente, String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
+        Croce entity = null;
 
         if (nonEsiste(code)) {
-            entity = Company.builder().code(code).descrizione(descrizione).contatto(contatto).telefono(telefono).email(email).indirizzo(indirizzo).build();
+            entity = new Croce(organizzazione, presidente);
+            entity.setCode(code);
+            entity.setDescrizione(descrizione);
+            entity.setContatto(contatto);
+            entity.setTelefono(telefono);
+            entity.setEmail(email);
+            entity.setIndirizzo(indirizzo);
         } else {
             return findByCode(code);
         }// end of if/else cycle
@@ -172,7 +206,7 @@ public class CompanyService extends AService {
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Company findByCode(String code) {
+    public Croce findByCode(String code) {
         return repository.findByCode(code);
     }// end of method
 
@@ -201,7 +235,7 @@ public class CompanyService extends AService {
      */
     @Override
     public AEntity save(AEntity entityBean) throws Exception {
-        String code = ((Company) entityBean).getCode();
+        String code = ((Croce) entityBean).getCode();
 
         if (entityBean == null) {
             return null;

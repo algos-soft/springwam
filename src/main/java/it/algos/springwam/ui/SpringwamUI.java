@@ -1,5 +1,6 @@
 package it.algos.springwam.ui;
 
+import it.algos.springwam.entity.croce.CroceList;
 import it.algos.springwam.entity.funzione.FunzioneList;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.address.AddressList;
@@ -48,6 +49,7 @@ public class SpringwamUI extends AUI {
      * La vista viene aggiunta allo SpringViewProvider usato da SpringNavigator
      */
     protected void addVisteSpecifiche() {
+		menuLayout.addView(CroceList.class);
 		menuLayout.addView(FunzioneList.class);
     }// end of method
 

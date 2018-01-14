@@ -76,7 +76,7 @@ public class StatoData extends AData {
      * Creazione di una collezione di stati
      */
     private void creaStati() {
-        String fileName = "stati";
+        String fileName = "stati.txt";
         List<String> righe = resource.readText(fileName);
 
         if (array.isValid(righe)) {
