@@ -103,6 +103,26 @@ public abstract class AForm extends AView implements IAForm {
     }// end of method
 
 
+//    /**
+//     * Creazione di una view (AForm) contenente i fields
+//     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
+//     * Ricrea tutto ogni volta che la view diventa attiva
+//     * La view comprende:
+//     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+//     * 2) Top: Contenitore grafico per la caption
+//     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+//     * 4) Bottom - Barra dei bottoni inferiore
+//     *
+//     * @param source              di riferimento per gli eventi
+//     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
+//     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+//     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
+//     */
+//    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EAButtonType> typeButtons) {
+//        super.start(source, entityClazz, entityBean, reflectedJavaFields, typeButtons);
+//    }// end of method
+
+
     /**
      * Crea la scritta esplicativa
      * Può essere sovrascritto per un'intestazione specifica (caption) della grid
@@ -129,11 +149,10 @@ public abstract class AForm extends AView implements IAForm {
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
      * @param source              presenter di riferimento per i componenti da cui vengono generati gli eventi
-     * @param entityBean          di riferimento
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
     @Override
-    protected void creaBody(IAPresenter source, AEntity entityBean, List<Field> reflectedJavaFields) {
+    protected void creaBody(IAPresenter source, List<Field> reflectedJavaFields) {
         /**
          * Crea un nuovo binder per questo Form e questa Entity
          * Costruisce i componenti grafici AFields (di tipo CustomField), in base ai reflectedFields ricevuti dal service
@@ -149,7 +168,7 @@ public abstract class AForm extends AView implements IAForm {
         layout.setHeightUndefined();
 
         //--rimanda ad un metodo separato per poterlo sovrascrivere
-        fixFields(source, layout, reflectedJavaFields, entityBean);
+        fixFields(source, layout, reflectedJavaFields);
 
         //--inserisce il layout con i fields in un pannello scorrevole
         bodyLayout.setContent(layout);
@@ -174,9 +193,8 @@ public abstract class AForm extends AView implements IAForm {
      * @param source              presenter di riferimento da cui vengono generati gli eventi
      * @param layout              in cui inserire i campi (window o panel)
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-     * @param entityBean          nuova istanza da creare, oppure istanza esistente da modificare
      */
-    protected void fixFields(IAPresenter source, Layout layout, List<Field> reflectedJavaFields, AEntity entityBean) {
+    protected void fixFields(IAPresenter source, Layout layout, List<Field> reflectedJavaFields) {
         AField algosField;
 
         //--Ricostruisce una fieldList interna

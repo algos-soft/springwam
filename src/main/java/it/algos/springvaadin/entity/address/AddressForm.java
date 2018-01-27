@@ -1,29 +1,37 @@
 package it.algos.springvaadin.entity.address;
+
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AForm;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.lib.ACost;
 
 /**
- * Created by gac on TIMESTAMP
+ * Project springvaadin
+ * Created by Algos
+ * User: gac
+ * Date: 2018-01-17_11:26:25
  * Estende la Entity astratta AForm di tipo AView per visualizzare i fields
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
 @Scope("session")
 @Qualifier(ACost.TAG_ADD)
 @SpringView(name = ACost.VIEW_ADD_FORM)
+@AIScript(sovrascrivibile = true)
 public class AddressForm extends AForm {
 
 

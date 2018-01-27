@@ -27,7 +27,7 @@ public interface FunzioneRepository extends MongoRepository<Funzione, String> {
 
     public List<Funzione> findByOrderByCodeAsc();
 
-    public List<Funzione> findByCompanyOrderByCodeAsc(Company company);
+    public List<Funzione> findByCompanyOrderByOrdineAsc(Company company);
 
     public List<Funzione> findTop1ByCompanyOrderByOrdineDesc(Company company);
 

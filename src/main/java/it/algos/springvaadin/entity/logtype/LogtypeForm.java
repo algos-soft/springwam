@@ -1,6 +1,7 @@
 package it.algos.springvaadin.entity.logtype;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AForm;
 import it.algos.springvaadin.lib.ACost;
@@ -19,11 +20,13 @@ import org.springframework.context.annotation.Scope;
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @SpringComponent
 @Scope("session")
 @Qualifier(ACost.TAG_LOGTYPE)
 @SpringView(name = ACost.VIEW_LOGTYPE_FORM)
+@AIScript(sovrascrivibile = true)
 public class LogtypeForm extends AForm {
 
 

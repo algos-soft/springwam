@@ -7,6 +7,7 @@ import com.vaadin.server.Resource;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAButtonType;
@@ -33,6 +34,7 @@ import java.util.List;
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
@@ -40,6 +42,7 @@ import java.util.List;
 @Qualifier(ACost.TAG_USE)
 @SpringView(name = ACost.VIEW_USE_LIST)
 @AIView(roleTypeVisibility = EARoleType.admin)
+@AIScript(sovrascrivibile = false)
 public class UserList extends AList {
 
 

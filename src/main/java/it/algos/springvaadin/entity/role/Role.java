@@ -34,6 +34,7 @@ import javax.validation.constraints.Size;
  * Annotated with @AIEntity (facoltativo) per alcuni parametri generali del modulo
  * Annotated with @AIList (facoltativo) per le colonne della Lista e loro visibilità/accessibilità relativa all'utente
  * Annotated with @AIForm (facoltativo) per i fields del Form e loro visibilità/accessibilità relativa all'utente
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Inserisce SEMPRE la versione di serializzazione che viene poi filtrata per non mostrarla in List e Form
  * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
  */
@@ -49,6 +50,7 @@ import javax.validation.constraints.Size;
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.nonUsata)
 @AIList(fields = {"ordine", "code"})
 @AIForm(fields = {"ordine", "code"},fieldsDev = EAFieldAccessibility.allways, fieldsAdmin = EAFieldAccessibility.never)
+@AIScript(sovrascrivibile = false)
 public class Role extends AEntity {
 
 

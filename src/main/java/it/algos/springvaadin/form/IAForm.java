@@ -31,11 +31,10 @@ public interface IAForm extends IAView {
      *
      * @param source              di riferimento per gli eventi
      * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-     * @param entityBean          di riferimento
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
      */
-    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, AEntity entityBean, List<Field> reflectedJavaFields, List<EAButtonType> typeButtons);
+    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EAButtonType> typeButtons);
 
 
     /**

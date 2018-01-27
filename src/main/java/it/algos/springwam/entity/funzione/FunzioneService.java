@@ -155,7 +155,7 @@ public class FunzioneService extends AService {
             entity = Funzione.builder().ordine(ordine != 0 ? ordine : this.getNewOrdine()).code(code).sigla(sigla).descrizione(descrizione).icona(icona).obbligatoria(obbligatoria).build();
             entity.company = company != null ? company : login.getCompany();
         } else {
-            return findByCompanyAndCode(company, code);
+            entity = findByCompanyAndCode(company, code);
         }// end of if/else cycle
 
         return entity;
@@ -224,7 +224,7 @@ public class FunzioneService extends AService {
         if (login.isDeveloper()) {
             return repository.findByOrderByCodeAsc();
         } else {
-            return repository.findByCompanyOrderByCodeAsc(login.getCompany());
+            return repository.findByCompanyOrderByOrdineAsc(login.getCompany());
         }// end of if/else cycle
     }// end of method
 
@@ -244,7 +244,7 @@ public class FunzioneService extends AService {
         if (company == null) {
             return findAll();
         } else {
-            return repository.findByCompanyOrderByCodeAsc(company);
+            return repository.findByCompanyOrderByOrdineAsc(company);
         }// end of if/else cycle
     }// end of method
 
@@ -259,7 +259,7 @@ public class FunzioneService extends AService {
      * @return the saved entity
      */
     @Override
-    public AEntity save(AEntity entityBean) throws Exception {
+    public AEntity save(AEntity entityBean) {
         Company company = ((ACEntity) entityBean).getCompany();
         String code = ((Funzione) entityBean).getCode();
 

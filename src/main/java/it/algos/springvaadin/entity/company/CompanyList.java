@@ -3,6 +3,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
@@ -24,6 +25,7 @@ import java.util.List;
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
  * Annotated with @AIView (facoltativo) per selezionarne la 'visibilità' secondo il ruolo dell'User collegato
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
@@ -31,6 +33,7 @@ import java.util.List;
 @Qualifier(ACost.TAG_COM)
 @SpringView(name = ACost.VIEW_COM_LIST)
 @AIView(roleTypeVisibility = EARoleType.developer)
+@AIScript(sovrascrivibile = true)
 public class CompanyList extends AList {
 
 

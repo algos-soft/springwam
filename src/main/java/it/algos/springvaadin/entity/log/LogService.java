@@ -1,5 +1,6 @@
 package it.algos.springvaadin.entity.log;
 
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.company.Company;
@@ -23,17 +24,18 @@ import java.util.List;
  * Created by gac on TIMESTAMP
  * Annotated with @Service (obbligatorio)
  * Annotated with @Qualifier, per individuare la classe specifica da iniettare come interfaccia
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
+ * Non esiste 'KeyUnica' e quindi non ha senso il metodo findOrCrea() (tipico degli altri XxxService) e si usa newCrea()
  */
 @Slf4j
 @Service
 @Qualifier(ACost.TAG_LOG)
+@AIScript(sovrascrivibile = false)
 public class LogService extends AService {
 
 
     private LogRepository repository;
 
-    @Autowired
-    public ATextService text;
 
     @Autowired
     public LogtypeService typeService;
@@ -46,8 +48,8 @@ public class LogService extends AService {
      */
     public LogService(@Qualifier(ACost.TAG_LOG) MongoRepository repository) {
         super(repository);
-        super.entityClass = Log.class;
         this.repository = (LogRepository) repository;
+        super.entityClass = Log.class;
     }// end of Spring constructor
 
 
@@ -63,45 +65,8 @@ public class LogService extends AService {
      *
      * @return la entity trovata o appena creata
      */
-    public Log findOrCrea(EALogLevel livello, Logtype type, String descrizione) {
-        return findOrCrea(livello, type, descrizione, (LocalDateTime) null, "");
-    }// end of method
-
-
-    /**
-     * Ricerca di una entity (la crea se non la trova)
-     * Properties obbligatorie
-     * Le entites di questa collezione non sono uniche, quindi non ha senso controllare se esiste già nella collezione
-     * Metodo tenuto per 'omogeneità di firma'. In realtà si potrebbe chiamare 'crea'
-     *
-     * @param livello:     rilevanza del log
-     * @param type:        raggruppamento logico dei log per categorie di eventi
-     * @param descrizione: completa in forma testuale
-     * @param note:        specifiche di dettaglio dell'evento
-     *
-     * @return la entity trovata o appena creata
-     */
-    public Log findOrCrea(EALogLevel livello, Logtype type, String descrizione, String note) {
-        return findOrCrea(livello, type, descrizione, (LocalDateTime) null, note);
-    }// end of method
-
-
-    /**
-     * Ricerca di una entity (la crea se non la trova)
-     * Properties obbligatorie
-     * Le entites di questa collezione non sono uniche, quindi non ha senso controllare se esiste già nella collezione
-     * Metodo tenuto per 'omogeneità di firma'. In realtà si potrebbe chiamare 'crea'
-     *
-     * @param livello:     rilevanza del log
-     * @param type:        raggruppamento logico dei log per categorie di eventi
-     * @param descrizione: completa in forma testuale
-     * @param evento:      data dell'evento di log
-     * @param note:        specifiche di dettaglio dell'evento
-     *
-     * @return la entity trovata o appena creata
-     */
-    public Log findOrCrea(EALogLevel livello, Logtype type, String descrizione, LocalDateTime evento, String note) {
-        return findOrCrea((Company) null, livello, type, descrizione, evento, note);
+    public Log newCrea(EALogLevel livello, Logtype type, String descrizione) {
+        return newCrea(livello, type, descrizione, "");
     }// end of method
 
 
@@ -113,22 +78,16 @@ public class LogService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company      di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param livello:     rilevanza del log
      * @param type:        raggruppamento logico dei log per categorie di eventi
      * @param descrizione: completa in forma testuale
-     * @param evento:      data dell'evento di log
      * @param note:        specifiche di dettaglio dell'evento
      *
      * @return la entity trovata o appena creata
      */
-    public Log findOrCrea(Company company, EALogLevel livello, Logtype type, String descrizione, LocalDateTime evento, String note) {
-        try { // prova ad eseguire il codice
-            return (Log) save(newEntity(company, livello, type, descrizione, evento, note));
-        } catch (Exception unErrore) { // intercetta l'errore
-            log.error(unErrore.toString());
-            return null;
-        }// fine del blocco try-catch
+    public Log newCrea(EALogLevel livello, Logtype type, String descrizione, String note) {
+        Log entity = newEntity(livello, type, descrizione, note);
+        return (Log) save(entity);
     }// end of method
 
 
@@ -141,7 +100,7 @@ public class LogService extends AService {
      */
     @Override
     public Log newEntity() {
-        return newEntity((Company) null, (EALogLevel) null, (Logtype) null, "", (LocalDateTime) null, "");
+        return newEntity((EALogLevel) null, (Logtype) null, "", "");
     }// end of method
 
 
@@ -155,59 +114,25 @@ public class LogService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company      di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param livello:     rilevanza del log
      * @param type:        raggruppamento logico dei log per categorie di eventi
      * @param descrizione: completa in forma testuale
-     * @param evento:      data dell'evento di log
      * @param note:        specifiche di dettaglio dell'evento
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Log newEntity(Company company, EALogLevel livello, Logtype type, String descrizione, LocalDateTime evento, String note) {
+    public Log newEntity(EALogLevel livello, Logtype type, String descrizione, String note) {
         Log entity = null;
 
-        entity = Log.builder().livello(livello != null ? livello : EALogLevel.debug).type(type).descrizione(descrizione).evento(evento != null ? evento : LocalDateTime.now()).build();
-
-        try { // prova ad eseguire il codice
-            if (login != null) {
-                entity.company = company != null ? company : login.getCompany();
-            }// end of if cycle
-        } catch (Exception unErrore) { // intercetta l'errore
-            log.error(unErrore.toString());
-        }// fine del blocco try-catch
+        entity = Log.builder()
+                .livello(livello != null ? livello : EALogLevel.debug)
+                .type(type)
+                .descrizione(descrizione)
+                .evento(LocalDateTime.now())
+                .build();
         entity.note = note;
 
-        return entity;
-    }// end of method
-
-
-    /**
-     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
-     *
-     * @param company di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
-     * @param evento: data dell'evento di log
-     *
-     * @return istanza della Entity, null se non trovata
-     */
-    public Log findByCompanyAndEvento(Company company, LocalDateTime evento) {
-        return repository.findByCompanyAndEvento(company != null ? company : login.getCompany(), evento);
-    }// end of method
-
-
-    /**
-     * Returns all instances of the type
-     * Usa MultiCompany, ma il developer può vedere anche tutto
-     * Lista ordinata
-     *
-     * @return lista ordinata di tutte le entities
-     */
-    public List findAll() {
-        if (login.isDeveloper()) {
-            return repository.findByOrderByEventoAsc();
-        } else {
-            return repository.findByCompanyOrderByEventoAsc(login.getCompany());
-        }// end of if/else cycle
+        return (Log) addCompany(entity);
     }// end of method
 
 
@@ -226,34 +151,22 @@ public class LogService extends AService {
         if (company == null) {
             return findAll();
         } else {
-            return repository.findByCompanyOrderByEventoAsc(company);
+            return repository.findByCompanyOrderByEventoDesc(company);
         }// end of if/else cycle
     }// end of method
 
 
-//    /**
-//     * Saves a given entity.
-//     * Use the returned instance for further operations
-//     * as the save operation might have changed the entity instance completely.
-//     *
-//     * @param entityBean da salvare
-//     *
-//     * @return the saved entity
-//     */
-//    @Override
-//    public AEntity save(AEntity entityBean) throws Exception {
-//        Company company = ((ACEntity) entityBean).getCompany();
-////        String code = ((Log) entityBean).getCode();
-//
-//        if (text.isValid(entityBean.id)) {
-//            return super.save(entityBean);
-//        } else {
-//            log.error("Ha cercato di salvare una entity già esistente per questa company");
-//            return null;
-//        }// end of if/else cycle
-//
-//    }// end of method
-
+    /**
+     * Returns all instances of the type
+     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
+     * Lista ordinata
+     *
+     * @return lista ordinata di tutte le entities
+     */
+    @Override
+    public List findAll() {
+        return repository.findByOrderByEventoDesc();
+    }// end of method
 
     /**
      * Registra un log di una entity modificata
@@ -264,7 +177,7 @@ public class LogService extends AService {
      * @param note:         singola modifica di una property
      */
     public void logSetup(AEntity modifiedBean, String note) {
-        findOrCrea(EALogLevel.debug, typeService.getSetup(), modifiedBean.getClass().getSimpleName(), note);
+        newCrea(EALogLevel.debug, typeService.getSetup(), modifiedBean.getClass().getSimpleName(), note);
     }// fine del metodo
 
 
@@ -277,7 +190,7 @@ public class LogService extends AService {
      * @param note:    dettagli della scheda
      */
     public void logNew(AEntity newBean, String note) {
-        findOrCrea(EALogLevel.info, typeService.getNew(), newBean.getClass().getSimpleName(), note);
+        newCrea(EALogLevel.info, typeService.getNew(), newBean.getClass().getSimpleName(), note);
     }// fine del metodo
 
 
@@ -290,7 +203,7 @@ public class LogService extends AService {
      * @param note:         singola modifica di una property
      */
     public void logEdit(AEntity modifiedBean, String note) {
-        findOrCrea(EALogLevel.info, typeService.getEdit(), modifiedBean.getClass().getSimpleName(), note);
+        newCrea(EALogLevel.info, typeService.getEdit(), modifiedBean.getClass().getSimpleName(), note);
     }// fine del metodo
 
 
@@ -303,7 +216,7 @@ public class LogService extends AService {
      * @param note:        dettagli della scheda
      */
     public void logDelete(AEntity deletedBean, String note) {
-        findOrCrea(EALogLevel.info, typeService.getDelete(), deletedBean.getClass().getSimpleName(), note);
+        newCrea(EALogLevel.info, typeService.getDelete(), deletedBean.getClass().getSimpleName(), note);
     }// fine del metodo
 
     /**
@@ -377,7 +290,7 @@ public class LogService extends AService {
      * @return messaggio per il log di sistema
      */
     private String logBase(EALogLevel livello, Logtype type, AEntity newModifiedBean) {
-        findOrCrea(livello, type, newModifiedBean.getClass().getSimpleName(), newModifiedBean.toString());
+        newCrea(livello, type, newModifiedBean.getClass().getSimpleName(), newModifiedBean.toString());
         return type + " - " + newModifiedBean.toString();
     }// fine del metodo
 

@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
  * Created by alex on 26/05/16.
  */
 @SpringComponent
-@Scope("session")
+@Scope("prototype")
 public class DALoginForm extends ALoginForm {
 
 
@@ -40,6 +40,7 @@ public class DALoginForm extends ALoginForm {
         this.fieldFactory = fieldFactory;
     }// end of Spring constructor
 
+
     /**
      * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
      * Aggiunge i listener al Login
@@ -59,7 +60,7 @@ public class DALoginForm extends ALoginForm {
      */
     public IAUser getSelectedUser() {
         String nickname = nameField.getValue();
-        IAUser user = userService.findByNickname(nickname);
+        IAUser user = userService.findByNick(nickname);
 
         return user;
     }// end of method

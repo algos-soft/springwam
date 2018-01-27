@@ -50,7 +50,7 @@ public abstract class AlgosApp {
      * Usando SpringBoot, la cartella deve (DEVE) essere contenuta nella directory 'webapp'
      * Name of the base folder for images.<br>
      */
-    public final static String RESOURCES_FOLDER_NAME = "./src/main/resources/static/";
+    public final static String TEXT_FOLDER_NAME = "./src/main/resources/txt/";
 
 
     /**

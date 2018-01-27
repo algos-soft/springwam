@@ -1,8 +1,10 @@
 package it.algos.springvaadin.entity.company;
 
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.address.Address;
 import it.algos.springvaadin.entity.persona.Persona;
+import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.AService;
 import it.algos.springvaadin.service.ATextService;
@@ -23,19 +25,17 @@ import java.util.List;
  * Annotated with @@Slf4j (facoltativo) per i logs automatici
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Service (ridondante)
- * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Scope (obbligatorio = 'singleton')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @Slf4j
 @SpringComponent
 @Service
 @Scope("singleton")
 @Qualifier(ACost.TAG_COM)
+@AIScript(sovrascrivibile = false)
 public class CompanyService extends AService {
-
-
-    @Autowired
-    public ATextService text;
 
 
     /**
@@ -55,8 +55,8 @@ public class CompanyService extends AService {
      */
     public CompanyService(@Qualifier(ACost.TAG_COM) MongoRepository repository) {
         super(repository);
-        super.entityClass = Company.class;
         this.repository = (CompanyRepository) repository;
+        super.entityClass = Company.class;
     }// end of Spring constructor
 
 
@@ -70,34 +70,14 @@ public class CompanyService extends AService {
      * @return la entity trovata o appena creata
      */
     public Company findOrCrea(String code, String descrizione) {
-        return findOrCrea(code, descrizione, (Persona) null, "", "", (Address) null);
-    }// end of method
+        Company entity = findByKeyUnica(code);
 
+        if (entity == null) {
+            entity = newEntity(code, descrizione);
+            save(entity);
+        }// end of if cycle
 
-    /**
-     * Ricerca di una entity (la crea se non la trova)
-     * All properties
-     *
-     * @param code        di riferimento interno (obbligatorio ed unico)
-     * @param descrizione ragione sociale o descrizione della company (visibile - obbligatoria)
-     * @param contatto    persona di riferimento (facoltativo)
-     * @param telefono    della company (facoltativo)
-     * @param email       della company (facoltativo)
-     * @param indirizzo   della company (facoltativo)
-     *
-     * @return la entity trovata o appena creata
-     */
-    public Company findOrCrea(String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
-        if (nonEsiste(code)) {
-            try { // prova ad eseguire il codice
-                return (Company) save(newEntity(code, descrizione, contatto, telefono, email, indirizzo));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
+        return entity;
     }// end of method
 
 
@@ -109,7 +89,22 @@ public class CompanyService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Company newEntity() {
-        return newEntity("", "", (Persona) null, "", "", (Address) null);
+        return newEntity("", "");
+    }// end of method
+
+
+    /**
+     * Creazione in memoria di una nuova entity che NON viene salvata
+     * Eventuali regolazioni iniziali delle property
+     * Properties obbligatorie
+     *
+     * @param code        di riferimento interno (obbligatorio ed unico)
+     * @param descrizione ragione sociale o descrizione della company (visibile - obbligatoria)
+     *
+     * @return la nuova entity appena creata (non salvata)
+     */
+    public Company newEntity(String code, String descrizione) {
+        return newEntity(code, descrizione, (Persona) null, "", "", (Address) null);
     }// end of method
 
 
@@ -129,39 +124,20 @@ public class CompanyService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Company newEntity(String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
-        Company entity = null;
+        Company entity = findByKeyUnica(code);
 
-        if (nonEsiste(code)) {
-            entity = Company.builder().code(code).descrizione(descrizione).contatto(contatto).telefono(telefono).email(email).indirizzo(indirizzo).build();
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = Company.builder()
+                    .code(code)
+                    .descrizione(descrizione)
+                    .contatto(contatto)
+                    .telefono(telefono)
+                    .email(email)
+                    .indirizzo(indirizzo)
+                    .build();
+        }// end of if cycle
 
         return entity;
-    }// end of method
-
-
-    /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(String code) {
-        return findByCode(code) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(String code) {
-        return findByCode(code) == null;
     }// end of method
 
 
@@ -172,23 +148,21 @@ public class CompanyService extends AService {
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Company findByCode(String code) {
+    public Company findByKeyUnica(String code) {
         return repository.findByCode(code);
     }// end of method
 
 
     /**
-     * Returns all instances of the type
-     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
-     * Lista ordinata
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
      *
-     * @return lista ordinata di tutte le entities
+     * @param entityBean nuova da creare
      */
     @Override
-    public List findAll() {
-        return repository.findByOrderByCodeAsc();
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return findByKeyUnica(((Company) entityBean).getCode()) != null;
     }// end of method
-
 
     /**
      * Saves a given entity.
@@ -200,23 +174,25 @@ public class CompanyService extends AService {
      * @return the saved entity
      */
     @Override
-    public AEntity save(AEntity entityBean) throws Exception {
-        String code = ((Company) entityBean).getCode();
+    public AEntity save(AEntity entityBean) {
 
-        if (entityBean == null) {
-            return null;
+        if (text.isEmpty(entityBean.id)) {
+            entityBean.id = ((Company)entityBean).getCode();
         }// end of if cycle
 
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(code)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente, ma unica");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
+        return super.save(entityBean);
+    }// end of method
+
+    /**
+     * Returns all instances of the type
+     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
+     * Lista ordinata
+     *
+     * @return lista ordinata di tutte le entities
+     */
+    @Override
+    public List findAll() {
+        return repository.findByOrderByCodeAsc();
     }// end of method
 
 }// end of class

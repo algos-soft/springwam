@@ -121,7 +121,7 @@ public interface IAService {
      *
      * @return the saved entity
      */
-    public AEntity save(AEntity entityBean) throws Exception;
+    public AEntity save(AEntity entityBean) ;
 
 
     /**

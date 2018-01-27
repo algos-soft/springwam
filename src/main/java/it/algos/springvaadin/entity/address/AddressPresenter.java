@@ -1,7 +1,6 @@
 package it.algos.springvaadin.entity.address;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.APresenter;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.IAService;
@@ -12,18 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
 
 /**
- * Created by gac on TIMESTAMP
+ * Project springvaadin
+ * Created by Algos
+ * User: gac
+ * Date: 2018-01-17_11:26:25
  * Estende la Entity astratta APresenter che gestisce la business logic
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con dei link @Autowired di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
 @Scope("session")
 @Qualifier(ACost.TAG_ADD)
+@AIScript(sovrascrivibile = true)
 public class AddressPresenter extends APresenter {
 
     /**

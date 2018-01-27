@@ -5,6 +5,7 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Label;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.form.AForm;
@@ -28,12 +29,14 @@ import org.springframework.context.annotation.Scope;
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
 @Scope("session")
 @Qualifier(ACost.TAG_ROL)
 @SpringView(name = ACost.VIEW_ROL_FORM)
+@AIScript(sovrascrivibile = true)
 public class RoleForm extends AForm {
 
 

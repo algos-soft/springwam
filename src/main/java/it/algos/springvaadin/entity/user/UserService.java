@@ -1,5 +1,6 @@
 package it.algos.springvaadin.entity.user;
 
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.AEntity;
@@ -29,12 +30,14 @@ import java.util.List;
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @@Slf4j (facoltativo) per i logs automatici
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @Slf4j
 @SpringComponent
 @Service
 @Scope("singleton")
 @Qualifier(ACost.TAG_USE)
+@AIScript(sovrascrivibile = false)
 public class UserService extends AService {
 
 
@@ -51,17 +54,13 @@ public class UserService extends AService {
     private ALogin login;
 
 
-    @Autowired
-    public ATextService text;
-
-
     /**
      * La repository viene iniettata dal costruttore, in modo che sia disponibile nella superclasse,
      * dove viene usata l'interfaccia MongoRepository
      * Spring costruisce al volo, quando serve, una implementazione di RoleRepository (come previsto dal @Qualifier)
      * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
      */
-    private UserRepository repository;
+    public UserRepository repository;
 
 
     /**
@@ -72,8 +71,8 @@ public class UserService extends AService {
      */
     public UserService(@Qualifier(ACost.TAG_USE) MongoRepository repository) {
         super(repository);
-        super.entityClass = User.class;
         this.repository = (UserRepository) repository;
+        super.entityClass = User.class;
     }// end of Spring constructor
 
 
@@ -100,7 +99,7 @@ public class UserService extends AService {
      * @return la entity trovata o appena creata
      */
     public User findOrCrea(String nickname, String password) {
-        return findOrCrea((Company) null, nickname, password, (Role) null);
+        return findOrCrea(nickname, password, (Role) null);
     }// end of method
 
 
@@ -114,26 +113,7 @@ public class UserService extends AService {
      * @return la entity trovata o appena creata
      */
     public User findOrCrea(String nickname, Role role) {
-        return findOrCrea((Company) null, nickname, nickname, role);
-    }// end of method
-
-
-    /**
-     * Ricerca di una entity (la crea se non la trova)
-     * Properties obbligatorie
-     * La company può essere facoltativa
-     * Diventa obbligatoria se l'applicazione è AlgosApp.USE_MULTI_COMPANY
-     * Se manca la prende dal Login
-     * Se è obbligatoria e manca anche nel Login, va in errore
-     *
-     * @param company  di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
-     * @param nickname di riferimento (obbligatorio, unico per company)
-     * @param role     (obbligatoria, non unica)
-     *
-     * @return la entity trovata o appena creata
-     */
-    public User findOrCrea(Company company, String nickname, Role role) {
-        return findOrCrea(company, nickname, nickname, role);
+        return findOrCrea(nickname, nickname, role);
     }// end of method
 
 
@@ -145,24 +125,21 @@ public class UserService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company  di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param nickname di riferimento (obbligatorio, unico per company)
      * @param password (obbligatoria o facoltativa, non unica)
      * @param role     (obbligatoria, non unica)
      *
      * @return la entity trovata o appena creata
      */
-    public User findOrCrea(Company company, String nickname, String password, Role role) {
-        if (nonEsiste(company, nickname)) {
-            try { // prova ad eseguire il codice
-                return (User) save(newEntity(company, nickname, password, role));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCompanyAndNickname(company, nickname);
-        }// end of if/else cycle
+    public User findOrCrea(String nickname, String password, Role role) {
+        User entity = findByKeyUnica(nickname);
+
+        if (entity == null) {
+            entity = newEntity(nickname, password, role);
+            save(entity);
+        }// end of if cycle
+
+        return entity;
     }// end of method
 
 
@@ -206,7 +183,7 @@ public class UserService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public User newEntity(String nickname, String password) {
-        return newEntity((Company) null, nickname, password, null);
+        return newEntity(nickname, password, (Role) null);
     }// end of method
 
 
@@ -215,56 +192,29 @@ public class UserService extends AService {
      * Eventuali regolazioni iniziali delle property
      * All properties
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
-     * La company può essere facoltativa
-     * Diventa obbligatoria se l'applicazione è AlgosApp.USE_MULTI_COMPANY
-     * Se manca la prende dal Login
-     * Se è obbligatoria e manca anche nel Login, va in errore
+     * La company viene controllata nel metodo AService.addCompany()
      *
-     * @param company  di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param nickname di riferimento (obbligatorio, unico per company)
      * @param password (obbligatoria o facoltativa, non unica)
      * @param role     (obbligatoria, non unica)
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public User newEntity(Company company, String nickname, String password, Role role) {
-        User entity = null;
+    public User newEntity(String nickname, String password, Role role) {
+        User entity = findByKeyUnica(nickname);
 
-        if (nonEsiste(company, nickname)) {
-            entity = User.builder().nickname(nickname).password(password).role(role != null ? role : roleService.getUser()).enabled(true).build();
-            entity.company = company != null ? company : login.getCompany();
-        } else {
-            return findByCompanyAndNickname(company, nickname);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = User.builder()
+                    .nickname(nickname)
+                    .password(password)
+                    .role(role != null ? role : roleService.getUser())
+                    .enabled(true)
+                    .build();
+        }// end of if cycle
 
-        return entity;
+        return (User) addCompany(entity);
     }// end of method
 
-
-    /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param company  di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
-     * @param nickname di riferimento (obbligatorio, unico per company)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(Company company, String nickname) {
-        return findByCompanyAndNickname(company, nickname) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param company  di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
-     * @param nickname di riferimento (obbligatorio, unico per company)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(Company company, String nickname) {
-        return findByCompanyAndNickname(company, nickname) == null;
-    }// end of method
 
 
     /**
@@ -274,7 +224,7 @@ public class UserService extends AService {
      *
      * @return istanza della Entity, null se non trovata
      */
-    public User findByNickname(String nickname) {
+    public User findByNick(String nickname) {
         return repository.findByNickname(nickname);
     }// end of method
 
@@ -282,12 +232,24 @@ public class UserService extends AService {
     /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
+     * @param nickname di riferimento (obbligatorio, unico per company)
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public User findByKeyUnica(String nickname) {
+        return findByKeyUnica(login.getCompany(), nickname);
+    }// end of method
+
+
+    /**
+     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
+     *
      * @param company  di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param nickname di riferimento (obbligatorio, unico per company)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public User findByCompanyAndNickname(Company company, String nickname) {
+    public User findByKeyUnica(Company company, String nickname) {
         return repository.findByCompanyAndNickname(company != null ? company : login.getCompany(), nickname);
     }// end of method
 
@@ -309,36 +271,6 @@ public class UserService extends AService {
 
 
     /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
-     *
-     * @param entityBean da salvare
-     *
-     * @return the saved entity
-     */
-    public AEntity save(AEntity entityBean) throws Exception {
-        Company company = ((ACEntity) entityBean).getCompany();
-        String nickname = ((User) entityBean).getNickname();
-
-        if (entityBean == null) {
-            return null;
-        }// end of if cycle
-
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(company, nickname)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente, ma unica");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
-    }// end of method
-
-
-    /**
      * Controlla che esiste un utente con questo nickname e questa password
      *
      * @param nickname di riferimento (obbligatorio, unico per company)
@@ -346,8 +278,15 @@ public class UserService extends AService {
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public boolean check(String nickname, String password) {
-        return repository.findByNicknameAndPassword(nickname, password) != null;
+    public boolean passwordValida(String nickname, String password) {
+        boolean valida = false;
+        User entity = findByNick(nickname);
+
+        if (entity != null) {
+            valida = entity.getPassword().equals(password);
+        }// end of if cycle
+
+        return valida;
     }// end of method
 
 }// end of class

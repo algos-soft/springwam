@@ -1,6 +1,7 @@
 package it.algos.springvaadin.entity.logtype;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.APresenter;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -20,10 +21,12 @@ import org.springframework.context.annotation.Scope;
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Costruttore con dei link @Autowired di tipo @Lazy per evitare un loop nella injection
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @SpringComponent
 @Scope("session")
 @Qualifier(ACost.TAG_LOGTYPE)
+@AIScript(sovrascrivibile = true)
 public class LogtypePresenter extends APresenter {
 
     /**

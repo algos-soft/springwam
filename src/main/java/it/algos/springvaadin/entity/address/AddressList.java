@@ -1,10 +1,12 @@
 package it.algos.springvaadin.entity.address;
+
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+import javax.annotation.PostConstruct;
+import java.util.List;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -13,18 +15,22 @@ import it.algos.springvaadin.enumeration.EARoleType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.lib.ACost;
 
 /**
- * Created by gac on TIMESTAMP
+ * Project springvaadin
+ * Created by Algos
+ * User: gac
+ * Date: 2018-01-17_11:26:25
  * Estende la Entity astratta AList di tipo AView per visualizzare la Grid
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
  * Annotated with @AIView (facoltativo) per selezionarne la 'visibilità' secondo il ruolo dell'User collegato
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
@@ -32,6 +38,7 @@ import java.util.List;
 @Qualifier(ACost.TAG_ADD)
 @SpringView(name = ACost.VIEW_ADD_LIST)
 @AIView(roleTypeVisibility = EARoleType.developer)
+@AIScript(sovrascrivibile = true)
 public class AddressList extends AList {
 
 
@@ -72,22 +79,18 @@ public class AddressList extends AList {
     }// end of Spring constructor
 
 
+
     /**
      * Crea la scritta esplicativa
      * Può essere sovrascritto per un'intestazione specifica (caption) della grid
      */
     @Override
     protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
+        super.fixCaption(entityClazz, items);
         if (login.isDeveloper()) {
-            super.fixCaption(entityClazz, items);
-            caption += "Non dovrebbero esserci schede.";
-            caption += "</br>Lista visibile solo al developer";
-            caption += "</br>NON usa la company";
-            caption += "</br>L'entity è 'embedded' nelle collezioni che la usano (no @Annotation property DbRef)";
-            caption += "</br>In pratica questa lista non dovrebbe mai essere usata (serve come test)";
-        } else {
-            super.caption = "Operazioni effettuate";
-        }// end of if/else cycle
+            caption += "</br>Lista visibile a tutti";
+            caption += "</br>Solo il developer vede queste note";
+        }// end of if cycle
     }// end of method
 
 }// end of class

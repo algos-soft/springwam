@@ -1,12 +1,14 @@
 package it.algos.springvaadin.service;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.ui.Notification;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.log.LogService;
 import it.algos.springvaadin.enumeration.*;
+import it.algos.springvaadin.exception.DuplicateException;
 import it.algos.springvaadin.exception.NotCompanyEntityException;
 import it.algos.springvaadin.exception.NullCompanyException;
 import it.algos.springvaadin.lib.ACost;
@@ -324,6 +326,54 @@ public abstract class AService implements IAService {
 
 
     /**
+     * Se la nuova entity usa la company, la recupera dal login
+     * Se la campany manca, lancia l'eccezione
+     *
+     * @param entityBean da creare
+     */
+    protected AEntity addCompany(AEntity entityBean) {
+        Company company;
+        EACompanyRequired tableCompanyRequired = annotation.getCompanyRequired(entityBean.getClass());
+
+        //--se la EntityClass non estende ACCompany, nopn deve fare nulla
+        if (!(entityBean instanceof ACEntity)) {
+            return entityBean;
+        }// end of if cycle
+
+        //--controlla l'obbligatorietà della Company
+        if (AlgosApp.USE_MULTI_COMPANY) {
+            tableCompanyRequired = annotation.getCompanyRequired(entityBean.getClass());
+            switch (tableCompanyRequired) {
+                case nonUsata:
+                    log.error("C'è una discrepanza tra 'extends ACEntity' della classe " + entityBean.getClass().getSimpleName() + " e l'annotation @AIEntity della classe stessa");
+                    break;
+                case facoltativa:
+                    company = login.getCompany();
+                    if (company != null) {
+                        ((ACEntity) entityBean).company = company;
+                    } else {
+                        log.info("Nuova scheda senza company (facoltativa)");
+                    }// end of if/else cycle
+                    break;
+                case obbligatoria:
+                    company = login.getCompany();
+                    if (company != null) {
+                        ((ACEntity) entityBean).company = company;
+                    } else {
+                        entityBean = null;
+                        log.error(NullCompanyException.MESSAGE);
+                        Notification.show("Nuova scheda", NullCompanyException.MESSAGE, Notification.Type.ERROR_MESSAGE);
+                    }// end of if/else cycle
+                    break;
+                default:
+                    break;
+            } // end of switch statement
+        }// end of if cycle
+
+        return entityBean;
+    }// end of method
+
+    /**
      * Saves a given entity.
      * Use the returned instance for further operations
      * as the save operation might have changed the entity instance completely.
@@ -338,7 +388,7 @@ public abstract class AService implements IAService {
      *
      * @return the saved entity
      */
-    public AEntity save(AEntity entityBean) throws Exception {
+    public AEntity save(AEntity entityBean) {
         return save((AEntity) null, entityBean);
     }// end of method
 
@@ -353,11 +403,19 @@ public abstract class AService implements IAService {
      *
      * @return the saved entity
      */
-    public AEntity save(AEntity oldBean, AEntity modifiedBean) throws Exception {
+    public AEntity save(AEntity oldBean, AEntity modifiedBean) {
         AEntity savedBean = null;
         EACompanyRequired tableCompanyRequired = annotation.getCompanyRequired(modifiedBean.getClass());
         Map mappa = null;
-        boolean nuovaEntity = false;
+        boolean nuovaEntity = oldBean == null || text.isEmpty(modifiedBean.id);
+
+        //--opportunità di controllare (per le nuove schede) che la key unica non esista già.
+        if (nuovaEntity) {
+            if (isEsisteEntityKeyUnica(modifiedBean)) {
+                Notification.show("Nuova scheda", DuplicateException.MESSAGE, Notification.Type.ERROR_MESSAGE);
+                return null;
+            }// end of if cycle
+        }// end of if cycle
 
         //--opportunità di usare una idKey specifica
         if (text.isEmpty(modifiedBean.id)) {
@@ -382,12 +440,16 @@ public abstract class AService implements IAService {
                     savedBean = (AEntity) repository.save(modifiedBean);
                     break;
                 case obbligatoria:
-                    if (checkCompany(modifiedBean, false)) {
-                        savedBean = (AEntity) repository.save(modifiedBean);
-                    } else {
-                        log.warn("Entity non creata perché manca la Company (obbligatoria)");
-                        savedBean = null;
-                    }// end of if/else cycle
+                    try { // prova ad eseguire il codice
+                        if (checkCompany(modifiedBean, false)) {
+                            savedBean = (AEntity) repository.save(modifiedBean);
+                        } else {
+                            log.warn("Entity non creata perché manca la Company (obbligatoria)");
+                            savedBean = null;
+                        }// end of if/else cycle
+                    } catch (Exception unErrore) { // intercetta l'errore
+                        log.error(unErrore.toString());
+                    }// fine del blocco try-catch
                     break;
                 default:
                     log.warn("Switch - caso non definito");
@@ -399,7 +461,6 @@ public abstract class AService implements IAService {
         }// end of if/else cycle
 
         if (!modifiedBean.getClass().getSimpleName().equals("Log")) {
-            nuovaEntity = oldBean == null || text.isEmpty(modifiedBean.id);
             if (nuovaEntity) {
                 logNewBean(modifiedBean);
             } else {
@@ -410,6 +471,17 @@ public abstract class AService implements IAService {
 
         return savedBean;
     }// end of method
+
+    /**
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
+     *
+     * @param entityBean nuova da creare
+     */
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return false;
+    }// end of method
+
 
     public void logNewBean(AEntity modifiedBean) {
         String note;
@@ -457,6 +529,7 @@ public abstract class AService implements IAService {
         return chekDifferences(oldBean, modifiedBean, (EAPrefType) null);
     }// end of method
 
+
     protected Map<String, String> chekDifferences(AEntity oldBean, AEntity modifiedBean, EAPrefType type) {
         Map<String, String> mappa = new LinkedHashMap();
         List<String> listaNomi = reflection.getAllFieldsNameNoCrono(oldBean.getClass());
@@ -488,10 +561,13 @@ public abstract class AService implements IAService {
 
     /**
      * Controlla che la entity estenda ACompanyEntity
-     * Se manca la company, cerca di usare quella della sessione (se esiste)
+     * Se manca la company, cerca di usare quella del login (se esiste)
      * Se la campany manca ancora, lancia l'eccezione
-     * Controlla che la gestione della chiave unica sia soddisfatta
+     * //     * Controlla che la gestione della chiave unica sia soddisfatta
+     *
+     * @param entity da salvare
      */
+    @Deprecated
     private boolean checkCompany(AEntity entity, boolean usaCodeCompanyUnico) throws Exception {
         ACEntity companyEntity;
         Company company;

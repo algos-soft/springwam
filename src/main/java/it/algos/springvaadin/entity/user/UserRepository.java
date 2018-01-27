@@ -1,6 +1,7 @@
 package it.algos.springvaadin.entity.user;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.lib.ACost;
 import org.bson.types.ObjectId;
@@ -14,9 +15,11 @@ import java.util.List;
  * Estende la l'interaccia MongoRepository col casting alla Entity relativa di questa repository
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @SpringComponent
 @Qualifier(ACost.TAG_USE)
+@AIScript(sovrascrivibile = false)
 public interface UserRepository extends MongoRepository<User, String> {
 
     public User findByNickname(String nickname);
@@ -26,7 +29,5 @@ public interface UserRepository extends MongoRepository<User, String> {
     public List<User> findByOrderByNicknameAsc();
 
     public List<User> findByCompanyOrderByNicknameAsc(Company company);
-
-    public User findByNicknameAndPassword(String nickname, String password);
 
 }// end of class

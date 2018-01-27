@@ -20,6 +20,7 @@ import it.algos.springvaadin.toolbar.IAToolbar;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 import javax.annotation.PostConstruct;
 
@@ -30,7 +31,7 @@ import javax.annotation.PostConstruct;
  * Se non si è loggati, mostra un bottone per eseguire il login <br>
  */
 @SpringComponent
-@Scope("session")
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ALoginButton extends MenuBar {
 
 
@@ -106,7 +107,7 @@ public class ALoginButton extends MenuBar {
     /**
      * Updates the UI based on the current Login state
      */
-    private void updateUI() {
+    public void updateUI() {
         IAUser user = login.getUser();
 
         if (user == null) {
@@ -121,6 +122,7 @@ public class ALoginButton extends MenuBar {
             });// end of anonymous inner class
         } else {
             String username = user.toString();
+            username=username.replaceAll("_"," ");
             loginItem.setCommand(null);
             loginItem.setText(username);
             loginItem.setIcon(VaadinIcons.USER);

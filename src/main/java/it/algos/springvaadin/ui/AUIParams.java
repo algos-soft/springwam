@@ -3,6 +3,8 @@ package it.algos.springvaadin.ui;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
+import it.algos.springvaadin.app.AlgosApp;
+import it.algos.springvaadin.service.AStartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,8 +22,8 @@ import javax.annotation.PostConstruct;
 public abstract class AUIParams extends UI {
 
 
-//    @Autowired
-//    protected AlgosStartService algosStartService;
+    @Autowired
+    protected AStartService startService;
 
 
 //    /**
@@ -173,19 +175,19 @@ public abstract class AUIParams extends UI {
         //--Legge eventuali parametri passati nella request
         checkParams(request);
 
+        //--Controlla la company selezionata
+        checkCompany(request);
+
         //--Legge i cookies dalla request
         checkCookies(request);
 
         //--Controlla il login della security
         checkSecurity(request);
-
-        //--Controlla la company selezionata
-        checkCompany(request);
     }// end of method
 
 
     /**
-     * Legge eventuali parametri passati nella request
+     * Legge eventuali parametri (generici) passati nella request
      * Scorporato per permettere di sovrascriverlo nelle sottoclassi
      *
      * @param request the Vaadin request that caused this UI to be created
@@ -199,16 +201,31 @@ public abstract class AUIParams extends UI {
 
 
     /**
-     * Legge i cookies dalla request
+     * Legge una eventuale company passata nella request
+     * Se la trova ed è valida, regola il Login della sessione
+     * Scorporato per permettere di sovrascriverlo nelle sottoclassi
+     *
+     * @param request the Vaadin request that caused this UI to be created
+     */
+    protected void checkCompany(VaadinRequest request) {
+        //@todo RIMETTERE
+//        if (AlgosApp.USE_MULTI_COMPANY) {
+//            algosStartService.checkCompany(request);
+//        }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Legge i cookies dalla request (user, password, company)
+     * Regola il Login della sessione
      * Scorporato per permettere di sovrascriverlo nelle sottoclassi
      *
      * @param request the Vaadin request that caused this UI to be created
      */
     protected void checkCookies(VaadinRequest request) {
-        //@todo RIMETTERE
-//        if (AlgosApp.USE_CHECK_COOKIES) {
-//            algosStartService.checkCookies(request);
-//        }// end of if cycle
+        if (AlgosApp.USE_CHECK_COOKIES) {
+            startService.checkCookies(request);
+        }// end of if cycle
     }// end of method
 
 
@@ -227,19 +244,6 @@ public abstract class AUIParams extends UI {
 //        }// end of if/else cycle
     }// end of method
 
-
-    /**
-     * Controlla la company selezionata
-     * Scorporato per permettere di sovrascriverlo nelle sottoclassi
-     *
-     * @param request the Vaadin request that caused this UI to be created
-     */
-    protected void checkCompany(VaadinRequest request) {
-        //@todo RIMETTERE
-//        if (AlgosApp.USE_MULTI_COMPANY) {
-//            algosStartService.checkCompany(request);
-//        }// end of if cycle
-    }// end of method
 
     /**
      * Stampa a video (productionMode) una info PRIMA dei valori

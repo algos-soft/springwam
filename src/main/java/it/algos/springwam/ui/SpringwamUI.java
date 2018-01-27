@@ -1,5 +1,8 @@
 package it.algos.springwam.ui;
 
+import it.algos.springvaadin.entity.user.UserService;
+import it.algos.springwam.entity.utente.UtenteList;
+import it.algos.springwam.entity.servizio.ServizioList;
 import it.algos.springwam.entity.croce.CroceList;
 import it.algos.springwam.entity.funzione.FunzioneList;
 import it.algos.springvaadin.app.AlgosApp;
@@ -16,6 +19,8 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Grid;
+import it.algos.springwam.entity.utente.UtenteRepository;
+import it.algos.springwam.entity.utente.UtenteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -35,6 +40,7 @@ import org.springframework.context.annotation.Scope;
 @Scope("session")
 public class SpringwamUI extends AUI {
 
+
     /**
      * Creazione delle viste (moduli) specifiche dell'applicazione.
      * La superclasse AlgosUIParams crea (flag true/false) le viste (moduli) usate da tutte le applicazioni
@@ -49,8 +55,10 @@ public class SpringwamUI extends AUI {
      * La vista viene aggiunta allo SpringViewProvider usato da SpringNavigator
      */
     protected void addVisteSpecifiche() {
-		menuLayout.addView(CroceList.class);
-		menuLayout.addView(FunzioneList.class);
+        menuLayout.addView(CroceList.class);
+		menuLayout.addView(UtenteList.class);
+        menuLayout.addView(FunzioneList.class);
+		menuLayout.addView(ServizioList.class);
     }// end of method
 
     /**

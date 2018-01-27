@@ -39,6 +39,7 @@ import it.algos.springvaadin.entity.AEntity;
  * Annotated with @AIEntity (facoltativo) per alcuni parametri generali del modulo
  * Annotated with @AIList (facoltativo) per le colonne della Lista e loro visibilità/accessibilità relativa all'utente
  * Annotated with @AIForm (facoltativo) per i fields del Form e loro visibilità/accessibilità relativa all'utente
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Inserisce SEMPRE la versione di serializzazione che viene poi filtrata per non mostrarla in List e Form
  * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
  */
@@ -53,6 +54,7 @@ import it.algos.springvaadin.entity.AEntity;
 @Qualifier(ACost.TAG_USE)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
 @AIList(dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIScript(sovrascrivibile = false)
 public class User extends ACEntity implements IAUser {
 
     /**

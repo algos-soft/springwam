@@ -85,14 +85,13 @@ public class StatoData extends AData {
                 creaStato(riga);
             }// end of for cycle
         }// end of if cycle
-
     }// end of method
 
 
     /**
      * Creazione di un singolo stato
      */
-    private boolean creaStato(String riga) {
+    private void creaStato(String riga) {
         String[] parti = riga.split(",");
         Stato stato;
         int ordine = 0;
@@ -117,25 +116,13 @@ public class StatoData extends AData {
             numerico = parti[3];
         }// end of if cycle
 
-        stato = service.newEntity(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
+        service.findOrCrea(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
 
-        try { // prova ad eseguire il codice
-            stato = (Stato) service.save(stato);
-            if (bandiera == null || bandiera.length == 0) {
-                log.warn("Stato: " + riga + " - Manca la bandiera");
-            } else {
-                log.info("Stato: " + riga + " - Tutto OK");
-            }// end of if/else cycle
-        } catch (Exception unErrore) { // intercetta l'errore
-            try { // prova ad eseguire il codice
-                stato = service.newEntity(ordine, nome, alfaDue, alfaTre, numerico, new byte[0]);
-                log.warn("Stato: " + riga + " - Dimensioni bandiera eccessive");
-            } catch (Exception unErrore2) { // intercetta l'errore
-                log.error("Stato: " + riga + " - Non sono riuscito a crearlo");
-            }// fine del blocco try-catch
-        }// fine del blocco try-catch
-
-        return stato != null;
+        if (bandiera == null || bandiera.length == 0) {
+            log.warn("Stato: " + riga + " - Manca la bandiera");
+        } else {
+            log.info("Stato: " + riga + " - Tutto OK");
+        }// end of if/else cycle
     }// end of method
 
 }// end of class

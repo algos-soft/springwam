@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Scope;
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con dei link @Autowired di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent

@@ -50,6 +50,7 @@ public class MenuHome extends VerticalLayout {
     @Autowired
     AReflectionService reflection;
 
+
     public static String MENU_ABILITATO = "highlight";
     public static String MENU_DISABILITATO = "disabilitato";
 

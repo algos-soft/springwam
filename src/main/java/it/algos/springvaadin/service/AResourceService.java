@@ -41,7 +41,10 @@ public class AResourceService {
     public List<String> readText(String nomeFile) {
         List<String> righe = null;
         String suffix = ".txt";
-        String pathTxt = AlgosApp.RESOURCES_FOLDER_NAME + nomeFile + suffix;
+        if (!nomeFile.endsWith(suffix)) {
+            nomeFile += suffix;
+        }// end of if cycle
+        String pathTxt = AlgosApp.TEXT_FOLDER_NAME + nomeFile;
         Path filePath = Paths.get(pathTxt);
 
         try { // prova ad eseguire il codice

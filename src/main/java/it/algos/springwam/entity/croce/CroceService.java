@@ -2,6 +2,7 @@ package it.algos.springwam.entity.croce;
 
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.address.Address;
+import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.persona.Persona;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.AService;
@@ -97,16 +98,14 @@ public class CroceService extends AService {
      * @return la entity trovata o appena creata
      */
     public Croce findOrCrea(EAOrganizzazione organizzazione, Persona presidente, String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
-        if (nonEsiste(code)) {
-            try { // prova ad eseguire il codice
-                return (Croce) save(newEntity(organizzazione, presidente, code, descrizione, contatto, telefono, email, indirizzo));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
+        Croce entity = findByKeyUnica(code);
+
+        if (entity == null) {
+            entity = newEntity(organizzazione, presidente, code, descrizione, contatto, telefono, email, indirizzo);
+            save(entity);
+        }// end of if cycle
+
+        return entity;
     }// end of method
 
 
@@ -157,9 +156,9 @@ public class CroceService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Croce newEntity(EAOrganizzazione organizzazione, Persona presidente, String code, String descrizione, Persona contatto, String telefono, String email, Address indirizzo) {
-        Croce entity = null;
+        Croce entity = findByKeyUnica(code);
 
-        if (nonEsiste(code)) {
+        if (entity == null) {
             entity = new Croce(organizzazione, presidente);
             entity.setCode(code);
             entity.setDescrizione(descrizione);
@@ -168,7 +167,7 @@ public class CroceService extends AService {
             entity.setEmail(email);
             entity.setIndirizzo(indirizzo);
         } else {
-            return findByCode(code);
+            return findByKeyUnica(code);
         }// end of if/else cycle
 
         return entity;
@@ -176,40 +175,27 @@ public class CroceService extends AService {
 
 
     /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(String code) {
-        return findByCode(code) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(String code) {
-        return findByCode(code) == null;
-    }// end of method
-
-
-    /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
-     * @param code codice di riferimento (obbligatorio)
+     * @param code di riferimento (obbligatorio)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Croce findByCode(String code) {
+    public Croce findByKeyUnica(String code) {
         return repository.findByCode(code);
     }// end of method
 
+
+    /**
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
+     *
+     * @param entityBean nuova da creare
+     */
+    @Override
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return findByKeyUnica(((Croce) entityBean).getCode()) != null;
+    }// end of method
 
     /**
      * Returns all instances of the type
@@ -234,23 +220,13 @@ public class CroceService extends AService {
      * @return the saved entity
      */
     @Override
-    public AEntity save(AEntity entityBean) throws Exception {
-        String code = ((Croce) entityBean).getCode();
+    public AEntity save(AEntity entityBean) {
 
-        if (entityBean == null) {
-            return null;
+        if (text.isEmpty(entityBean.id)) {
+            entityBean.id = ((Company) entityBean).getCode();
         }// end of if cycle
 
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(code)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente, ma unica");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
+        return super.save(entityBean);
     }// end of method
 
 }// end of class

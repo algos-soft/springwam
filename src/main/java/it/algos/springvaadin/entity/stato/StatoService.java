@@ -1,5 +1,6 @@
 package it.algos.springvaadin.entity.stato;
 
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.lib.ACost;
@@ -24,17 +25,16 @@ import java.util.List;
  * Annotated with @Service (ridondante)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @Slf4j
 @SpringComponent
 @Service
 @Scope("singleton")
 @Qualifier(ACost.TAG_STA)
+@AIScript(sovrascrivibile = false)
 public class StatoService extends AService {
 
-
-    @Autowired
-    public ATextService text;
 
 
     /**
@@ -54,8 +54,8 @@ public class StatoService extends AService {
      */
     public StatoService(@Qualifier(ACost.TAG_STA) MongoRepository repository) {
         super(repository);
-        super.entityClass = Stato.class;
         this.repository = (StatoRepository) repository;
+        super.entityClass = Stato.class;
     }// end of Spring constructor
 
 
@@ -86,16 +86,14 @@ public class StatoService extends AService {
      * @return la entity trovata o appena creata
      */
     public Stato findOrCrea(int ordine, String nome, String alfaDue, String alfaTre, String numerico, byte[] bandiera) {
-        if (nonEsiste(nome)) {
-            try { // prova ad eseguire il codice
-                return (Stato) save(newEntity(ordine, nome, alfaDue, alfaTre, numerico, bandiera));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByNome(nome);
-        }// end of if/else cycle
+        Stato entity = findByKeyUnica(nome);
+
+        if (entity == null) {
+            entity = newEntity(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
+            save(entity);
+        }// end of if cycle
+
+        return entity;
     }// end of method
 
 
@@ -108,22 +106,7 @@ public class StatoService extends AService {
      */
     @Override
     public Stato newEntity() {
-        return newEntity("");
-    }// end of method
-
-
-    /**
-     * Creazione in memoria di una nuova entity che NON viene salvata
-     * Eventuali regolazioni iniziali delle property
-     * Properties obbligatorie
-     * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
-     *
-     * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
-     *
-     * @return la nuova entity appena creata (non salvata)
-     */
-    public Stato newEntity(String nome) {
-        return newEntity(0, nome, "", "", "", (byte[]) null);
+        return newEntity(0, "", "", "", "", (byte[]) null);
     }// end of method
 
 
@@ -143,39 +126,20 @@ public class StatoService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Stato newEntity(int ordine, String nome, String alfaDue, String alfaTre, String numerico, byte[] bandiera) {
-        Stato entity = null;
+        Stato entity = findByKeyUnica(nome);
 
-        if (nonEsiste(nome)) {
-            entity = Stato.builder().ordine(ordine != 0 ? ordine : this.getNewOrdine()).nome(nome).alfaDue(alfaDue).alfaTre(alfaTre).numerico(numerico).bandiera(bandiera).build();
-        } else {
-            return findByNome(nome);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = Stato.builder()
+                    .ordine(ordine != 0 ? ordine : this.getNewOrdine())
+                    .nome(nome)
+                    .alfaDue(alfaDue)
+                    .alfaTre(alfaTre)
+                    .numerico(numerico)
+                    .bandiera(bandiera)
+                    .build();
+        }// end of if cycle
 
         return entity;
-    }// end of method
-
-
-    /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(String nome) {
-        return findByNome(nome) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param nome corrente completo, non ufficiale (obbligatorio ed unico)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(String nome) {
-        return findByNome(nome) == null;
     }// end of method
 
 
@@ -186,52 +150,52 @@ public class StatoService extends AService {
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Stato findByNome(String nome) {
+    public Stato findByKeyUnica(String nome) {
         return repository.findByNome(nome);
     }// end of method
 
 
-    /**
-     * Returns all instances of the type
-     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
-     * Lista ordinata
-     *
-     * @return lista ordinata di tutte le entities
-     */
-    @Override
-    public List findAll() {
-        return repository.findByOrderByOrdineAsc();
-    }// end of method
+//    /**
+//     * Returns all instances of the type
+//     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
+//     * Lista ordinata
+//     *
+//     * @return lista ordinata di tutte le entities
+//     */
+//    @Override
+//    public List findAll() {
+//        return repository.findByOrderByOrdineAsc();
+//    }// end of method
 
 
-    /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
-     *
-     * @param entityBean da salvare
-     *
-     * @return the saved entity
-     */
-    @Override
-    public AEntity save(AEntity entityBean) throws Exception {
-        String code = ((Stato) entityBean).getNome();
-
-        if (entityBean == null) {
-            return null;
-        }// end of if cycle
-
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(code)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente, ma unica");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
-    }// end of method
+//    /**
+//     * Saves a given entity.
+//     * Use the returned instance for further operations
+//     * as the save operation might have changed the entity instance completely.
+//     *
+//     * @param entityBean da salvare
+//     *
+//     * @return the saved entity
+//     */
+//    @Override
+//    public AEntity save(AEntity entityBean)  {
+//        String code = ((Stato) entityBean).getNome();
+//
+//        if (entityBean == null) {
+//            return null;
+//        }// end of if cycle
+//
+//        if (text.isValid(entityBean.id)) {
+//            return super.save(entityBean);
+//        } else {
+//            if (nonEsiste(code)) {
+//                return super.save(entityBean);
+//            } else {
+//                log.error("Ha cercato di salvare una entity già esistente, ma unica");
+//                return null;
+//            }// end of if/else cycle
+//        }// end of if/else cycle
+//    }// end of method
 
 
     /**

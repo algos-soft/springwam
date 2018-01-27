@@ -1,6 +1,7 @@
 package it.algos.springvaadin.entity.role;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.lib.ACost;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,12 @@ import java.util.List;
  * Time: 11:42
  * Estende la l'interaccia MongoRepository col casting alla Entity relativa di questa repository
  * Annotated with @SpringComponent (obbligatorio)
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  */
 @SpringComponent
 @Qualifier(ACost.TAG_ROL)
+@AIScript(sovrascrivibile = false)
 public interface RoleRepository extends MongoRepository<Role, String> {
 
     public Role findByCode(String code);

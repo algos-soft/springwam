@@ -109,8 +109,8 @@ public class ABoot {
      * Inizializzazione dei dati standard di alcune collections sul DB
      */
     protected void iniziaDataStandard() {
-        this.logtype.findOrCrea();
         this.role.findOrCrea();
+        this.logtype.findOrCrea();
         this.stato.findOrCrea();
     }// end of method
 
@@ -140,9 +140,9 @@ public class ABoot {
 //
 //        AlgosApp.USE_CHECK_PARAMS = true;
 //        log.info("AlgosApp.USE_CHECK_PARAMS: " + AlgosApp.USE_CHECK_PARAMS);
-//
-//        AlgosApp.USE_CHECK_COOKIES = true;
-//        log.info("AlgosApp.USE_CHECK_COOKIES: " + AlgosApp.USE_CHECK_COOKIES);
+
+        AlgosApp.USE_CHECK_COOKIES = true;
+        log.info("AlgosApp.USE_CHECK_COOKIES: " + AlgosApp.USE_CHECK_COOKIES);
 
         AlgosApp.USE_VERS = true;
         log.info("AlgosApp.USE_VERS: " + AlgosApp.USE_VERS);

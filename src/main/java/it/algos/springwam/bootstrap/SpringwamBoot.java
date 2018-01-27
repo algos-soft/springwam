@@ -3,6 +3,7 @@ package it.algos.springwam.bootstrap;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.bootstrap.ABoot;
+import it.algos.springwam.migration.MigrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -30,14 +31,21 @@ public class SpringwamBoot extends ABoot {
 
 
     @Autowired
-    protected CompanyData company;
+    protected CroceData croce;
 
 
     /**
      * Inietta da Spring come 'singleton'
      */
     @Autowired
-    public UserData user;
+    public UtenteData utente;
+
+
+    /**
+     * Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    public MigrationService migration;
 
 
     /**
@@ -66,8 +74,13 @@ public class SpringwamBoot extends ABoot {
      */
     protected void iniziaData() {
         super.iniziaDataStandard();
-        this.company.findOrCrea();
-        this.user.findOrCrea();
+        migration.importAllCrociSetup();
+//        migration.importAllFunzioniSetup();
+//        migration.importAllServiziSetup();
+//        this.company.findOrCrea();
+//        this.user.findOrCrea();
+        croce.findOrCrea();
+        utente.findOrCrea();
     }// end of method
 
 

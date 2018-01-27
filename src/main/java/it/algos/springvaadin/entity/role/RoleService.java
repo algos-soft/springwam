@@ -2,9 +2,16 @@ package it.algos.springvaadin.entity.role;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Notification;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.entity.address.Address;
+import it.algos.springvaadin.entity.company.Company;
+import it.algos.springvaadin.entity.persona.Persona;
+import it.algos.springvaadin.entity.stato.Stato;
 import it.algos.springvaadin.entity.user.User;
+import it.algos.springvaadin.exception.NullCompanyException;
 import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.service.AFieldService;
 import it.algos.springvaadin.service.AService;
 import it.algos.springvaadin.service.ASessionService;
 import it.algos.springvaadin.service.ATextService;
@@ -26,30 +33,18 @@ import java.util.List;
  * Estende la Entity astratta AService. Layer di collegamento tra il Presenter e la Repository.
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Service (ridondante)
- * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Scope (obbligatorio = 'singleton')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @@Slf4j (facoltativo) per i logs automatici
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @Slf4j
 @SpringComponent
 @Service
 @Scope("singleton")
 @Qualifier(ACost.TAG_ROL)
+@AIScript(sovrascrivibile = false)
 public class RoleService extends AService {
-
-
-    /**
-     * Libreria di servizio. Inietta da Spring come 'singleton'
-     */
-    @Autowired
-    public ATextService text;
-
-
-    /**
-     * Libreria di servizio. Inietta da Spring come 'singleton'
-     */
-    @Autowired
-    public ASessionService session;
 
 
     public final static String DEV = "developer";
@@ -57,6 +52,9 @@ public class RoleService extends AService {
     public final static String USER = "user";
     public final static String GUEST = "guest";
 
+
+    @Autowired
+    protected ATextService text;
 
     /**
      * La repository viene iniettata dal costruttore, in modo che sia disponibile nella superclasse,
@@ -82,39 +80,24 @@ public class RoleService extends AService {
     }// end of Spring constructor
 
 
+
     /**
      * Ricerca di una entity (la crea se non la trova)
      * Properties obbligatorie
      *
-     * @param code di riferimento (obbligatorio)
+     * @param code di riferimento interno (obbligatorio ed unico)
      *
      * @return la entity trovata o appena creata
      */
     public Role findOrCrea(String code) {
-        return this.findOrCrea(0, code);
-    }// end of method
+        Role entity = findByKeyUnica(code);
 
+        if (entity == null) {
+            entity = newEntity(0, code);
+            save(entity);
+        }// end of if cycle
 
-    /**
-     * Ricerca di una entity (la crea se non la trova)
-     * All properties
-     *
-     * @param ordine di rilevanza (obbligatorio, unico, con inserimento automatico se è zero, non modificabile)
-     * @param code di riferimento (obbligatorio)
-     *
-     * @return la entity trovata o appena creata
-     */
-    public Role findOrCrea(int ordine, String code) {
-        if (nonEsiste(code)) {
-            try { // prova ad eseguire il codice
-                return (Role) save(newEntity(ordine, code));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
+        return entity;
     }// end of method
 
 
@@ -138,32 +121,21 @@ public class RoleService extends AService {
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
      * @param ordine di rilevanza (obbligatorio, unico, con inserimento automatico se è zero, non modificabile)
-     * @param code di riferimento (obbligatorio)
+     * @param code   di riferimento (obbligatorio)
      *
      * @return la nuova entity appena creata (non salvata)
      */
     public Role newEntity(int ordine, String code) {
-        Role entity = null;
+        Role entity = findByKeyUnica(code);
 
-        if (nonEsiste(code)) {
-            entity = Role.builder().ordine(ordine != 0 ? ordine : this.getNewOrdine()).code(code).build();
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = Role.builder()
+                    .ordine(ordine != 0 ? ordine : this.getNewOrdine())
+                    .code(code)
+                    .build();
+        }// end of if cycle
 
         return entity;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code di riferimento (obbligatorio)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(String code) {
-        return findByCode(code) == null;
     }// end of method
 
 
@@ -174,21 +146,20 @@ public class RoleService extends AService {
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Role findByCode(String code) {
+    public Role findByKeyUnica(String code) {
         return repository.findByCode(code);
     }// end of method
 
 
     /**
-     * Returns all instances of the type
-     * La Entity è EACompanyRequired.nonUsata. Non usa Company.
-     * Lista ordinata
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
      *
-     * @return lista ordinata di tutte le entities
+     * @param entityBean nuova da creare
      */
     @Override
-    public List<Role> findAll() {
-        return repository.findByOrderByOrdineAsc();
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return findByKeyUnica(((Role) entityBean).getCode()) != null;
     }// end of method
 
 
@@ -202,25 +173,14 @@ public class RoleService extends AService {
      * @return the saved entity
      */
     @Override
-    public AEntity save(AEntity entityBean) throws Exception {
-        String codice = ((Role) entityBean).getCode();
+    public AEntity save(AEntity entityBean) {
 
-        if (entityBean == null) {
-            return null;
+        if (text.isEmpty(entityBean.id)) {
+            entityBean.id = ((Role)entityBean).getCode();
         }// end of if cycle
 
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(codice)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
+        return super.save(entityBean);
     }// end of method
-
 
     /**
      * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),
@@ -246,7 +206,7 @@ public class RoleService extends AService {
      * @return entity richiesta
      */
     public Role getDev() {
-        return findByCode(DEV);
+        return findByKeyUnica(DEV);
     }// end of method
 
 
@@ -256,7 +216,7 @@ public class RoleService extends AService {
      * @return entity richiesta
      */
     public Role getAdmin() {
-        return findByCode(ADMIN);
+        return findByKeyUnica(ADMIN);
     }// end of method
 
 
@@ -266,7 +226,7 @@ public class RoleService extends AService {
      * @return entity richiesta
      */
     public Role getUser() {
-        return findByCode(USER);
+        return findByKeyUnica(USER);
     }// end of method
 
 
@@ -276,7 +236,7 @@ public class RoleService extends AService {
      * @return entity richiesta
      */
     public Role getGuest() {
-        return findByCode(GUEST);
+        return findByKeyUnica(GUEST);
     }// end of method
 
 }// end of class

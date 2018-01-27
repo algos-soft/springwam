@@ -1,5 +1,6 @@
 package it.algos.springvaadin.entity.logtype;
 
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.lib.ACost;
@@ -22,14 +23,16 @@ import java.util.List;
  * Annotated with @@Slf4j (facoltativo) per i logs automatici
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Service (ridondante)
- * Annotated with @Scope (obbligatorio = 'session')
+ * Annotated with @Scope (obbligatorio = 'singleton')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @Slf4j
 @SpringComponent
 @Service
 @Scope("singleton")
 @Qualifier(ACost.TAG_LOGTYPE)
+@AIScript(sovrascrivibile = false)
 public class LogtypeService extends AService {
 
 
@@ -38,9 +41,6 @@ public class LogtypeService extends AService {
     public final static String EDIT = "Edit";
     public final static String DELETE = "Delete";
 
-
-    @Autowired
-    public ATextService text;
 
 
     /**
@@ -60,8 +60,8 @@ public class LogtypeService extends AService {
      */
     public LogtypeService(@Qualifier(ACost.TAG_LOGTYPE) MongoRepository repository) {
         super(repository);
-        super.entityClass = Logtype.class;
         this.repository = (LogtypeRepository) repository;
+        super.entityClass = Logtype.class;
     }// end of Spring constructor
 
 
@@ -69,37 +69,20 @@ public class LogtypeService extends AService {
      * Ricerca di una entity (la crea se non la trova)
      * Properties obbligatorie
      *
-     * @param code di riferimento (obbligatorio)
+     * @param code di riferimento interno (obbligatorio ed unico)
      *
      * @return la entity trovata o appena creata
      */
     public Logtype findOrCrea(String code) {
-        return this.findOrCrea(0, code);
+        Logtype entity = findByKeyUnica(code);
+
+        if (entity == null) {
+            entity = newEntity(0, code);
+            save(entity);
+        }// end of if cycle
+
+        return entity;
     }// end of method
-
-
-    /**
-     * Ricerca di una entity (la crea se non la trova)
-     * All properties
-     *
-     * @param ordine di rilevanza (obbligatorio, unico, con inserimento automatico se è zero, non modificabile)
-     * @param code   di riferimento (obbligatorio)
-     *
-     * @return la entity trovata o appena creata
-     */
-    public Logtype findOrCrea(int ordine, String code) {
-        if (nonEsiste(code)) {
-            try { // prova ad eseguire il codice
-                return (Logtype) save(newEntity(ordine, code));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
-    }// end of method
-
 
     /**
      * Creazione in memoria di una nuova entity che NON viene salvata
@@ -126,52 +109,31 @@ public class LogtypeService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Logtype newEntity(int ordine, String code) {
-        Logtype entity = null;
+        Logtype entity = findByKeyUnica(code);
 
-        if (nonEsiste(code)) {
-            entity = Logtype.builder().ordine(ordine != 0 ? ordine : this.getNewOrdine()).code(code).build();
-        } else {
-            return findByCode(code);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = Logtype.builder()
+                    .ordine(ordine != 0 ? ordine : this.getNewOrdine())
+                    .code(code)
+                    .build();
+        }// end of if cycle
 
         return entity;
     }// end of method
 
 
-    /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(String code) {
-        return findByCode(code) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param code sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(String code) {
-        return findByCode(code) == null;
-    }// end of method
-
 
     /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
-     * @param code codice di riferimento (obbligatorio)
+     * @param code di riferimento (obbligatorio)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Logtype findByCode(String code) {
+    public Logtype findByKeyUnica(String code) {
         return repository.findByCode(code);
     }// end of method
+
 
 
     /**
@@ -187,6 +149,19 @@ public class LogtypeService extends AService {
     }// end of method
 
 
+
+    /**
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
+     *
+     * @param entityBean nuova da creare
+     */
+    @Override
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return findByKeyUnica(((Logtype) entityBean).getCode()) != null;
+    }// end of method
+
+
     /**
      * Saves a given entity.
      * Use the returned instance for further operations
@@ -197,25 +172,14 @@ public class LogtypeService extends AService {
      * @return the saved entity
      */
     @Override
-    public AEntity save(AEntity entityBean) throws Exception {
-        String code = ((Logtype) entityBean).getCode();
+    public AEntity save(AEntity entityBean) {
 
-        if (entityBean == null) {
-            return null;
+        if (text.isEmpty(entityBean.id)) {
+            entityBean.id = ((Logtype)entityBean).getCode();
         }// end of if cycle
 
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(code)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente, ma unica");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
+        return super.save(entityBean);
     }// end of method
-
 
     /**
      * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),
@@ -241,7 +205,7 @@ public class LogtypeService extends AService {
      * @return la entity appena trovata
      */
     public Logtype getSetup() {
-        return findByCode(SETUP);
+        return findByKeyUnica(SETUP);
     }// end of method
 
 
@@ -251,7 +215,7 @@ public class LogtypeService extends AService {
      * @return la entity appena trovata
      */
     public Logtype getNew() {
-        return findByCode(NEW);
+        return findByKeyUnica(NEW);
     }// end of method
 
 
@@ -261,7 +225,7 @@ public class LogtypeService extends AService {
      * @return la entity appena trovata
      */
     public Logtype getEdit() {
-        return findByCode(EDIT);
+        return findByKeyUnica(EDIT);
     }// end of method
 
 
@@ -271,7 +235,7 @@ public class LogtypeService extends AService {
      * @return la entity appena trovata
      */
     public Logtype getDelete() {
-        return findByCode(DELETE);
+        return findByKeyUnica(DELETE);
     }// end of method
 
 }// end of class

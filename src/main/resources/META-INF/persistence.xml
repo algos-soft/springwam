@@ -39,9 +39,8 @@
         <class>it.algos.springwam.migration.CroceAmb</class>
         <class>it.algos.springwam.migration.FunzioneAmb</class>
         <class>it.algos.springwam.migration.ServizioAmb</class>
-        <class>it.algos.springwam.migration.UtenteAmb</class>
         <class>it.algos.springwam.migration.UserAmb</class>
-        <class>it.algos.springwam.migration.MiliteFunzioneAmb</class>
+        <class>it.algos.springwam.migration.UtenteAmb</class>
         <class>it.algos.springwam.migration.UtenteRuoloAmb</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>

@@ -3,6 +3,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
@@ -26,12 +27,14 @@ import java.util.List;
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
  * Annotated with @AIView (facoltativo) per selezionarne la 'visibilità' secondo il ruolo dell'User collegato
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @SpringComponent
 @Scope("session")
 @Qualifier(ACost.TAG_LOGTYPE)
 @SpringView(name = ACost.VIEW_LOGTYPE_LIST)
 @AIView(roleTypeVisibility = EARoleType.developer)
+@AIScript(sovrascrivibile = true)
 public class LogtypeList extends AList {
 
 

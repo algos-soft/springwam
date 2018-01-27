@@ -15,6 +15,7 @@ import it.algos.springvaadin.lib.LibVaadin;
 import it.algos.springvaadin.listener.ALoginListener;
 import it.algos.springvaadin.listener.ALogoutListener;
 import it.algos.springvaadin.listener.AProfileChangeListener;
+import it.algos.springvaadin.service.ACookieService;
 import it.algos.springvaadin.service.ATextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -39,6 +40,13 @@ public class ALogin {
      */
     @Autowired
     public UserService userService;
+
+
+    /**
+     * Libreria di servizio. Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    public ACookieService cookieService;
 
 
     /**
@@ -113,8 +121,6 @@ public class ALogin {
      * Displays the Login form
      */
     public void showLoginForm() {
-
-
         // set the login listener in the form
         loginForm.setLoginListener(new ALoginListener() {
             @Override
@@ -132,6 +138,7 @@ public class ALogin {
         // Open it in the UI
         UI.getCurrent().addWindow(loginForm);
     }// end of method
+
 
 //    /**
 //     * Displays the user profile
@@ -172,7 +179,7 @@ public class ALogin {
 
         String nickname = loginForm.getNickname();
         String password = loginForm.getPassword();
-        valido = userService.check(nickname, password);
+        valido = userService.passwordValida(nickname, password);
 
         if (valido) {
             Notification.show("Login", "Valido", Notification.Type.HUMANIZED_MESSAGE);
@@ -217,6 +224,30 @@ public class ALogin {
 
 
     /**
+     * Esegue il login con i dati presenti nella UI.
+     *
+     * @return true se riuscito
+     */
+    public boolean esegueLogin(String nickname, String password) {
+        boolean valido = userService.passwordValida(nickname, password);
+        IAUser user = userService.findByNick(nickname);
+        this.user=user;
+        this.typeLogged = EARoleType.getType(((User) user).role.getCode());
+
+        if (this.user != null) {
+            this.setCompany(((User) this.user).getCompany());
+        }// end of if cycle
+
+        footer.start();
+
+        ALoginEvent evento = new ALoginEvent(this, valido, user, null, false);
+        fireLoginListeners(evento);
+
+        return valido;
+    }// end of method
+
+
+    /**
      * Logout the current user
      */
     public void logout() {
@@ -226,10 +257,27 @@ public class ALogin {
 //        for (LogoutListener l : logoutListeners) {
 //            l.onUserLogout(e);
 //        }
-//        deleteCookies();//@todo aggiunta di gac 12.2.17
-        LibVaadin.getUI().getNavigator().navigateTo(ACost.VIEW_USE_LIST);
+        deleteCookies();//@todo aggiunta di gac 12.2.17
+//        LibVaadin.getUI().getNavigator().navigateTo(ACost.VIEW_USE_LIST);
         LibVaadin.getUI().getNavigator().navigateTo(ACost.VIEW_HOME);
     }// end of method
+
+
+//    /**
+//     * Reads the cookies and puts the data in the fields
+//     */
+//    public void readCookies() {
+//        String username = cookieService.getCookieValue(ACost.COOKIE_NAME_LOGIN);
+//        String password = cookieService.getCookieValue(ACost.COOKIE_NAME_PASSWORD);
+//        String rememberStr = cookieService.getCookieValue(ACost.COOKIE_NAME_REMEMBER);
+//        boolean remember = (rememberStr.equalsIgnoreCase("true"));
+//
+//        AbsLoginForm loginForm = getLoginForm();
+//        loginForm.setUsername(username);
+//        loginForm.setPassword(password);
+//        loginForm.setRemember(remember);
+//
+//    }// end of method
 
 
 //    /**
@@ -249,27 +297,8 @@ public class ALogin {
 //        }
 //
 //    }
-//
-//
-//    /**
-//     * Reads the cookies and puts the data in the fields
-//     */
-//    public void readCookies() {
-//
-//        String username = LibCookie.getCookieValue(getLoginKey());
-//        String encPass = LibCookie.getCookieValue(getPasswordKey());
-//        String clearPass = LibCrypto.decrypt(encPass);
-//        String rememberStr = LibCookie.getCookieValue(getRememberKey());
-//        boolean remember = (rememberStr.equalsIgnoreCase("true"));
-//
-//        AbsLoginForm loginForm = getLoginForm();
-//        loginForm.setUsername(username);
-//        loginForm.setPassword(clearPass);
-//        loginForm.setRemember(remember);
-//
-//    }
-//
-//
+
+
 //    /**
 //     * Renew the expiry time for all the cookies
 //     */
@@ -282,17 +311,17 @@ public class ALogin {
 //        cookie = LibCookie.getCookie(getRememberKey());
 //        LibCookie.setCookie(getRememberKey(), cookie.getValue(), getLoginPath(), expiryTime);
 //    }
-//
-//    /**
-//     * Delete all the cookies
-//     */
-//    private void deleteCookies() {
-//        LibCookie.deleteCookie(getLoginKey(), getLoginPath());
-//        LibCookie.deleteCookie(getPasswordKey(), getLoginPath());
-//        LibCookie.deleteCookie(getRememberKey(), getLoginPath());
-//    }
-//
-//
+
+    /**
+     * Delete all the cookies
+     */
+    private void deleteCookies() {
+        cookieService.deleteCookie(ACost.COOKIE_NAME_LOGIN, "/");
+        cookieService.deleteCookie(ACost.COOKIE_NAME_PASSWORD, "/");
+        cookieService.deleteCookie(ACost.COOKIE_NAME_REMEMBER, "/");
+    }// end of method
+
+
 //    /**
 //     * Attempts a login directly from the cookies without showing the login form.
 //     *
@@ -467,6 +496,7 @@ public class ALogin {
 
     public void setUser(IAUser user) {
         this.user = user;
+        Object a = ((User) user).role;
     }// end of method
 
     public void setTypeLogged(EARoleType typeLogged) {
@@ -486,7 +516,11 @@ public class ALogin {
     }// end of method
 
     public boolean isDeveloper() {
-        return getTypeLogged() == EARoleType.developer;
+        if (AlgosApp.USE_SECURITY) {
+            return getTypeLogged() == EARoleType.developer;
+        } else {
+            return true;
+        }// end of if/else cycle
     }// end of method
 
     public Company getCompany() {

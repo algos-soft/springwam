@@ -224,11 +224,10 @@ public abstract class AView extends VerticalLayout implements IAView {
      *
      * @param source              presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-     * @param entityBean          di riferimento
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
      */
-    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, AEntity entityBean, List<Field> reflectedJavaFields, List<EAButtonType> typeButtons) {
+    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EAButtonType> typeButtons) {
         this.removeAllComponents();
 
         //--componente grafico obbligatorio
@@ -242,7 +241,7 @@ public abstract class AView extends VerticalLayout implements IAView {
         }// end of if cycle
 
         //--componente grafico obbligatorio
-        this.creaBody(source, entityBean, reflectedJavaFields);
+        this.creaBody(source, reflectedJavaFields);
         this.addComponent(bodyLayout);
 
         //--componente grafico facoltativo
@@ -320,10 +319,9 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
      * @param source              presenter di riferimento per i componenti da cui vengono generati gli eventi
-     * @param entityBean          di riferimento
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
-    protected void creaBody(IAPresenter source, AEntity entityBean, List<Field> reflectedJavaFields) {
+    protected void creaBody(IAPresenter source, List<Field> reflectedJavaFields) {
     }// end of method
 
 

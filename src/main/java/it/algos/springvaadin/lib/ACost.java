@@ -14,9 +14,15 @@ public abstract class ACost {
     public final static boolean DEBUG = false;
     public final static String LOGIN_INFO = "loginInfo";
 
-    public final static String COOKIE_LOGIN_NICK = "cookieLoginNick";
-    public final static String COOKIE_LOGIN_PASS = "cookieLoginPass";
-    public final static String COOKIE_LOGIN_ROLE = "cookieLoginRole";
+//    public final static String COOKIE_LOGIN_NICK = "cookieLoginNick";
+//    public final static String COOKIE_LOGIN_PASS = "cookieLoginPass";
+//    public final static String COOKIE_LOGIN_ROLE = "cookieLoginRole";
+
+    // default cookie names
+    public static final String COOKIE_NAME_LOGIN = "loginusername";
+    public static final String COOKIE_NAME_PASSWORD = "loginpassword";
+    public static final String COOKIE_NAME_REMEMBER = "loginremember";
+    public static final String COOKIE_NAME_COMPANY = "logincompany";
 
     public final static String KEY_MAP_COMPANY = "company";
     public final static String SIGLA_COMPANY_DEMO = "demo";

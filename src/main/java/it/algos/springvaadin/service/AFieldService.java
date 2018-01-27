@@ -386,4 +386,4 @@ public class AFieldService {
         prima, dopo
     }// end of internal enumerationù
 
-}// end of abstract static class
+}// end of service class
