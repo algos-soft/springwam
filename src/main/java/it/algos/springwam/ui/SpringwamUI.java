@@ -2,6 +2,7 @@ package it.algos.springwam.ui;
 
 import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.footer.AFooter;
+import it.algos.springvaadin.service.AStartService;
 import it.algos.springwam.entity.milite.MiliteService;
 import it.algos.springwam.entity.utente.UtenteList;
 import it.algos.springwam.entity.servizio.ServizioList;
@@ -53,6 +54,10 @@ public class SpringwamUI extends AUI {
     private MiliteService militeService;
 
 
+    @Autowired
+    private AStartService startService;
+
+
     /**
      * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
      */
@@ -63,6 +68,9 @@ public class SpringwamUI extends AUI {
             if (militeService != null) {
                 login.userService = militeService;
                 login.loginForm.userService = militeService;
+            }// end of if cycle
+            if (startService != null) {
+                startService.userService = militeService;
             }// end of if cycle
         }// end of if cycle
     }// end of method

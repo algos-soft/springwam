@@ -237,10 +237,10 @@ public class ALogin {
         boolean valido = userService.passwordValida(nickname, password);
         IAUser user = userService.findByNickname(nickname);
         this.user = user;
-        this.typeLogged = EARoleType.getType(((User) user).role.getCode());
+        this.typeLogged = EARoleType.getType(user.getRole().getCode());
 
         if (this.user != null) {
-            this.setCompany(((User) this.user).getCompany());
+            this.setCompany(this.user.getCompany());
         }// end of if cycle
 
         footer.start();

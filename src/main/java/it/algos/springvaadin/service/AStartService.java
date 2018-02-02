@@ -37,7 +37,7 @@ public class AStartService {
     protected ALoginButton loginButton;
 
     @Autowired
-    protected UserService userService;
+    public ALoginService userService;
 
     /**
      * Legge eventuali parametri passati nella request

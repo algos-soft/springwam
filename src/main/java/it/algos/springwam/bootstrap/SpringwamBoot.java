@@ -75,8 +75,9 @@ public class SpringwamBoot extends ABoot {
     protected void iniziaData() {
         super.iniziaDataStandard();
         migration.importAllCrociSetup();
-//        migration.importAllFunzioniSetup();
-//        migration.importAllServiziSetup();
+        migration.importAllFunzioniSetup();
+        migration.importAllServiziSetup();
+        migration.importAllMilitiSetup();
 //        this.company.findOrCrea();
 //        this.user.findOrCrea();
         croce.findOrCrea();

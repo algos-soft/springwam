@@ -15,6 +15,8 @@ import it.algos.springwam.entity.croce.CroceService;
 import it.algos.springwam.entity.croce.EAOrganizzazione;
 import it.algos.springwam.entity.funzione.Funzione;
 import it.algos.springwam.entity.funzione.FunzioneService;
+import it.algos.springwam.entity.milite.Milite;
+import it.algos.springwam.entity.milite.MiliteService;
 import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.servizio.ServizioService;
 import it.algos.springwam.entity.utente.Utente;
@@ -54,10 +56,7 @@ public class MigrationService {
     private ServizioService servizioService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UtenteService utenteService;
+    private MiliteService militeService;
 
     @Autowired
     private RoleService roleService;
@@ -297,25 +296,25 @@ public class MigrationService {
 
 
     /**
-     * Importa tutti gli users e utenti/militi/volontari esistenti in webambulanze, in fase iniziale di setup
+     * Importa tutti i militi esistenti in webambulanze, in fase iniziale di setup
      */
-    public void importAllUtentiSetup() {
-        if (userService.count() == 0 || utenteService.count() == 0) {
-            importAllUtenti();
-        }// end of if cycle
+    public void importAllMilitiSetup() {
+//        if (militeService.count() == 0) {
+            importAllMiliti();
+//        }// end of if cycle
     }// end of constructor
 
 
     /**
-     * Importa tutti gli users e utenti/militi/volontari esistenti in webambulanze
+     * Importa tutti i militi esistenti in webambulanze
      */
-    public void importAllUtenti() {
+    public void importAllMiliti() {
         Croce croceNew;
         creaManagers();
 
         for (CroceAmb croceOld : getAllCrociValide()) {
             croceNew = getCroce(croceOld);
-            importUtenti(croceOld, croceNew);
+            importMiliti(croceOld, croceNew);
         }// end of for cycle
 
         chiudeManagers();
@@ -323,20 +322,20 @@ public class MigrationService {
 
 
     /**
-     * Importa  gli users e utenti/militi/volontari esistenti in una croce di webambulanze
+     * Importa i militi esistenti in una croce di webambulanze
      */
-    public void importUtenti(CroceAmb croceOld, Croce croceNew) {
+    public void importMiliti(CroceAmb croceOld, Croce croceNew) {
         List<UserAmb> users = UserAmb.findAllByCroce(croceOld, manager);
         List<UtenteAmb> utenti = UtenteAmb.findAll(croceOld, manager);
 
         for (UserAmb userOld : users) {
-            creaSingoloUtente(croceNew, utenti, userOld);
+            creaSingoloMilite(croceNew, utenti, userOld);
         }// end of for cycle
     }// end of constructor
 
 
     /**
-     * Crea il singolo utente
+     * Crea il singolo milite
      * Non è detto che ci sia il login corretto per la company
      * Quindi non posso usare il metodo userService.findOrCrea() che usa la company del login
      * Quindi inserisco la company direttamente
@@ -344,23 +343,27 @@ public class MigrationService {
      * @param userOld  della companyOld
      * @param croceNew company usata in springWam
      */
-    private void creaSingoloUtente(Croce croceNew, List<UtenteAmb> utenti, UserAmb userOld) {
-        User entity;
+    private void creaSingoloMilite(Croce croceNew, List<UtenteAmb> utenti, UserAmb userOld) {
+        Milite entity;
         String nickname = userOld.getNickname();
         String password = userOld.getPass();
         Role role = getRuolo(userOld);
         boolean enabled = userOld.isEnabled();
 
-        if (userService.findByKeyUnica(croceNew, nickname) == null) {
-            entity = User.builder()
-                    .nickname(nickname)
-                    .password(password)
-                    .role(role)
-                    .enabled(enabled)
-                    .build();
+        if (militeService.findByKeyUnica(croceNew, nickname) == null) {
 
+            entity = new Milite();
+            entity.setNickname(nickname);
+            entity.setPassword(password);
+            entity.setRole(role);
+            entity.setEnabled(true);
+            entity.setNome(nickname);
+            entity.setCognome(nickname);
+            entity.setEnabled(enabled);
+            entity.setDipendente(false);
+            entity.setInfermiere(false);
             entity.company = croceNew;
-            userService.save(entity);
+            militeService.save(entity);
         }// end of if cycle
 
     }// end of method
