@@ -162,8 +162,16 @@ public class Utente extends Persona implements IAUser {
      */
     @Override
     public boolean validatePassword(String password) {
-        return false;
-    }
+        boolean valid = false;
+
+        if (isEnabled()) {
+            if (this.password.equals(password)) {
+                valid = true;
+            }// end of if cycle
+        }// end of if cycle
+
+        return valid;
+    }// end of method
 
     /**
      * @return true if this user is developer

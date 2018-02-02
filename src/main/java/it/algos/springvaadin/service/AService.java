@@ -71,6 +71,14 @@ public abstract class AService implements IAService {
     //--il modello-dati specifico viene regolato dalla sottoclasse nel costruttore
     public Class<? extends AEntity> entityClass;
 
+
+    /**
+     * Default constructor
+     */
+    public AService( ) {
+    }// end of constructor
+
+
     /**
      * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
      * Si usa un @Qualifier(), per avere la sottoclasse specifica

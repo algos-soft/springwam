@@ -13,13 +13,16 @@ import it.algos.springvaadin.dialog.AConfirmDialog;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.user.User;
+import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.field.ACheckBoxField;
 import it.algos.springvaadin.field.ATextField;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.lib.LibVaadin;
 import it.algos.springvaadin.listener.ALoginListener;
 import it.algos.springvaadin.service.ACookieService;
+import it.algos.springvaadin.service.ALoginService;
 import it.algos.springvaadin.service.AReflectionService;
+import it.algos.springvaadin.service.AService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
@@ -32,14 +35,24 @@ import javax.annotation.PostConstruct;
 public abstract class ALoginForm extends AConfirmDialog {
 
 
+    /**
+     * Libreria di servizio. Inietta da Spring come 'singleton'
+     */
+    public ALoginService userService;
+
     @Autowired
     public ACookieService cookieService;
 
-
+    //--componente specifico per il nickname
+    //--la sottoclasse può implementare un textField oppure un comboBox
     protected Component usernameField;
+
+    //--componente fisso per la password
     //    private PasswordField passField; @todo ricambiare
     protected ATextField passField;
-    private ACheckBoxField rememberField;
+
+    //--componente fisso per il flag booleano
+    protected ACheckBoxField rememberField;
 
     /**
      * Login gestisce il form ed alla chiusura controlla la validità del nuovo utente
@@ -54,8 +67,9 @@ public abstract class ALoginForm extends AConfirmDialog {
     /**
      * Constructor
      */
-    public ALoginForm() {
+    public ALoginForm(ALoginService service) {
         super(null);
+        this.userService = service;
     }// end of constructor
 
 
@@ -97,7 +111,9 @@ public abstract class ALoginForm extends AConfirmDialog {
      *
      * @return the username component
      */
-    abstract Component createUsernameComponent();
+    protected Component createUsernameComponent() {
+        return null;
+    }// end of method
 
 
     @Override
@@ -119,8 +135,7 @@ public abstract class ALoginForm extends AConfirmDialog {
             }// end of if/else cycle
 
             if (rememberField.getValue()) {
-                User userVaadin = (User) user;
-                writeCookies(user.getNickname(), password, userVaadin.company);
+                writeCookies(user.getNickname(), password, user.getCompany());
             }// end of if cycle
 
         }// end of if cycle
@@ -155,7 +170,9 @@ public abstract class ALoginForm extends AConfirmDialog {
      *
      * @return the selected user
      */
-    abstract IAUser getSelectedUser();
+    protected IAUser getSelectedUser() {
+        return null;
+    }// end of method
 
 
     /**
@@ -171,13 +188,25 @@ public abstract class ALoginForm extends AConfirmDialog {
 
     public void setLoginListener(ALoginListener listener) {
         this.loginListener = listener;
-    }
+    }// end of method
 
     public Window getWindow() {
         return this;
-    }
+    }// end of method
 
-    abstract void setUsername(String name);
+    protected void setNickname(String name) {
+    }// end of method
+
+    protected void setPassword(String password) {
+    }// end of method
+
+    protected String getNickname() {
+        return null;
+    }// end of method
+
+    protected String getPassword() {
+        return null;
+    }// end of method
 
 //    public void setPassword(String password) {
 //        passField.setValue(password);

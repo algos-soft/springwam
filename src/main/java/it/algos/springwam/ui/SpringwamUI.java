@@ -1,6 +1,8 @@
 package it.algos.springwam.ui;
 
 import it.algos.springvaadin.entity.user.UserService;
+import it.algos.springvaadin.footer.AFooter;
+import it.algos.springwam.entity.milite.MiliteService;
 import it.algos.springwam.entity.utente.UtenteList;
 import it.algos.springwam.entity.servizio.ServizioList;
 import it.algos.springwam.entity.croce.CroceList;
@@ -25,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Created by gac on @TODAY@
  * <p>
@@ -39,6 +43,39 @@ import org.springframework.context.annotation.Scope;
 @SpringViewDisplay()
 @Scope("session")
 public class SpringwamUI extends AUI {
+
+
+    @Autowired
+    private WamLoginForm loginForm;
+
+
+    @Autowired
+    private MiliteService militeService;
+
+
+    /**
+     * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
+     */
+    @PostConstruct
+    private void cambiaLogin() {
+        if (login != null && loginForm != null) {
+            login.loginForm = loginForm;
+            if (militeService != null) {
+                login.userService = militeService;
+                login.loginForm.userService = militeService;
+            }// end of if cycle
+        }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
+     */
+    @PostConstruct
+    private void fixProjectFooter() {
+        AFooter.PROJECT = "Springvaadin";
+        AFooter.VERSION = "0.1";
+    }// end of method
 
 
     /**
@@ -56,9 +93,9 @@ public class SpringwamUI extends AUI {
      */
     protected void addVisteSpecifiche() {
         menuLayout.addView(CroceList.class);
-		menuLayout.addView(UtenteList.class);
+        menuLayout.addView(UtenteList.class);
         menuLayout.addView(FunzioneList.class);
-		menuLayout.addView(ServizioList.class);
+        menuLayout.addView(ServizioList.class);
     }// end of method
 
     /**

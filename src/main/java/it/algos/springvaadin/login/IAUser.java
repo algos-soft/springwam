@@ -1,6 +1,9 @@
 package it.algos.springvaadin.login;
 
 
+import it.algos.springvaadin.entity.company.Company;
+import it.algos.springvaadin.entity.role.Role;
+
 /**
  * Interface to a User entity
  * Created by alex on 25-05-2016.
@@ -52,6 +55,18 @@ public interface IAUser {
      * @return true if this user is developer
      */
     boolean isDeveloper();
+
+
+    /**
+     * @return the role of the user
+     */
+    Role getRole();
+
+
+    /**
+     * @return the company of the user
+     */
+    Company getCompany();
 
 
 //    /**

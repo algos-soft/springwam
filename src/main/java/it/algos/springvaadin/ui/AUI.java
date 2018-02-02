@@ -83,7 +83,6 @@ public abstract class AUI extends AUIViews implements ViewDisplay {
     protected void init(VaadinRequest request) {
         super.init(request);
 
-
 //        //--Controlla (se MultiUtenza) che sia stata selezionata una company valida
 //        //--Crea la User Interface
 //        if (AlgosApp.USE_MULTI_COMPANY) {

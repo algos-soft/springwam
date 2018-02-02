@@ -52,8 +52,8 @@ public class AFooter extends VerticalLayout {
 
 
     private final static String DEVELOPER_COMPANY = "Algos® ";
-    private final static String PROJECT = "WebAMbulanze";
-    private final static String VERSION = "v0.4";
+    public  static String PROJECT = "";
+    public  static String VERSION = "";
     private final static LocalDate DATA = LocalDate.now();
     private final static String DEV_TAG = "Dev: ";
     private final static String ADMIN_TAG = "Admin: ";

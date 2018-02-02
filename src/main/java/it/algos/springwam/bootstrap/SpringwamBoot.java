@@ -38,7 +38,7 @@ public class SpringwamBoot extends ABoot {
      * Inietta da Spring come 'singleton'
      */
     @Autowired
-    public UtenteData utente;
+    public MiliteData milite;
 
 
     /**
@@ -80,7 +80,7 @@ public class SpringwamBoot extends ABoot {
 //        this.company.findOrCrea();
 //        this.user.findOrCrea();
         croce.findOrCrea();
-        utente.findOrCrea();
+        milite.findOrCrea();
     }// end of method
 
 

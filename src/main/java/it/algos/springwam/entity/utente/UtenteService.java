@@ -9,6 +9,8 @@ import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.entity.user.User;
 import it.algos.springvaadin.entity.user.UserRepository;
 import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.login.IAUser;
+import it.algos.springvaadin.service.ALoginService;
 import it.algos.springvaadin.service.AService;
 import it.algos.springvaadin.service.ATextService;
 import it.algos.springwam.entity.croce.Croce;
@@ -40,11 +42,8 @@ import it.algos.springwam.application.AppCost;
 @Scope("singleton")
 @Qualifier(AppCost.TAG_UTE)
 @AIScript(sovrascrivibile = false)
-public class UtenteService extends AService {
+public class UtenteService extends ALoginService {
 
-
-//    @Autowired
-//    public ATextService text;
 
     /**
      * Libreria di servizio. Inietta da Spring come 'singleton'
@@ -226,7 +225,7 @@ public class UtenteService extends AService {
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Utente findByNick(String nickname) {
+    public IAUser findByNickname(String nickname) {
         return repository.findByNickname(nickname);
     }// end of method
 
@@ -271,5 +270,17 @@ public class UtenteService extends AService {
         }// end of if/else cycle
     }// end of method
 
+    /**
+     * Controlla che esiste un utente con questo nickname e questa password
+     *
+     * @param nickname di riferimento (obbligatorio, unico per company)
+     * @param password (obbligatoria o facoltativa, non unica)
+     *
+     * @return la nuova entity appena creata (non salvata)
+     */
+    @Override
+    public boolean passwordValida(String nickname, String password) {
+        return false;
+    }// end of method
 
 }// end of class

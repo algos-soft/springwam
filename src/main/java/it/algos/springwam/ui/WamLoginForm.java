@@ -1,34 +1,31 @@
-package it.algos.springvaadin.login;
+package it.algos.springwam.ui;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
-import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.field.ATextField;
 import it.algos.springvaadin.field.IAFieldFactory;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.login.ALoginForm;
+import it.algos.springvaadin.login.IAUser;
 import it.algos.springvaadin.service.ALoginService;
-import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.toolbar.IAToolbar;
-import org.springframework.beans.factory.annotation.Autowired;
+import it.algos.springwam.application.AppCost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
-import javax.annotation.PostConstruct;
-
 /**
- * Created by alex on 26/05/16.
+ * Project springvaadin
+ * Created by Algos
+ * User: gac
+ * Date: sab, 27-gen-2018
+ * Time: 18:20
  */
 @SpringComponent
 @Scope("prototype")
-public class DALoginForm extends ALoginForm {
-
+public class WamLoginForm extends ALoginForm {
 
     private IAFieldFactory fieldFactory;
-
     public ATextField nameField;
-
 
     /**
      * Costruttore @Autowired
@@ -43,29 +40,24 @@ public class DALoginForm extends ALoginForm {
      * @param service      iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      * @param fieldFactory
      */
-    public DALoginForm(@Qualifier(ACost.TAG_USE) ALoginService service, IAFieldFactory fieldFactory) {
+    public WamLoginForm(@Qualifier(AppCost.TAG_UTE) ALoginService service, IAFieldFactory fieldFactory) {
         super(service);
         this.fieldFactory = fieldFactory;
     }// end of Spring constructor
 
-//    /**
-//     * Costruttore @Autowired
-//     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
-//     *
-//     * @param fieldFactory
-//     */
-//    public DALoginForm(IAFieldFactory fieldFactory) {
-//        this.fieldFactory = fieldFactory;
-//    }// end of Spring constructor
-
-
     /**
-     * Metodo @PostConstruct invocato (da Spring) subito DOPO il costruttore (si può usare qualsiasi firma)
-     * Aggiunge i listener al Login
+     * Create the component to input the username.
+     *
+     * @return the username component
      */
-    @PostConstruct
-    private void inizia() {
-        getPassField().setWidth("15em");
+    public Component createUsernameComponent() {
+        nameField = (ATextField) fieldFactory.crea(null, EAFieldType.text, null, null);
+        nameField.inizializza("Username", null);
+        nameField.setWidth("15em");
+        nameField.setCaption("Username");
+        nameField.setFocus(true);
+
+        return nameField;
     }// end of method
 
 
@@ -83,30 +75,6 @@ public class DALoginForm extends ALoginForm {
         return user;
     }// end of method
 
-
-    /**
-     * Create the component to input the username.
-     *
-     * @return the username component
-     */
-    public Component createUsernameComponent() {
-        nameField = (ATextField) fieldFactory.crea(null, EAFieldType.text, null, null);
-        nameField.inizializza("Username", null);
-        nameField.setWidth("15em");
-        nameField.setCaption("Username");
-        nameField.setFocus(true);
-
-        return nameField;
-    }// end of method
-
-    @Override
-    public void setNickname(String name) {
-        if (nameField != null) {
-            nameField.setValue(name);
-        }// end of if cycle
-    }// end of method
-
-
     @Override
     public String getNickname() {
         String value = "";
@@ -118,16 +86,6 @@ public class DALoginForm extends ALoginForm {
         return value;
     }// end of method
 
-
-    @Override
-    public void setPassword(String name) {
-        if (passField != null) {
-            passField.setValue(name);
-        }// end of if cycle
-    }// end of method
-
-
-    @Override
     public String getPassword() {
         String value = "";
 
@@ -137,6 +95,5 @@ public class DALoginForm extends ALoginForm {
 
         return value;
     }// end of method
-
 
 }// end of class
