@@ -3,6 +3,7 @@ package it.algos.springvaadin.field;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.button.IAButtonFactory;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.event.IAListener;
 import lombok.extern.slf4j.Slf4j;
@@ -127,10 +128,10 @@ public class AFieldFactory implements IAFieldFactory {
 ////                case resource:
 ////                    field = fieldFactory.apply(AImageField.class);
 ////                    break;
-////                case icon:
-////                    field = fieldFactory.apply(AIconField.class);
-////                    field.setButton(buttonFactory.crea(AButtonType.image, source, source, field));
-////                    break;
+//                case icon:
+//                    field = fieldFactory.apply(AIconField.class);
+//                    field.setButton(buttonFactory.crea(AButtonType.image, source, source, field));
+//                    break;
 ////                case json:
 ////                    field = fieldFactory.apply(AJSonField.class);
 ////                    ((AJSonField) field).setType(PrefType.string);
@@ -222,10 +223,10 @@ public class AFieldFactory implements IAFieldFactory {
 //                case resource:
 //                    field = fieldFactory.apply(AImageField.class);
 //                    break;
-//                case icon:
-//                    field = fieldFactory.apply(AIconField.class);
-//                    field.setButton(buttonFactory.crea(AButtonType.image, source, source, field));
-//                    break;
+                case icon:
+                    field = fieldFactory.apply(AIconField.class);
+                    field.setButton(buttonFactory.crea(EAButtonType.image, source, source, field));
+                    break;
 //                case json:
 //                    field = fieldFactory.apply(AJSonField.class);
 //

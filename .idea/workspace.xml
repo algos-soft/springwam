@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6397ac32-0237-4492-bc00-7fe042bb92a5" name="Default" comment="...">
+      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AIconField.java" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_vaadin_vaadin_7_0_0_alpha2.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" afterPath="" />
@@ -26,11 +27,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_3_11_RELEASE.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_4_3_11_RELEASE.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALogin.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALogin.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AStartService.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AStartService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldFactory.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldFactory.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AReflectionService.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AReflectionService.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AResourceService.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AResourceService.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MigrationService.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MigrationService.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/algos/springwam/ui/SpringwamUI.java" afterPath="$PROJECT_DIR$/src/main/java/it/algos/springwam/ui/SpringwamUI.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -52,78 +55,80 @@
       <file leaf-file-name="MigrationService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MigrationService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="336" column="7" lean-forward="true" selection-start-line="336" selection-start-column="7" selection-end-line="336" selection-end-column="7" />
+            <state relative-caret-position="330">
+              <caret line="53" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AService.java">
+      <file leaf-file-name="FunzioneList.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="398" column="19" lean-forward="false" selection-start-line="398" selection-start-column="19" selection-end-line="398" selection-end-column="19" />
-              <folding />
+            <state relative-caret-position="427">
+              <caret line="147" column="0" lean-forward="true" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ALoginForm.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginForm.java">
+      <file leaf-file-name="AList.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/AList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+            <state relative-caret-position="-897">
+              <caret line="44" column="22" lean-forward="false" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Milite.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/milite/Milite.java">
+      <file leaf-file-name="AGrid.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/AGrid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+            <state relative-caret-position="323">
+              <caret line="108" column="26" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WamLoginForm.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/ui/WamLoginForm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="656">
-              <caret line="88" column="33" lean-forward="true" selection-start-line="88" selection-start-column="33" selection-end-line="88" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpringwamBoot.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MiliteData.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/MiliteData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="398">
-              <caret line="106" column="22" lean-forward="false" selection-start-line="106" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Funzione.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Funzione.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="76" column="57" lean-forward="true" selection-start-line="76" selection-start-column="57" selection-end-line="76" selection-end-column="57" />
+            <state relative-caret-position="570">
+              <caret line="56" column="27" lean-forward="false" selection-start-line="56" selection-start-column="27" selection-end-line="56" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AColumnService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AColumnService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="25" column="27" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/AView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2685">
+              <caret line="201" column="0" lean-forward="false" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FunzioneService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2835">
+              <caret line="206" column="10" lean-forward="false" selection-start-line="206" selection-start-column="10" selection-end-line="206" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -140,7 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getFormFields</find>
       <find>case noSearch</find>
       <find>onApplicationEvent</find>
       <find>ShortcutAction</find>
@@ -170,7 +174,11 @@
       <find>regexImportMenu</find>
       <find>userService</find>
       <find>EARoleType.getType</find>
+      <find>WIDTH_ICON</find>
     </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src/main/java/it/algos/springwam</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -183,11 +191,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java" />
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/application/SpringwamApplication.java" />
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoData.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AResourceService.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/Organizzazione.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/EAOrganizzazione.java" />
@@ -214,7 +217,6 @@
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CompanyData.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/CroceData.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/UserData.java" />
-        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceService.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/UtenteData.java" />
@@ -233,7 +235,13 @@
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AStartService.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALogin.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/SpringwamBoot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AReflectionService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AIconField.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java" />
         <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MigrationService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java" />
+        <option value="$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java" />
       </list>
     </option>
   </component>
@@ -257,10 +265,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="127" />
-    <option name="y" value="183" />
-    <option name="width" value="1698" />
-    <option name="height" value="1209" />
+    <option name="x" value="103" />
+    <option name="y" value="184" />
+    <option name="width" value="2050" />
+    <option name="height" value="1212" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -278,7 +286,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -350,7 +357,37 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="algos" type="462c0819:PsiDirectoryNode" />
               <item name="springvaadin" type="462c0819:PsiDirectoryNode" />
-              <item name="login" type="462c0819:PsiDirectoryNode" />
+              <item name="field" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="algos" type="462c0819:PsiDirectoryNode" />
+              <item name="springvaadin" type="462c0819:PsiDirectoryNode" />
+              <item name="grid" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="algos" type="462c0819:PsiDirectoryNode" />
+              <item name="springvaadin" type="462c0819:PsiDirectoryNode" />
+              <item name="presenter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springwam" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="algos" type="462c0819:PsiDirectoryNode" />
+              <item name="springvaadin" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
@@ -360,16 +397,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="algos" type="462c0819:PsiDirectoryNode" />
               <item name="springwam" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="algos" type="462c0819:PsiDirectoryNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="bootstrap" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
@@ -400,39 +427,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="algos" type="462c0819:PsiDirectoryNode" />
               <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="entity" type="462c0819:PsiDirectoryNode" />
-              <item name="milite" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="algos" type="462c0819:PsiDirectoryNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="entity" type="462c0819:PsiDirectoryNode" />
-              <item name="utente" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="algos" type="462c0819:PsiDirectoryNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
               <item name="migration" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="algos" type="462c0819:PsiDirectoryNode" />
-              <item name="springwam" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springwam" type="b2602c69:ProjectViewProjectNode" />
@@ -453,14 +448,15 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView" />
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -489,11 +485,11 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="it.algos.springvaadin.field" />
       <recent name="it.algos.springwam.ui" />
       <recent name="it.algos.springwam.migration" />
       <recent name="it.algos.springwam.entity.croce" />
       <recent name="it.algos.springvaadin.annotation" />
-      <recent name="it.algos.springwam.bootstrap" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/webapp/VAADIN" />
@@ -782,7 +778,8 @@
       <workItem from="1517417219525" duration="505000" />
       <workItem from="1517417775152" duration="1234000" />
       <workItem from="1517484906300" duration="117000" />
-      <workItem from="1517557984703" duration="7218000" />
+      <workItem from="1517557984703" duration="16754000" />
+      <workItem from="1517673848074" duration="851000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <created>1509822884890</created>
@@ -917,11 +914,18 @@
       <option name="project" value="LOCAL" />
       <updated>1517561787534</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="...">
+      <created>1517569156564</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1517569156564</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="858491000" />
+    <option name="totallyTimeSpent" value="868878000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -933,7 +937,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="127" y="183" width="1698" height="1209" extended-state="0" />
+    <frame x="103" y="184" width="2050" height="1212" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -944,21 +948,21 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22403382" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22360557" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22082585" sideWeight="0.498275" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29095793" sideWeight="0.498275" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296328" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30520648" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30438676" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2535478" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31782946" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31781557" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3284091" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21256039" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17679283" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32103688" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1019,7 +1023,7 @@
           <option name="timeStamp" value="809" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="901" />
+      <option name="time" value="912" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1060,167 +1064,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-116">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UtenteAmb.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="29" column="41" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.3.8.RELEASE/spring-context-4.3.8.RELEASE-sources.jar!/org/springframework/context/event/ApplicationListenerMethodAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="263" column="0" lean-forward="false" selection-start-line="263" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/UtenteRuoloAmb.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/role/RoleService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="163" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/address/AddressService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-270">
-          <caret line="37" column="13" lean-forward="false" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="158" column="32" lean-forward="true" selection-start-line="158" selection-start-column="32" selection-end-line="158" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/company/CompanyService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="59" column="33" lean-forward="false" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/persona/Persona.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="63" column="13" lean-forward="false" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="26" column="44" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/Croce.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="63" column="52" lean-forward="true" selection-start-line="63" selection-start-column="52" selection-end-line="63" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/croce/CroceService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="167" column="43" lean-forward="true" selection-start-line="167" selection-start-column="43" selection-end-line="167" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtenteList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="27" column="49" lean-forward="false" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/utente/UtentePresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="31" column="13" lean-forward="false" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/bootstrap/BootService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/ALoginService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="619">
-          <caret line="52" column="26" lean-forward="false" selection-start-line="52" selection-start-column="20" selection-end-line="52" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/IAUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="41" column="12" lean-forward="false" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/8.1.0/vaadin-server-8.1.0.jar!/com/vaadin/server/ServerRpcManager.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="40" column="37" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/dialog/AConfirmDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="77" column="19" lean-forward="false" selection-start-line="77" selection-start-column="19" selection-end-line="77" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/DALoginForm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="21" column="31" lean-forward="false" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/8.1.0/vaadin-server-8.1.0.jar!/com/vaadin/event/ListenerMethod.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
@@ -1310,7 +1153,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
           <caret line="113" column="0" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1318,7 +1160,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="332">
           <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1326,7 +1167,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
           <caret line="57" column="16" lean-forward="false" selection-start-line="57" selection-start-column="16" selection-end-line="57" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1334,7 +1174,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="38" column="37" lean-forward="false" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1342,7 +1181,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="28" column="43" lean-forward="false" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1350,7 +1188,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="596">
           <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1358,7 +1195,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
           <caret line="226" column="0" lean-forward="false" selection-start-line="226" selection-start-column="0" selection-end-line="226" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1374,17 +1210,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="242" column="0" lean-forward="false" selection-start-line="242" selection-start-column="0" selection-end-line="242" selection-end-column="0" />
-          <folding>
-            <marker date="1517565254553" expanded="true" signature="7718:8081" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="76" column="57" lean-forward="true" selection-start-line="76" selection-start-column="57" selection-end-line="76" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1392,7 +1217,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="398">
           <caret line="106" column="22" lean-forward="false" selection-start-line="106" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1400,7 +1224,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="317">
           <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1408,7 +1231,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="656">
           <caret line="88" column="33" lean-forward="true" selection-start-line="88" selection-start-column="33" selection-end-line="88" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1420,26 +1242,216 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.3.8.RELEASE/spring-aop-4.3.8.RELEASE-sources.jar!/org/springframework/aop/framework/JdkDynamicAopProxy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
-          <caret line="398" column="19" lean-forward="false" selection-start-line="398" selection-start-column="19" selection-end-line="398" selection-end-column="19" />
+          <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/IAService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="71" column="44" lean-forward="false" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AArrayService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/ATextService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AReflectionService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="363" column="43" lean-forward="false" selection-start-line="363" selection-start-column="43" selection-end-line="363" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AAnnotationService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="196" column="0" lean-forward="false" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="157" column="0" lean-forward="false" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/annotation/AIField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="18" column="18" lean-forward="false" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/form/AForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="208" column="0" lean-forward="false" selection-start-line="208" selection-start-column="0" selection-end-line="208" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AIconField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-331">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/field/AFieldFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="217" column="28" lean-forward="false" selection-start-line="217" selection-start-column="28" selection-end-line="217" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AFieldService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="91" column="0" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/stato/StatoService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1208">
+          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1920">
+          <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/entity/user/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="255" column="6" lean-forward="true" selection-start-line="255" selection-start-column="6" selection-end-line="255" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/IAGrid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="17" column="17" lean-forward="false" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/8.1.0/vaadin-server-8.1.0.jar!/com/vaadin/ui/Grid.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="1509" column="33" lean-forward="false" selection-start-line="1509" selection-start-column="33" selection-end-line="1509" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/presenter/APresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="153" column="0" lean-forward="false" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/migration/MigrationService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="336" column="7" lean-forward="true" selection-start-line="336" selection-start-column="7" selection-end-line="336" selection-end-column="7" />
+        <state relative-caret-position="330">
+          <caret line="53" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/login/ALoginForm.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/view/AView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+        <state relative-caret-position="2685">
+          <caret line="201" column="0" lean-forward="false" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2835">
+          <caret line="206" column="10" lean-forward="false" selection-start-line="206" selection-start-column="10" selection-end-line="206" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/list/AList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-897">
+          <caret line="44" column="22" lean-forward="false" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/grid/AGrid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="108" column="26" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springvaadin/service/AColumnService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="25" column="27" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/FunzioneList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="147" column="0" lean-forward="true" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/it/algos/springwam/entity/funzione/Funzione.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="56" column="27" lean-forward="false" selection-start-line="56" selection-start-column="27" selection-end-line="56" selection-end-column="27" />
           <folding />
         </state>
       </provider>

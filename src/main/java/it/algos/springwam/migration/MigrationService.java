@@ -228,9 +228,60 @@ public class MigrationService {
         String sigla = funzioneOld.getSigla_visibile();
         int ordine = funzioneOld.getOrdine();
         String descrizione = funzioneOld.getDescrizione();
-//        VaadinIcons icona = selezionaIcona(descrizione);
+        VaadinIcons icona = selezionaIcona(descrizione);
 
-        funzioneService.findOrCrea(croceNew, ordine, code, sigla, descrizione, 0, false);
+        //--non posso usare il metodo funzioneService.findOrCrea(), perchè manca la sessione  e manca il login da cui
+        //--prendere automaticamente la company
+        if (funzioneService.findByKeyUnica(croceNew, code) == null) {
+            Funzione entity = Funzione.builder()
+                    .ordine(ordine != 0 ? ordine : funzioneService.getNewOrdine())
+                    .code(code)
+                    .sigla(sigla)
+                    .descrizione(descrizione)
+                    .icona(icona != null ? icona.getCodepoint() : 0)
+                    .obbligatoria(false)
+                    .build();
+            entity.company = croceNew;
+            funzioneService.save(entity);
+        }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Elabora la vecchia descrizione2 per selezionare una icona adeguata
+     *
+     * @param descrizione usata in webambulanze
+     *
+     * @return la FontAwesome selezionata
+     */
+    private VaadinIcons selezionaIcona(String descrizione) {
+        VaadinIcons icona = null;
+        String autista = "utista";
+        String soc = "Soccorritore";
+        String soc2 = "Primo";
+        String ser = "Centralino";
+        String ser2 = "Pulizie";
+        String ser3 = "Ufficio";
+
+        if (descrizione.contains(autista)) {
+//            glyph = FontAwesome.AMBULANCE;
+            icona = VaadinIcons.ASTERISK;
+        } else {
+            if (descrizione.contains(soc) || descrizione.contains(soc2)) {
+//                glyph = FontAwesome.HEART;
+                icona = VaadinIcons.MONEY;
+            } else {
+                if (descrizione.contains(ser) || descrizione.contains(ser2) || descrizione.contains(ser3)) {
+//                    glyph = FontAwesome.USER;
+                    icona = VaadinIcons.FACEBOOK;
+                } else {
+//                    glyph = FontAwesome.STETHOSCOPE;
+                    icona = VaadinIcons.RECYCLE;
+                }// end of if/else cycle
+            }// end of if/else cycle
+        }// end of if/else cycle
+
+        return icona;
     }// end of method
 
 
@@ -300,7 +351,7 @@ public class MigrationService {
      */
     public void importAllMilitiSetup() {
 //        if (militeService.count() == 0) {
-            importAllMiliti();
+        importAllMiliti();
 //        }// end of if cycle
     }// end of constructor
 

@@ -1,5 +1,6 @@
 package it.algos.springvaadin.service;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -280,5 +281,20 @@ public class AResourceService {
 
         return resource;
     }
+
+
+    public VaadinIcons getVaadinIcon(int codePoint) {
+        VaadinIcons icona = null;
+        VaadinIcons[] icons = VaadinIcons.values();
+
+        for (VaadinIcons icon : icons) {
+            if (icon.getCodepoint() == codePoint) {
+                icona = icon;
+                break;
+            }// end of if cycle
+        }// end of for cycle
+
+        return icona;
+    }// end of method
 
 }// end of singleton class
