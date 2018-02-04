@@ -34,10 +34,18 @@ import it.algos.springwam.application.AppCost;
 public class ServizioService extends AService {
 
 
-    private ServizioRepository repository;
-
     @Autowired
     public ATextService text;
+
+
+    /**
+     * La repository viene iniettata dal costruttore, in modo che sia disponibile nella superclasse,
+     * dove viene usata l'interfaccia MongoRepository
+     * Spring costruisce al volo, quando serve, una implementazione di RoleRepository (come previsto dal @Qualifier)
+     * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
+     */
+    private ServizioRepository repository;
+
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -47,8 +55,8 @@ public class ServizioService extends AService {
      */
     public ServizioService(@Qualifier(AppCost.TAG_SER) MongoRepository repository) {
         super(repository);
-        super.entityClass = Servizio.class;
         this.repository = (ServizioRepository) repository;
+        super.entityClass = Servizio.class;
     }// end of Spring constructor
 
 
@@ -56,15 +64,15 @@ public class ServizioService extends AService {
      * Ricerca di una entity (la crea se non la trova)
      * Properties obbligatorie
      *
-     * @param code         di codifica interna specifica per ogni company (obbligatorio, unico nella company)
-     * @param descrizione  (obbligatoria, non unica)
-     * @param oraInizio    prevista di inizio turno (obbligatoria, se orario è true)
-     * @param oraFine      prevista di fine turno (obbligatoria, se orario è true)
+     * @param code        di codifica interna specifica per ogni company (obbligatorio, unico nella company)
+     * @param descrizione (obbligatoria, non unica)
+     * @param oraInizio   prevista di inizio turno (obbligatoria, se orario è true)
+     * @param oraFine     prevista di fine turno (obbligatoria, se orario è true)
      *
      * @return la entity trovata o appena creata
      */
     public Servizio findOrCrea(String code, String descrizione, int oraInizio, int oraFine) {
-        return findOrCrea( (Company) null, 0,code, descrizione, 0, true, oraInizio, 0, oraFine, 0, true, (List<Funzione>)null);
+        return findOrCrea(0, code, descrizione, 0, true, oraInizio, 0, oraFine, 0, true, (List<Funzione>) null);
     }// end of method
 
 
@@ -76,7 +84,6 @@ public class ServizioService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company      di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param ordine       di presentazione nelle liste (obbligatorio, unico nella company,
      *                     con controllo automatico prima del save se è zero,  modificabile da developer ed admin)
      * @param code         di codifica interna specifica per ogni company (obbligatorio, unico nella company)
@@ -93,7 +100,6 @@ public class ServizioService extends AService {
      * @return la entity trovata o appena creata
      */
     public Servizio findOrCrea(
-            Company company,
             int ordine,
             String code,
             String descrizione,
@@ -105,29 +111,14 @@ public class ServizioService extends AService {
             int minutiFine,
             boolean visibile,
             List<Funzione> funzioni) {
+        Servizio entity = findByKeyUnica(code);
 
-        if (nonEsiste(company, code)) {
-            try { // prova ad eseguire il codice
-                return (Servizio) save(newEntity(
-                        company,
-                        ordine,
-                        code,
-                        descrizione,
-                        colore,
-                        orario,
-                        oraInizio,
-                        minutiInizio,
-                        oraFine,
-                        minutiFine,
-                        visibile,
-                        funzioni));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCompanyAndCode(company, code);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = newEntity(ordine, code, descrizione, colore, orario, oraInizio, minutiInizio, oraFine, minutiFine, visibile, funzioni);
+            save(entity);
+        }// end of if cycle
+
+        return entity;
     }// end of method
 
 
@@ -140,7 +131,7 @@ public class ServizioService extends AService {
      */
     @Override
     public Servizio newEntity() {
-        return newEntity("","",0,0);
+        return newEntity("", "", 0, 0);
     }// end of method
 
 
@@ -150,15 +141,15 @@ public class ServizioService extends AService {
      * Properties obbligatorie
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
-     * @param code         di codifica interna specifica per ogni company (obbligatorio, unico nella company)
-     * @param descrizione  (obbligatoria, non unica)
-     * @param oraInizio    prevista di inizio turno (obbligatoria, se orario è true)
-     * @param oraFine      prevista di fine turno (obbligatoria, se orario è true)
+     * @param code        di codifica interna specifica per ogni company (obbligatorio, unico nella company)
+     * @param descrizione (obbligatoria, non unica)
+     * @param oraInizio   prevista di inizio turno (obbligatoria, se orario è true)
+     * @param oraFine     prevista di fine turno (obbligatoria, se orario è true)
      *
      * @return la nuova entity appena creata (non salvata)
      */
     public Servizio newEntity(String code, String descrizione, int oraInizio, int oraFine) {
-        return newEntity( (Company) null, 0,code, descrizione, 0, true, oraInizio, 0, oraFine, 0, true, (List<Funzione>)null);
+        return newEntity(0, code, descrizione, 0, true, oraInizio, 0, oraFine, 0, true, (List<Funzione>) null);
     }// end of method
 
 
@@ -172,7 +163,6 @@ public class ServizioService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company      di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
      * @param ordine       di presentazione nelle liste (obbligatorio, unico nella company,
      *                     con controllo automatico prima del save se è zero,  modificabile da developer ed admin)
      * @param code         di codifica interna specifica per ogni company (obbligatorio, unico nella company)
@@ -189,7 +179,6 @@ public class ServizioService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Servizio newEntity(
-            Company company,
             int ordine,
             String code,
             String descrizione,
@@ -201,12 +190,11 @@ public class ServizioService extends AService {
             int minutiFine,
             boolean visibile,
             List<Funzione> funzioni) {
+        Servizio entity = findByKeyUnica(code);
 
-        Servizio entity = null;
-
-        if (nonEsiste(company, code)) {
+        if (entity == null) {
             entity = Servizio.builder()
-                    .ordine(ordine)
+                    .ordine(ordine != 0 ? ordine : this.getNewOrdine())
                     .code(code)
                     .descrizione(descrizione)
                     .colore(colore)
@@ -217,52 +205,22 @@ public class ServizioService extends AService {
                     .minutiFine(minutiFine)
                     .visibile(visibile)
                     .funzioni(funzioni)
-                    .oraFine(oraFine)
                     .build();
-            entity.company = company != null ? company : login.getCompany();
-        } else {
-            entity = findByCompanyAndCode(company, code);
-        }// end of if/else cycle
+        }// end of if cycle
 
-        return entity;
-    }// end of method
-
-
-    /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param company ACompanyRequired.obbligatoria
-     * @param code    sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(Company company, String code) {
-        return findByCompanyAndCode(company, code) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param company ACompanyRequired.obbligatoria
-     * @param code    sigla di riferimento interna (interna, obbligatoria ed unica per la company)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(Company company, String code) {
-        return findByCompanyAndCode(company, code) == null;
+        return (Servizio) addCompany(entity);
     }// end of method
 
 
     /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
-     * @param code di riferimento interno (obbligatorio ed unico)
+     * @param code di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Servizio findByCode(String code) {
-        return this.findByCompanyAndCode((Company) null, code);
+    public Servizio findByKeyUnica(String code) {
+        return findByKeyUnica(login.getCompany(), code);
     }// end of method
 
 
@@ -270,11 +228,11 @@ public class ServizioService extends AService {
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
      * @param company di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
-     * @param code    di riferimento interno (obbligatorio ed unico)
+     * @param code    di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Servizio findByCompanyAndCode(Company company, String code) {
+    public Servizio findByKeyUnica(Company company, String code) {
         return repository.findByCompanyAndCode(company != null ? company : login.getCompany(), code);
     }// end of method
 
@@ -290,57 +248,26 @@ public class ServizioService extends AService {
         if (login.isDeveloper()) {
             return repository.findByOrderByCodeAsc();
         } else {
-            return repository.findByCompanyOrderByCodeAsc(login.getCompany());
+            return repository.findByCompanyOrderByOrdineAsc(login.getCompany());
         }// end of if/else cycle
     }// end of method
 
 
     /**
-     * Returns all instances of the type.
-     * Usa MultiCompany obbligatoria -> ACompanyRequired.obbligatoria
-     * Filtrata sulla company indicata
-     * Se la company è nulla, rimanda a findAll
-     * Lista ordinata
-     *
-     * @param company ACompanyRequired.obbligatoria
-     *
-     * @return entities filtrate
+     * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),
+     * viene calcolato in automatico prima del persist sul database
+     * Recupera il valore massimo della property
+     * Incrementa di uno il risultato
      */
-    public List findAllByCompany(Company company) {
-        if (company == null) {
-            return findAll();
-        } else {
-            return repository.findByCompanyOrderByCodeAsc(company);
-        }// end of if/else cycle
+    public int getNewOrdine() {
+        int ordine = 0;
+
+        List<Servizio> lista = repository.findTop1ByCompanyOrderByOrdineDesc(login.getCompany());
+        if (lista != null && lista.size() == 1) {
+            ordine = lista.get(0).getOrdine();
+        }// end of if cycle
+
+        return ordine + 1;
     }// end of method
-
-
-    /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
-     *
-     * @param entityBean da salvare
-     *
-     * @return the saved entity
-     */
-    @Override
-    public AEntity save(AEntity entityBean) {
-        Company company = ((ACEntity) entityBean).getCompany();
-        String code = ((Servizio) entityBean).getCode();
-
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(company, code)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente per questa company");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
-
-    }// end of method
-
 
 }// end of class

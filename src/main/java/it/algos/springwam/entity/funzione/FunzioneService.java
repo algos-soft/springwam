@@ -1,5 +1,6 @@
 package it.algos.springwam.entity.funzione;
 
+import com.vaadin.icons.VaadinIcons;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.company.Company;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.algos.springvaadin.annotation.*;
@@ -33,7 +35,14 @@ import it.algos.springwam.application.AppCost;
 public class FunzioneService extends AService {
 
 
+    /**
+     * La repository viene iniettata dal costruttore, in modo che sia disponibile nella superclasse,
+     * dove viene usata l'interfaccia MongoRepository
+     * Spring costruisce al volo, quando serve, una implementazione di RoleRepository (come previsto dal @Qualifier)
+     * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
+     */
     private FunzioneRepository repository;
+
 
     @Autowired
     public ATextService text;
@@ -46,8 +55,8 @@ public class FunzioneService extends AService {
      */
     public FunzioneService(@Qualifier(AppCost.TAG_FUN) MongoRepository repository) {
         super(repository);
-        super.entityClass = Funzione.class;
         this.repository = (FunzioneRepository) repository;
+        super.entityClass = Funzione.class;
     }// end of Spring constructor
 
 
@@ -57,12 +66,12 @@ public class FunzioneService extends AService {
      *
      * @param code        di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      * @param sigla       di codifica visibile (obbligatoria, non unica)
-     * @param descrizione (obbligatoria, non unica)
+     * @param descrizione completa (obbligatoria, non unica)
      *
      * @return la entity trovata o appena creata
      */
     public Funzione findOrCrea(String code, String sigla, String descrizione) {
-        return findOrCrea((Company) null, 0, code, sigla, descrizione, 0, false);
+        return findOrCrea(0, code, sigla, descrizione, (VaadinIcons) null, false);
     }// end of method
 
 
@@ -74,28 +83,25 @@ public class FunzioneService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company      di riferimento (obbligatoria=EACompanyRequired.obbligatoria), se manca la prende dal Login
      * @param ordine       di presentazione nelle liste (obbligatorio, unico nella company,
      *                     con controllo automatico prima del save se è zero,  modificabile da developer ed admin)
      * @param code         di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      * @param sigla        di codifica visibile (obbligatoria, non unica)
-     * @param descrizione  (obbligatoria, non unica)
-     * @param icona        (facoltativa)
+     * @param descrizione  completa (obbligatoria, non unica)
+     * @param icona        VaadinIcons (facoltativa)
      * @param obbligatoria (facoltativa) funzione obbligatoria per il servizio che la usa ('embedded')
      *
      * @return la entity trovata o appena creata
      */
-    public Funzione findOrCrea(Company company, int ordine, String code, String sigla, String descrizione, int icona, boolean obbligatoria) {
-        if (nonEsiste(company, code)) {
-            try { // prova ad eseguire il codice
-                return (Funzione) save(newEntity(company, ordine, code, sigla, descrizione, icona, obbligatoria));
-            } catch (Exception unErrore) { // intercetta l'errore
-                log.error(unErrore.toString());
-                return null;
-            }// fine del blocco try-catch
-        } else {
-            return findByCompanyAndCode(company, code);
-        }// end of if/else cycle
+    public Funzione findOrCrea(int ordine, String code, String sigla, String descrizione, VaadinIcons icona, boolean obbligatoria) {
+        Funzione entity = findByKeyUnica(code);
+
+        if (entity == null) {
+            entity = newEntity(ordine, code, sigla, descrizione, icona, obbligatoria);
+            save(entity);
+        }// end of if cycle
+
+        return entity;
     }// end of method
 
 
@@ -108,22 +114,7 @@ public class FunzioneService extends AService {
      */
     @Override
     public Funzione newEntity() {
-        return newEntity((Company) null, 0, "", "", "", 0, false);
-    }// end of method
-
-
-    /**
-     * Creazione in memoria di una nuova entity che NON viene salvata
-     * Properties obbligatorie
-     *
-     * @param code        di codifica interna specifica per ogni company (obbligatorio, unico nella company)
-     * @param sigla       di codifica visibile (obbligatoria, non unica)
-     * @param descrizione (obbligatoria, non unica)
-     *
-     * @return la nuova entity appena creata (non salvata)
-     */
-    public Funzione newEntity(int ordine, String code, String sigla, String descrizione, int icona, boolean obbligatoria) {
-        return newEntity((Company) null, 0, code, sigla, descrizione, 0, false);
+        return newEntity(0, "", "", "", (VaadinIcons) null, false);
     }// end of method
 
 
@@ -137,66 +128,43 @@ public class FunzioneService extends AService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
-     * @param company      di riferimento (obbligatoria=EACompanyRequired.obbligatoria), se manca la prende dal Login
      * @param ordine       di presentazione nelle liste (obbligatorio, unico nella company,
      *                     con controllo automatico prima del save se è zero,  modificabile da developer ed admin)
      * @param code         di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      * @param sigla        di codifica visibile (obbligatoria, non unica)
-     * @param descrizione  (obbligatoria, non unica)
-     * @param icona        (facoltativa)
+     * @param descrizione  completa (obbligatoria, non unica)
+     * @param icona        VaadinIcons (facoltativa)
      * @param obbligatoria (facoltativa) funzione obbligatoria per il servizio che la usa ('embedded')
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Funzione newEntity(Company company, int ordine, String code, String sigla, String descrizione, int icona, boolean obbligatoria) {
-        Funzione entity = null;
+    public Funzione newEntity(int ordine, String code, String sigla, String descrizione, VaadinIcons icona, boolean obbligatoria) {
+        Funzione entity = findByKeyUnica(code);
 
-        if (nonEsiste(company, code)) {
-            entity = Funzione.builder().ordine(ordine != 0 ? ordine : this.getNewOrdine()).code(code).sigla(sigla).descrizione(descrizione).icona(icona).obbligatoria(obbligatoria).build();
-            entity.company = company != null ? company : login.getCompany();
-        } else {
-            entity = findByCompanyAndCode(company, code);
-        }// end of if/else cycle
+        if (entity == null) {
+            entity = Funzione.builder()
+                    .ordine(ordine != 0 ? ordine : this.getNewOrdine())
+                    .code(code)
+                    .sigla(sigla)
+                    .descrizione(descrizione)
+                    .icona(icona != null ? icona.getCodepoint() : 0)
+                    .obbligatoria(obbligatoria)
+                    .build();
+        }// end of if cycle
 
-        return entity;
-    }// end of method
-
-
-    /**
-     * Controlla che esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param company ACompanyRequired.obbligatoria
-     * @param code    di codifica interna specifica per ogni company (obbligatorio, unico nella company)
-     *
-     * @return vero se esiste, false se non trovata
-     */
-    public boolean esiste(Company company, String code) {
-        return findByCompanyAndCode(company, code) != null;
-    }// end of method
-
-
-    /**
-     * Controlla che non esista una istanza della Entity usando la property specifica (obbligatoria ed unica)
-     *
-     * @param company ACompanyRequired.obbligatoria
-     * @param code    di codifica interna specifica per ogni company (obbligatorio, unico nella company)
-     *
-     * @return vero se non esiste, false se trovata
-     */
-    public boolean nonEsiste(Company company, String code) {
-        return findByCompanyAndCode(company, code) == null;
+        return (Funzione) addCompany(entity);
     }// end of method
 
 
     /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
-     * @param code di riferimento interno (obbligatorio ed unico)
+     * @param code di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Funzione findByCode(String code) {
-        return this.findByCompanyAndCode((Company) null, code);
+    public Funzione findByKeyUnica(String code) {
+        return findByKeyUnica((Company) null, code);
     }// end of method
 
 
@@ -204,11 +172,11 @@ public class FunzioneService extends AService {
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
      * @param company di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
-     * @param code    di riferimento interno (obbligatorio ed unico)
+     * @param code    di codifica interna specifica per ogni company (obbligatorio, unico nella company)
      *
      * @return istanza della Entity, null se non trovata
      */
-    public Funzione findByCompanyAndCode(Company company, String code) {
+    public Funzione findByKeyUnica(Company company, String code) {
         return repository.findByCompanyAndCode(company != null ? company : login.getCompany(), code);
     }// end of method
 
@@ -229,52 +197,21 @@ public class FunzioneService extends AService {
     }// end of method
 
 
-    /**
-     * Returns all instances of the type.
-     * Usa MultiCompany obbligatoria -> ACompanyRequired.obbligatoria
-     * Filtrata sulla company indicata
-     * Se la company è nulla, rimanda a findAll
-     * Lista ordinata
-     *
-     * @param company ACompanyRequired.obbligatoria
-     *
-     * @return entities filtrate
-     */
-    public List findAllByCompany(Company company) {
-        if (company == null) {
-            return findAll();
-        } else {
-            return repository.findByCompanyOrderByOrdineAsc(company);
-        }// end of if/else cycle
-    }// end of method
-
 
     /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
-     *
-     * @param entityBean da salvare
-     *
-     * @return the saved entity
+     * @return lista di code
      */
-    @Override
-    public AEntity save(AEntity entityBean) {
-        Company company = ((ACEntity) entityBean).getCompany();
-        String code = ((Funzione) entityBean).getCode();
+    public List<String> findAllCode() {
+        List lista = new ArrayList();
+        List<Funzione> listaFunz = findAll();
 
-        if (text.isValid(entityBean.id)) {
-            return super.save(entityBean);
-        } else {
-            if (nonEsiste(company, code)) {
-                return super.save(entityBean);
-            } else {
-                log.error("Ha cercato di salvare una entity già esistente per questa company");
-                return null;
-            }// end of if/else cycle
-        }// end of if/else cycle
+        for (Funzione funz : listaFunz) {
+            lista.add(funz.getCode());
+        }// end of for cycle
 
+        return lista;
     }// end of method
+
 
     /**
      * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),
@@ -282,7 +219,7 @@ public class FunzioneService extends AService {
      * Recupera il valore massimo della property
      * Incrementa di uno il risultato
      */
-    private int getNewOrdine() {
+    public int getNewOrdine() {
         int ordine = 0;
 
         List<Funzione> lista = repository.findTop1ByCompanyOrderByOrdineDesc(login.getCompany());

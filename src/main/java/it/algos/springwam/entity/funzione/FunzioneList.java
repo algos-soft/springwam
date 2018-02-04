@@ -1,17 +1,28 @@
 package it.algos.springwam.entity.funzione;
 
+import com.sun.deploy.panel.ExceptionListDialog;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Field;
 import java.util.List;
+
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Grid;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.lib.LibResource;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.renderer.IconRenderer;
+import it.algos.springvaadin.service.AColumnService;
+import it.algos.springvaadin.service.AResourceService;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springvaadin.enumeration.EARoleType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -41,6 +52,11 @@ import it.algos.springwam.application.AppCost;
 public class FunzioneList extends AList {
 
 
+    @Autowired
+    private AResourceService resource;
+
+    private final static String ICON_FIELD_NAME = "Icona";
+
     /**
      * Label del menu (facoltativa)
      * SpringNavigator usa il 'name' della Annotation @SpringView per identificare (internamente) e recuperare la view
@@ -69,14 +85,13 @@ public class FunzioneList extends AList {
      * The injected bean will only be fully created when it’s first needed.
      *
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
-     * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param toolbar   iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
     public FunzioneList(
             @Lazy @Qualifier(AppCost.TAG_FUN) IAPresenter presenter,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
         super(presenter, toolbar);
     }// end of Spring constructor
-
 
 
     /**
@@ -90,6 +105,58 @@ public class FunzioneList extends AList {
             caption += "</br>Lista visibile a tutti";
             caption += "</br>Solo il developer vede queste note";
         }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Crea il corpo centrale della view
+     * Componente grafico obbligatorio
+     * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
+     *
+     * @param source
+     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
+     * @param columns     visibili ed ordinate della Grid
+     * @param items       da visualizzare nella Grid
+     */
+    @Override
+    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+        super.creaBody(source, entityClazz, columns, items);
+        grid.getGrid().setRowHeight(47);
+        addColumnIcona();
+    }// end of method
+
+    /**
+     * Crea la colonna (di tipo Component) per visualizzare l'icona
+     */
+    private void addColumnIcona() {
+        IconRenderer renderIcon = new IconRenderer();
+
+        Grid.Column colonna = grid.getGrid().addComponentColumn(funzione -> {
+            int codePoint = ((Funzione) funzione).getIcona();
+
+            if (codePoint > 0) {
+                VaadinIcons icona = resource.getVaadinIcon(codePoint);
+                Button button = new Button(icona);
+                button.setHeight("2em");
+                button.setWidth("3em");
+                return button;
+            } else {
+                return null;
+            }// end of if/else cycle
+
+        });//end of lambda expressions
+
+        colonna.setId(ICON_FIELD_NAME);
+        colonna.setCaption(ICON_FIELD_NAME);
+        colonna.setWidth(AColumnService.WIDTH_ICON);
+        float lar = grid.getGrid().getWidth();
+        grid.getGrid().setWidth(lar + AColumnService.WIDTH_ICON ,Unit.PIXELS);
+        if (true) {
+            grid.getGrid().setColumnOrder("ordine", ICON_FIELD_NAME, "sigla", "descrizione");
+        } else {
+            grid.getGrid().setColumnOrder("ordine", ICON_FIELD_NAME, "sigla", "descrizione");
+        }// end of if/else cycle
+
     }// end of method
 
 }// end of class

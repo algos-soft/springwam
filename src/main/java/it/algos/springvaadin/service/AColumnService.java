@@ -7,7 +7,9 @@ import com.vaadin.ui.renderers.DateRenderer;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.renderer.ByteStringRenderer;
+import it.algos.springvaadin.renderer.IconRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
@@ -61,8 +63,8 @@ public class AColumnService {
      *
      * @return la colonna appena creata
      */
-    public void add(final Grid grid, final Field reflectionJavaField) {
-        Grid.Column colonna;
+    public Grid.Column add(final Grid grid, final Field reflectionJavaField) {
+        Grid.Column colonna = null;
         EAFieldType type = annotation.getColumnType(reflectionJavaField);
 
         //--aggiunge una colonna di tipo Text per tutti i type, eccetto quelli indicati in questo switch statement
@@ -70,6 +72,9 @@ public class AColumnService {
         switch (type) {
             case checkbox:
             case checkboxlabel:
+                colonna = grid.addColumn(reflectionJavaField.getName());
+                this.add(grid, reflectionJavaField, type, colonna);
+                break;
             case noone:
                 break;
             default:
@@ -78,6 +83,7 @@ public class AColumnService {
                 break;
         } // end of switch statement
 
+        return colonna;
     }// end of method
 
 
@@ -133,6 +139,58 @@ public class AColumnService {
         larGrid = grid.getWidth();
         larCol = ((Double) colonna.getWidth()).intValue();
         grid.setWidth(larGrid + larCol, Sizeable.Unit.PIXELS);
+    }// end of method
+
+
+    /**
+     * Regola una colonna
+     * Caption, renderer e width
+     * Restituisce la larghezza dopo le regolazioni
+     *
+     * @param colonna         appena costruita, da regolare se ci sono Annoattion diverse dallo standard
+     * @param reflectionField di riferimento per estrarre le Annotation
+     *
+     * @return la larghezza della colonna come regolata
+     */
+    public int regolaAnnotationAndGetLarghezza(Grid.Column colonna, Field reflectionField) {
+        String caption = annotation.getColumnName(reflectionField);
+        EAFieldType type = annotation.getColumnType(reflectionField);
+        int width = annotation.getColumnWith(reflectionField);
+
+        DateRenderer render = new DateRenderer("%1$te-%1$tb-%1$tY", Locale.ITALIAN);
+        LocalDateRenderer renderDate = new LocalDateRenderer("d-MMM-u", Locale.ITALIAN);
+        LocalDateTimeRenderer renderTime = new LocalDateTimeRenderer("d-MMM-uu HH:mm", Locale.ITALIAN);
+        IconRenderer renderIcon = new IconRenderer();
+        ByteStringRenderer renderByte = new ByteStringRenderer();
+
+        colonna.setCaption(caption);
+        colonna.setWidth(width > 0 ? width : WIDTH_TEXT_NORMAL);
+
+        if (type == EAFieldType.localdate) {
+            colonna.setRenderer(renderDate);
+            colonna.setWidth(WIDTH_LOCAL_DATE);
+        }// end of if cycle
+
+        if (type == EAFieldType.localdatetime) {
+            colonna.setRenderer(renderTime);
+            colonna.setWidth(WIDTH_LOCAL_DATE_TIME);
+        }// end of if cycle
+
+        if (type == EAFieldType.icon) {
+            colonna.setRenderer(renderIcon);
+            colonna.setWidth(WIDTH_TEXT_NORMAL);
+        }// end of if cycle
+
+        if (type == EAFieldType.json) {
+            colonna.setRenderer(renderByte);
+            colonna.setWidth(WIDTH_BYTE);
+        }// end of if cycle
+
+        if (caption.equals(ACost.PROPERTY_ID)) {
+            colonna.setWidth(290);
+        }// end of if cycle
+
+        return ((Double) colonna.getWidth()).intValue();
     }// end of method
 
 

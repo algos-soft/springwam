@@ -50,6 +50,21 @@ public class FunzioneAmb extends BaseEntity {
     public FunzioneAmb() {
     }// end of constructor
 
+    /**
+     * Recupera una istanza della Entity usando la query standard della Primary Key
+     * Nessun filtro sulla company, perché la primary key è unica
+     *
+     * @param id valore (unico) della Primary Key
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public static FunzioneAmb find(long id, EntityManager manager) {
+        if (manager != null) {
+            return (FunzioneAmb) AQuery.find(FunzioneAmb.class, id, manager);
+        }// end of if cycle
+        return null;
+    }// end of static method
+
 
     public static List<FunzioneAmb> findAllByCroce(CroceAmb company, EntityManager manager) {
         List<FunzioneAmb> lista = new ArrayList<>();

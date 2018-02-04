@@ -12,10 +12,7 @@ import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.service.AAnnotationService;
-import it.algos.springvaadin.service.AColumnService;
-import it.algos.springvaadin.service.AReflectionService;
-import it.algos.springvaadin.service.ATextService;
+import it.algos.springvaadin.service.*;
 import it.algos.springvaadin.toolbar.AListToolbar;
 import it.algos.springvaadin.toolbar.AToolbar;
 import it.algos.springvaadin.toolbar.IAToolbar;
@@ -66,6 +63,12 @@ public abstract class AList extends AView implements IAList {
     @Autowired
     protected AAnnotationService annotation;
 
+
+    /**
+     * Libreria di servizio. Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    protected AHtmlService html;
 
     /**
      * Libreria di servizio. Inietta da Spring come 'singleton'

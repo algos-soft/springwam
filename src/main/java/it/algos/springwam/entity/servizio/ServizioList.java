@@ -1,17 +1,25 @@
 package it.algos.springwam.entity.servizio;
 
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Field;
 import java.util.List;
+
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.Label;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.label.LabelRosso;
+import it.algos.springvaadin.label.LabelVerde;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springwam.entity.funzione.Funzione;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -90,6 +98,117 @@ public class ServizioList extends AList {
             caption += "</br>Lista visibile a tutti";
             caption += "</br>Solo il developer vede queste note";
         }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Crea il corpo centrale della view
+     * Componente grafico obbligatorio
+     * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
+     *
+     * @param source
+     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
+     * @param columns     visibili ed ordinate della Grid
+     * @param items       da visualizzare nella Grid
+     */
+    @Override
+    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+        super.creaBody(source, entityClazz, columns, items);
+        grid.getGrid().setRowHeight(47);
+//        addColumnOrarioBool();
+//        addColumnOrarioText();
+//        addColumnVisibile();
+        addColumnFunzioni();
+    }// end of method
+
+
+//    /**
+//     * Crea la colonna orario (di tipo CheckBox)
+//     */
+//    private void addColumnOrarioBool() {
+//        String idKey = "orarioBool";
+//        Grid.Column colonna = grid.addComponentColumn(servizio -> {
+//            if (((Servizio) servizio).isOrario()) {
+//                return new LabelVerde(VaadinIcons.CHECK);
+//            } else {
+//                return new LabelRosso(VaadinIcons.CLOSE);
+//            }// end of if/else cycle
+//        });//end of lambda expressions
+//
+//        fixColumn(colonna, idKey, "Fix", LibColumn.WIDTH_CHECK_BOX);
+//        spostaColonnaPrima(idKey, "oraInizio");
+//    }// end of method
+
+
+//    /**
+//     * Crea la colonna orario (di tipo String)
+//     */
+//    private void addColumnOrarioText() {
+//        String idKey = "orarioText";
+//        Grid.Column colonna = grid.addColumn(servizio -> {
+//            return service.getStrOrario((Servizio) servizio);
+//        });//end of lambda expressions
+//
+//        fixColumn(colonna, idKey, "Orario", 160);
+//        spostaColonnaPrima(idKey, "visibile");
+//    }// end of method
+
+
+//    /**
+//     * Crea la colonna tabellone (di tipo CheckBox)
+//     */
+//    private void addColumnVisibile() {
+//        String idKey = "tab";
+//        Grid.Column colonna = grid.addComponentColumn(servizio -> {
+//            if (((Servizio) servizio).isVisibile()) {
+//                return new LabelVerde(VaadinIcons.CHECK);
+//            } else {
+//                return new LabelRosso(VaadinIcons.CLOSE);
+//            }// end of if/else cycle
+//        });//end of lambda expressions
+//
+//        fixColumn(colonna, idKey, "Tab", 68);
+//        spostaColonnaDopo("tab", "oraFine");
+//    }// end of method
+
+
+    /**
+     * Crea la colonna (di tipo Component) per visualizzare le funzioni
+     */
+    private void addColumnFunzioni() {
+        Grid.Column colonna = grid.getGrid().addComponentColumn(servizio -> {
+            String valueLabel = "";
+            String valueFunz;
+            String tag = " - ";
+
+            List<Funzione> funzioni = ((Servizio) servizio).getFunzioni();
+            if (funzioni != null && funzioni.size() > 0) {
+                for (Funzione funz : funzioni) {
+                    valueFunz = "";
+                    if (funz != null) {
+                        valueFunz = funz.getSigla();
+                        if (funz.isObbligatoria()) {
+                            valueFunz = html.setRossoBold(valueFunz);
+                        } else {
+                            valueFunz = html.setBluBold(valueFunz);
+                        }// end of if/else cycle
+                        valueLabel += valueFunz + tag;
+                    }// end of if cycle
+                }// end of for cycle
+                valueLabel = text.levaCoda(valueLabel, tag);
+                return new Label(valueLabel, ContentMode.HTML);
+            } else {
+                return null;
+            }// end of if/else cycle
+        });//end of lambda expressions
+
+//        fixColumn(colonna, "funzioni", "Funzioni del servizio", 350);//@todo ricreare un metodo generico
+        colonna.setId("funzioni");
+        colonna.setCaption("Funzioni del servizio");
+        colonna.setWidth(350);
+        float lar = grid.getGrid().getWidth();
+        grid.getGrid().setWidth(lar + 350, Unit.PIXELS);
+
     }// end of method
 
 }// end of class

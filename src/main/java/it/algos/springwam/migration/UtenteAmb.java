@@ -61,6 +61,7 @@ public class UtenteAmb extends BaseEntity {
     public UtenteAmb() {
     }// end of constructor
 
+
     /**
      * Recupera una istanza della Entity usando la query standard della Primary Key
      * Nessun filtro sulla company, perché la primary key è unica
@@ -75,8 +76,6 @@ public class UtenteAmb extends BaseEntity {
         }// end of if cycle
         return null;
     }// end of static method
-
-
 
 
     /**

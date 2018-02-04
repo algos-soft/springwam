@@ -36,7 +36,7 @@ import java.util.List;
 @Scope("session")
 @Qualifier(ACost.TAG_MIL)
 @SpringView(name = ACost.VIEW_MIL_LIST)
-@AIView(roleTypeVisibility = EARoleType.user)
+@AIView(roleTypeVisibility = EARoleType.admin)
 @AIScript(sovrascrivibile = true)
 public class MiliteList extends AList {
 

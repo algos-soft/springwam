@@ -12,7 +12,9 @@ import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.field.ATextAreaField;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.service.AAnnotationService;
 import it.algos.springvaadin.service.AFieldService;
+import it.algos.springvaadin.service.AHtmlService;
 import it.algos.springvaadin.service.AReflectionService;
 import it.algos.springvaadin.toolbar.AFormToolbar;
 import it.algos.springvaadin.toolbar.AListToolbar;
@@ -51,7 +53,14 @@ public abstract class AForm extends AView implements IAForm {
      * Libreria di servizio. Inietta da Spring come 'singleton'
      */
     @Autowired
-    public AReflectionService reflection;
+    protected AAnnotationService annotation;
+
+    /**
+     * Libreria di servizio. Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    protected AReflectionService reflection;
+
 
     /**
      * Caption informativa posizionata prima del body con lo scorrevole dei fileds
@@ -428,6 +437,20 @@ public abstract class AForm extends AView implements IAForm {
         binder.readBean(entityBean);
     }// end of method
 
+
+    /**
+     * Recupera il field dal nome
+     */
+    protected AField getField(String publicFieldName) {
+
+        for (AField field : fieldList) {
+            if (field.getName().equals(publicFieldName)) {
+                return field;
+            }// end of if cycle
+        }// end of for cycle
+
+        return null;
+    }// end of method
 
     /**
      * Componente concreto di questa interfaccia

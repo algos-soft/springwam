@@ -58,8 +58,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(AppCost.TAG_SER)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
-@AIList(fields = {"code", "descrizione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"code", "descrizione"})
+@AIList(fields = {"ordine", "code", "descrizione", "oraInizio", "oraFine", "visibile", "colore"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIForm(fields = {"code", "descrizione", "colore", "orario", "oraInizio", "minutiInizio", "oraFine", "minutiFine", "visibile", "note"})
 @AIScript(sovrascrivibile = false)
 public class Servizio extends ACEntity {
 
@@ -96,10 +96,10 @@ public class Servizio extends ACEntity {
     @AIField(
             type = EAFieldType.text,
             required = true,
-            name = "Codifica interna unica",
+            name = "Sigla interna unica",
             focus = true,
             widthEM = 9)
-    @AIColumn(name = "Code", width = 120)
+    @AIColumn(name = "Sigla", width = 140)
     private String code;
 
 
@@ -113,7 +113,7 @@ public class Servizio extends ACEntity {
             required = true,
             name = "Descrizione completa",
             widthEM = 26)
-    @AIColumn(name = "Descrizione", width = 500)
+    @AIColumn(name = "Descrizione", width = 400)
     private String descrizione;
 
 
@@ -124,7 +124,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Colore distintivo per il tabellone",
             widthEM = 3)
-    @AIColumn(width = 50)
+    @AIColumn(name = "Colore", width = 120)
     private int colore = new Color(128, 128, 128).getRGB();
 
 
@@ -134,7 +134,7 @@ public class Servizio extends ACEntity {
      */
     @AIField(
             type = EAFieldType.checkbox,
-            name = "Orario predefinito del turno",
+            name = "Turno con orario predefinito",
             widthEM = 3)
     @AIColumn(name = "Orario", width = 90)
     private boolean orario;
@@ -147,7 +147,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Ora inizio turno",
             widthEM = 3)
-    @AIColumn(name = "In", width = 65)
+    @AIColumn(name = "Inizio", width = 120)
     private int oraInizio;
 
     /**
@@ -158,7 +158,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Minuti inizio turno",
             widthEM = 3)
-    @AIColumn(width = 60)
+    @AIColumn(name = "->M", width = 65)
     private int minutiInizio = 0;
 
     /**
@@ -168,7 +168,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Ora (prevista) fine turno",
             widthEM = 3)
-    @AIColumn(name = "Out", width = 65)
+    @AIColumn(name = "Fine", width = 120)
     private int oraFine;
 
     /**
@@ -179,7 +179,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Minuti (previsti) fine turno",
             widthEM = 3)
-    @AIColumn(width = 50)
+    @AIColumn(name = "M->", width = 65)
     private int minutiFine = 0;
 
 
@@ -194,7 +194,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.checkbox,
             name = "Attivo, visibile nel tabellone",
             widthEM = 3)
-    @AIColumn(name = "Tab.", width = 60)
+    @AIColumn(name = "Tab.", width = 100)
     private boolean visibile;
 
 

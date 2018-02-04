@@ -160,8 +160,9 @@ public class AGrid extends Grid implements IAGrid {
      * @param columns visibili ed ordinate della Grid
      */
     public void addColumns(List<Field> columns) {
+        Grid.Column colonna = null;
         Class<? extends AEntity> clazz = this.getBeanType();
-//        int lar = 0;
+        int lar = 0;
 
         if (this.getColumns() != null && this.getColumns().size() > 0) {
             this.removeAllColumns();
@@ -169,7 +170,10 @@ public class AGrid extends Grid implements IAGrid {
 
         if (array.isValid(columns)) {
             for (Field field : columns) {
-                columnService.add(this, field);
+                colonna = columnService.add(this, field);
+                if (colonna!=null) {
+                    lar += columnService.regolaAnnotationAndGetLarghezza(colonna, field);
+                }// end of if cycle
             }// end of for cycle
         }// end of if cycle
 
@@ -183,14 +187,14 @@ public class AGrid extends Grid implements IAGrid {
 //                lar += columnService.regolaAnnotationAndGetLarghezza(colonna, field);
 //            }// end of for cycle
 //        }// end of if cycle
-//
-//        //--spazio per la colonna automatica di selezione
-//        //@todo RIMETTERE
-////        if (pref.isTrue(Cost.KEY_USE_SELEZIONE_MULTIPLA_GRID)) {
-////            lar += 50;
-////        }// end of if cycle
-//
-//        this.setWidth(lar + "px");
+
+        //--spazio per la colonna automatica di selezione
+        //@todo RIMETTERE
+//        if (pref.isTrue(Cost.KEY_USE_SELEZIONE_MULTIPLA_GRID)) {
+//            lar += 50;
+//        }// end of if cycle
+
+        this.setWidth(lar + "px");
     }// end of method
 
 

@@ -2,6 +2,7 @@ package it.algos.springwam.entity.funzione;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -53,8 +54,8 @@ import it.algos.springwam.application.AppCost;
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(AppCost.TAG_FUN)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
-@AIList(fields = {"code", "descrizione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"code", "descrizione"})
+@AIList(fields = {"ordine", "sigla", "descrizione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIForm(fields = {"icona", "sigla", "descrizione", "note"})
 @AIScript(sovrascrivibile = false)
 public class Funzione extends ACEntity {
 
@@ -134,7 +135,7 @@ public class Funzione extends ACEntity {
             type = EAFieldType.icon,
             name = "Icona grafica rappresentativa della funzione",
             widthEM = 8)
-    @AIColumn(width = 85)
+    @AIColumn(name = "Icona", width = 90)
     private int icona;
 
 

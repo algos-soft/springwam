@@ -3,6 +3,7 @@ package it.algos.springwam.ui;
 import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.footer.AFooter;
 import it.algos.springvaadin.service.AStartService;
+import it.algos.springwam.entity.milite.MiliteList;
 import it.algos.springwam.entity.milite.MiliteService;
 import it.algos.springwam.entity.utente.UtenteList;
 import it.algos.springwam.entity.servizio.ServizioList;
@@ -101,7 +102,7 @@ public class SpringwamUI extends AUI {
      */
     protected void addVisteSpecifiche() {
         menuLayout.addView(CroceList.class);
-        menuLayout.addView(UtenteList.class);
+        menuLayout.addView(MiliteList.class);
         menuLayout.addView(FunzioneList.class);
         menuLayout.addView(ServizioList.class);
     }// end of method

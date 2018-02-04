@@ -338,12 +338,124 @@ public class MigrationService {
         int oraFine = servizioOld.getOra_fine();
         int minutiFine = servizioOld.getMinuti_fine();
         boolean visibile = servizioOld.isVisibile();
-        List<Funzione> funzioni = new ArrayList<>();
+        List<Funzione> funzioni = selezionaFunzioni(servizioOld, croceNew);
 
 
-        servizioService.findOrCrea(croceNew, ordine, code, descrizione, 0, orario, oraInizio, minutiInizio, oraFine, minutiFine, visibile, funzioni);
-//        servizioAddFunzioni(servizioOld, servizio);
+        //--non posso usare il metodo servizioService.findOrCrea(), perchè manca la sessione  e manca il login da cui
+        //--prendere automaticamente la company
+        if (servizioService.findByKeyUnica(croceNew, code) == null) {
+            Servizio entity = Servizio.builder()
+                    .ordine(ordine != 0 ? ordine : servizioService.getNewOrdine())
+                    .code(code)
+                    .descrizione(descrizione)
+                    .colore(0)
+                    .orario(orario)
+                    .oraInizio(oraInizio)
+                    .minutiInizio(minutiInizio)
+                    .oraFine(oraFine)
+                    .minutiFine(minutiFine)
+                    .visibile(visibile)
+                    .funzioni(funzioni)
+                    .build();
+            entity.company = croceNew;
+            servizioService.save(entity);
+        }// end of if cycle
     }// end of method
+
+
+    /**
+     * Recupera le funzioni del servizio
+     *
+     * @param servizioOld della companyOld
+     */
+    private List<Funzione> selezionaFunzioni(ServizioAmb servizioOld, Croce croceNew) {
+        List<Funzione> listaFunzioni = new ArrayList<>();
+        FunzioneAmb funzAmb = null;
+        String code;
+        Funzione funz = null;
+        int numeroFunzioniObbligatorie = servizioOld.getFunzioni_obbligatorie();
+        long idFunzione1 = servizioOld.getFunzione1_id();
+        long idFunzione2 = servizioOld.getFunzione2_id();
+        long idFunzione3 = servizioOld.getFunzione3_id();
+        long idFunzione4 = servizioOld.getFunzione4_id();
+
+        funzAmb = FunzioneAmb.find(idFunzione1, manager);
+        if (funzAmb != null) {
+            funz = funzioneService.findByKeyUnica(croceNew, funzAmb.getSigla());
+            funz.setObbligatoria(numeroFunzioniObbligatorie > 0);
+            listaFunzioni.add(funz);
+        }// end of if cycle
+
+        funzAmb = FunzioneAmb.find(idFunzione2, manager);
+        if (funzAmb != null) {
+            funz = funzioneService.findByKeyUnica(croceNew, funzAmb.getSigla());
+            funz.setObbligatoria(numeroFunzioniObbligatorie > 1);
+            listaFunzioni.add(funz);
+        }// end of if cycle
+
+        funzAmb = FunzioneAmb.find(idFunzione3, manager);
+        if (funzAmb != null) {
+            funz = funzioneService.findByKeyUnica(croceNew, funzAmb.getSigla());
+            funz.setObbligatoria(numeroFunzioniObbligatorie > 2);
+            listaFunzioni.add(funz);
+        }// end of if cycle
+
+        funzAmb = FunzioneAmb.find(idFunzione4, manager);
+        if (funzAmb != null) {
+            funz = funzioneService.findByKeyUnica(croceNew, funzAmb.getSigla());
+            funz.setObbligatoria(numeroFunzioniObbligatorie > 3);
+            listaFunzioni.add(funz);
+        }// end of if cycle
+
+        return listaFunzioni;
+    }// end of method
+
+//    /**
+//     * Aggiunge le funzioni al servizio
+//     *
+//     * @param servizioOld della companyOld
+//     * @param servizioNew appena creato in springWam
+//     */
+//    private void servizioAddFunzioni(ServizioAmb servizioOld, Servizio servizioNew) {
+//        List<Funzione> listaFunzioni = new ArrayList<>();
+//        Funzione funz = null;
+//        int numeroFunzioniObbligatorie = servizioOld.getFunzioni_obbligatorie();
+//        long idFunzione1 = servizioOld.getFunzione1_id();
+//        long idFunzione2 = servizioOld.getFunzione2_id();
+//        long idFunzione3 = servizioOld.getFunzione3_id();
+//        long idFunzione4 = servizioOld.getFunzione4_id();
+//
+//        funz = mappaFunzioni.get(idFunzione1);
+//        if (funz != null) {
+//            funz.setObbligatoria(numeroFunzioniObbligatorie > 0);
+//            listaFunzioni.add(funz);
+//        }// end of if cycle
+//
+//        funz = mappaFunzioni.get(idFunzione2);
+//        if (funz != null) {
+//            funz.setObbligatoria(numeroFunzioniObbligatorie > 1);
+//            listaFunzioni.add(funz);
+//        }// end of if cycle
+//
+//        funz = mappaFunzioni.get(idFunzione3);
+//        if (funz != null) {
+//            funz.setObbligatoria(numeroFunzioniObbligatorie > 2);
+//            listaFunzioni.add(funz);
+//        }// end of if cycle
+//
+//        funz = mappaFunzioni.get(idFunzione4);
+//        if (funz != null) {
+//            funz.setObbligatoria(numeroFunzioniObbligatorie > 3);
+//            listaFunzioni.add(funz);
+//        }// end of if cycle
+//
+//        servizioNew.setFunzioni(listaFunzioni);
+//        try { // prova ad eseguire il codice
+//            servizioService.save(servizioNew);
+//        } catch (Exception unErrore) { // intercetta l'errore
+//            log.error(unErrore.toString());
+//        }// fine del blocco try-catch
+//    }// end of method
 
 
     /**
