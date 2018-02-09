@@ -3,9 +3,15 @@ package it.algos.springwam.tabellone;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.ALoginService;
+import it.algos.springvaadin.service.AReflectionService;
 import it.algos.springvaadin.service.AService;
 import it.algos.springwam.application.AppCost;
+import it.algos.springwam.entity.riga.Riga;
+import it.algos.springwam.entity.riga.RigaService;
 import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.servizio.ServizioService;
 import it.algos.springwam.entity.turno.Turno;
@@ -21,6 +27,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -50,10 +57,16 @@ public class TabelloneService extends AService {
     private ServizioService servizioService;
 
     @Autowired
+    private AReflectionService reflection;
+
+    @Autowired
     private TurnoService turnoService;
 
-//    @Autowired
-//    private RigaService rigaService;
+    @Autowired
+    private RigaService rigaService;
+
+    @Autowired
+    private ADateService dateService;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -66,26 +79,26 @@ public class TabelloneService extends AService {
     }// end of Spring constructor
 
 
-//    /**
-//     * Colonne visibili (e ordinate) nella Grid
-//     * Sovrascrivibile
-//     * La colonna ID normalmente non si visualizza
-//     * 1) Se questo metodo viene sovrascritto, si utilizza la lista della sottoclasse specifica (con o senza ID)
-//     * 2) Se la classe AEntity->@AIList(columns = ...) prevede una lista specifica, usa quella lista (con o senza ID)
-//     * 3) Se non trova AEntity->@AIList, usa tutti i campi della AEntity (senza ID)
-//     * 4) Se trova AEntity->@AIList(showsID = true), questo viene aggiunto, indipendentemente dalla lista
-//     * 5) Vengono visualizzati anche i campi delle superclassi della classe AEntity
-//     * Ad esempio: company della classe ACompanyEntity
-//     *
-//     * @return lista di fields visibili nella Grid
-//     */
-//    @Override
-//    public List<Field> getListFields() {
-//        List<Field> listaField = new ArrayList<>();
-//        Field field = LibReflection.getField(Riga.class, "servizio");
-//        listaField.add(field);
-//        return listaField;
-//    }// end of method
+    /**
+     * Colonne visibili (e ordinate) nella Grid
+     * Sovrascrivibile
+     * La colonna ID normalmente non si visualizza
+     * 1) Se questo metodo viene sovrascritto, si utilizza la lista della sottoclasse specifica (con o senza ID)
+     * 2) Se la classe AEntity->@AIList(columns = ...) prevede una lista specifica, usa quella lista (con o senza ID)
+     * 3) Se non trova AEntity->@AIList, usa tutti i campi della AEntity (senza ID)
+     * 4) Se trova AEntity->@AIList(showsID = true), questo viene aggiunto, indipendentemente dalla lista
+     * 5) Vengono visualizzati anche i campi delle superclassi della classe AEntity
+     * Ad esempio: company della classe ACompanyEntity
+     *
+     * @return lista di fields visibili nella Grid
+     */
+    @Override
+    public List<Field> getListFields() {
+        List<Field> listaField = new ArrayList<>();
+        Field field = reflection.getField(Riga.class, "servizio");
+        listaField.add(field);
+        return listaField;
+    }// end of method
 
 
 //    /**
@@ -174,6 +187,24 @@ public class TabelloneService extends AService {
     }// end of method
 
     /**
+     * Returns all entities of the type.
+     * <p>
+     * Senza filtri
+     * Ordinati per ID
+     * <p>
+     * Methods of this library return Iterable<T>, while the rest of my code expects Collection<T>
+     * L'annotation standard di JPA prevede un ritorno di tipo Iterable, mentre noi usiamo List
+     * Eseguo qui la conversione, che rimane trasparente al resto del programma
+     *
+     * @return all entities
+     */
+    @Override
+    public List<? extends AEntity> findAll() {
+        return creaRighe(LocalDate.now(), 7);
+    }// end of method
+
+
+    /**
      * Creazione in memoria di una nuova entity che NON viene salvata
      * Eventuali regolazioni iniziali delle property
      * Senza properties per compatibilità con la superclasse
@@ -186,47 +217,47 @@ public class TabelloneService extends AService {
     }// end of method
 
 
-//    /**
-//     * Returns all instances of the current company.
-//     *
-//     * @return selected entities
-//     */
-//    public List findAllByCompany() {
-//        return rigaService.findAllByCompany();
-//    }// end of method
+    /**
+     * Crea in memoria le righe di questa company per i turni dei giorni indicati
+     *
+     * @return selected entities
+     */
+    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+        List<Riga> righe = new ArrayList<>();
+        List<Turno> listaTurni;
+        Turno turno;
+        List<Servizio> listaServiziVisibili = servizioService.findAllByCompanyVisibili();
+        LocalDate giorno = null;
+        Riga riga;
 
-//    /**
-//     * Returns all instances of the current company.
-//     *
-//     * @return selected entities
-//     */
-//    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
-//        List<Riga> righe = new ArrayList<>();
-//        List<Turno> listaTurni;
-//        Turno turno;
-//        List<Servizio> listaServiziVisibili = servizioService.findAllByCompanyVisibili();
-//        LocalDate giorno = null;
-//        Riga riga;
-//
-//        if (listaServiziVisibili != null && listaServiziVisibili.size() > 0) {
-//            for (int k = 0; k < listaServiziVisibili.size(); k++) {
-//                Servizio servizio = listaServiziVisibili.get(k);
-//                listaTurni = new ArrayList<>();
-//
-//                for (int y = 0; y < giorni; y++) {
-//                    giorno = LibDate.add(giornoInizio, y);
-//                    turno = turnoService.findByGiornoAndServizio(giorno, servizio);
-//                    listaTurni.add(turno);
-//                }// end of for cycle
-//
-//                riga = rigaService.newEntity(giornoInizio, servizio, listaTurni);
-//                righe.add(riga);
-//            }// end of for cycle
-//        }// end of if cycle
-//
-//        return righe;
-//    }// end of method
+        if (listaServiziVisibili != null && listaServiziVisibili.size() > 0) {
+            for (int k = 0; k < listaServiziVisibili.size(); k++) {
+                Servizio servizio = listaServiziVisibili.get(k);
+                listaTurni = new ArrayList<>();
+
+                for (int y = 0; y < giorni; y++) {
+                    giorno = giornoInizio.plusDays(y);
+                    turno = turnoService.findByGiornoAndServizio(giorno, servizio);
+                    listaTurni.add(turno);
+                }// end of for cycle
+
+                riga = rigaService.newEntity(giornoInizio, servizio, listaTurni);
+                righe.add(riga);
+            }// end of for cycle
+        }// end of if cycle
+
+        return righe;
+    }// end of method
 
 
+    /**
+     * Lista di bottoni presenti nella toolbar (footer) della view AList
+     * Legge la enumeration indicata nella @Annotation della AEntity
+     *
+     * @return lista (type) di bottoni visibili nella toolbar della view AList
+     */
+    public List<EAButtonType> getListTypeButtons() {
+        return null;
+    }// end of method
 
 }// end of class

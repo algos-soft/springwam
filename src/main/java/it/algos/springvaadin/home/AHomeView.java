@@ -74,11 +74,6 @@ public class AHomeView extends AView {
     //--icona del Menu
     public static final Resource VIEW_ICON = VaadinIcons.HOME;
 
-    /**
-     * Classe da aggiungere a menuLayout solo per questo modulo
-     * Viene eliminata dal menuLayout quando la view ''esce'
-     */
-    private Class<? extends IAView> viewForThisModuleOnly = RoleForm.class;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -93,7 +88,6 @@ public class AHomeView extends AView {
      * Elimina il riferimento al menuLayout nella view 'uscente' (oldView) perché il menuLayout è un 'singleton'
      * Elimina tutti i componenti della view 'entrante' (this)
      * Aggiunge il riferimento al menuLayout nella view 'entrante' (this)
-     * Passa il controllo al Presenter
      */
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {

@@ -254,6 +254,22 @@ public class ServizioService extends AService {
 
 
     /**
+     * Returns all instances of the current company.
+     *
+     * @return selected entities
+     */
+    public List findAllByCompanyVisibili() {
+        Company company = login.getCompany();
+
+        if (company != null) {
+            return repository.findByCompanyAndVisibileOrderByOrdineAsc(company, true);
+        } else {
+            return null;
+        }// end of if/else cycle
+    }// end of method
+
+
+    /**
      * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),
      * viene calcolato in automatico prima del persist sul database
      * Recupera il valore massimo della property

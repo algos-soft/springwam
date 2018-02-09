@@ -35,6 +35,10 @@ import it.algos.springwam.application.AppCost;
 public class FunzioneService extends AService {
 
 
+    @Autowired
+    public ATextService text;
+
+
     /**
      * La repository viene iniettata dal costruttore, in modo che sia disponibile nella superclasse,
      * dove viene usata l'interfaccia MongoRepository
@@ -43,9 +47,6 @@ public class FunzioneService extends AService {
      */
     private FunzioneRepository repository;
 
-
-    @Autowired
-    public ATextService text;
 
     /**
      * Costruttore @Autowired (nella superclasse)

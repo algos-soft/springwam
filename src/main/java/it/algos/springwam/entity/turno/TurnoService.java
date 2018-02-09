@@ -163,6 +163,25 @@ public class TurnoService extends AService {
     }// end of method
 
     /**
+     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
+     *
+     * @param giorno   di inizio turno (obbligatorio)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public Turno findByGiornoAndServizio(LocalDate giorno, Servizio servizio) {
+        Company company = login.getCompany();
+
+        if (company != null) {
+            return repository.findByCompanyAndGiornoAndServizio(company, giorno,servizio);
+        } else {
+            return null;
+        }// end of if/else cycle
+    }// end of method
+
+
+    /**
      * Saves a given entity.
      * Use the returned instance for further operations
      * as the save operation might have changed the entity instance completely.

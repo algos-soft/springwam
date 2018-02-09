@@ -1,6 +1,7 @@
 package it.algos.springwam.entity.turno;
 
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springwam.entity.servizio.Servizio;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -30,6 +31,8 @@ public interface TurnoRepository extends MongoRepository<Turno, String> {
     public List<Turno> findByCompanyAndGiorno(Company company, LocalDate giorno);
 
     public List<Turno> findByCompanyAndGiornoIsGreaterThanEqual(Company company, LocalDate giorno);
+
+    public Turno findByCompanyAndGiornoAndServizio(Company company, LocalDate giorno, Servizio servizio);
 
     public List<Turno> findTop42ByCompanyAndGiornoIsGreaterThanEqual(Company company, LocalDate giorno);
 

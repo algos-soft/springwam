@@ -15,6 +15,8 @@ public abstract class AppCost {
 	public final static String TAG_TAB = "tabellone";
 	public final static String VIEW_TAB_LIST = "tabellonegrid";
 	public final static String VIEW_TAB_FORM = "tabelloneturno";
+	public final static String TAG_GEN = "generator";
+	public final static String TAG_RIG = "riga";
 
 	public final static String TAG_CRO = "croce";
 	public final static String VIEW_CRO_LIST = "crocelist";

@@ -3,12 +3,15 @@ package it.algos.springwam.tabellone;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.form.IAForm;
 import it.algos.springvaadin.list.IAList;
 import it.algos.springvaadin.presenter.APresenter;
 import it.algos.springvaadin.service.IAService;
 import it.algos.springwam.application.AppCost;
+import it.algos.springwam.entity.riga.Riga;
 import it.algos.springwam.entity.turno.TurnoPresenter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -31,6 +34,7 @@ import java.util.List;
  * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con dei link @Autowired di tipo @Lazy per evitare un loop nella injection
  */
+@Slf4j
 @SpringComponent
 @Scope("session")
 @Qualifier(AppCost.TAG_TAB)
@@ -43,7 +47,12 @@ public class TabellonePresenter extends APresenter {
 //    @Autowired
 //    protected PreferenzaService pref;
 
-    private TabelloneService service;
+    /**
+     * Il service viene iniettato dal costruttore, in modo che sia disponibile nella superclasse,
+     * Spring costruisce al volo, quando serve, una implementazione di AService (come previsto dal @Qualifier)
+     * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
+     */
+   private TabelloneService service;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -52,47 +61,55 @@ public class TabellonePresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public TabellonePresenter(
-            @Lazy @Qualifier(AppCost.TAG_TAB) IAService service,
-            @Lazy @Qualifier(AppCost.TAG_TAB) IAList list,
-            @Lazy @Qualifier(AppCost.TAG_TAB) IAForm form) {
+             @Qualifier(AppCost.TAG_TAB) IAService service,
+             @Qualifier(AppCost.TAG_TAB) IAList list,
+             @Qualifier(AppCost.TAG_TAB) IAForm form) {
         super(service, list, form);
-//        super.entityClass = Riga.class; //@todo rimettere
+        this.service = (TabelloneService) service;
+        super.entityClass = Riga.class;
     }// end of Spring constructor
 
 
-//    /**
-//     * Metodo invocato dalla view ogni volta che questa diventa attiva
-//     * oppure
-//     * metodo invocato da un Evento (azione) che necessita di aggiornare e ripresentare la Lista
-//     * tipo dopo un delete, dopo un nuovo record, dopo la edit di un record
-//     * <p>
-//     * Recupera dal service tutti i dati necessari (aggiornati)
-//     * Recupera dal service le colonne da mostrare nella grid
-//     * Recupera dal service gli items (records) della collection, da mostrare nella grid
-//     * Passa il controllo alla view con i dati necessari
-//     */
-//    @Override
-//    protected void presentaLista() {
-//        List items = null;
-//        List<Field> columns = null;
-//
-//        if (service != null) {
-//            columns = service.getListFields();
-//            items = creaRighe();
-//        }// end of if cycle
-//
-//        view.setList(entityClass, columns, items);
-//    }// end of method
+
+    /**
+     * Gestione di una Lista visualizzata con una Grid
+     * Metodo invocato da:
+     * 1) una view quando diventa attiva
+     * 2) un Evento (azione) che necessita di aggiornare e ripresentare la Lista;
+     * tipo dopo un delete, dopo un nuovo record, dopo la edit di un record
+     * <p>
+     * Recupera dal service tutti i dati necessari (aggiornati)
+     * Recupera dal service le colonne da mostrare nella grid
+     * Recupera dal service gli items (records) della collection, da mostrare nella grid
+     * Recupera dal service i bottoni comando da mostrare nella toolbar del footer (sotto la Grid)
+     * Passa il controllo alla view con i dati necessari
+     */
+    public void setList() {
+        List items = null;
+        List<Field> columns = null;
+
+        columns = service.getListFields();
+        if (array.isEmpty(columns)) {
+            log.warn("Tabellone non ha giorni selezionati");
+        }// end of if cycle
+
+        items = service.findAll();
+        if (array.isEmpty(items)) {
+            log.info("Tabellone non ha nessun turno");
+        }// end of if cycle
+
+        list.start(this, entityClass, columns, items, null);
+    }// end of method
 
 
-//    public List<Riga> creaRighe() {
-//        return creaRighe(LocalDate.now(), 7);
-//    }// end of method
+    public List<Riga> creaRighe() {
+        return creaRighe(LocalDate.now(), 7);
+    }// end of method
 
 
-//    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
-//        return service.creaRighe(giornoInizio, giorni);
-//    }// end of method
+    public List<Riga> creaRighe(LocalDate giornoInizio, int giorni) {
+        return service.creaRighe(giornoInizio, giorni);
+    }// end of method
 
 
 //    protected void turnoNewAndEdit(AEntity entityBean) {

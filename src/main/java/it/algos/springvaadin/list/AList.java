@@ -181,8 +181,6 @@ public abstract class AList extends AView implements IAList {
         bottomLayout.setHeightUndefined();
         toolbar.inizializza(source, typeButtons);
 
-//        fixToolbar();
-
         bottomLayout.addComponent((AListToolbar) toolbar);
         return bottomLayout;
     }// end of method
