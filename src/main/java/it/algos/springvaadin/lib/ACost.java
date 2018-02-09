@@ -155,7 +155,7 @@ public abstract class ACost {
 	public final static String VIEW_PRO_FORM = "provaform";
 	public final static String VIEW_PER_LIST = "personalist";
 	public final static String VIEW_PER_FORM = "personaform";
-	public final static String TAG_MIL = "milite";
+	public final static String TAG_MIL = "militi";
 	public final static String VIEW_MIL_LIST = "militelist";
 	public final static String VIEW_MIL_FORM = "militeform";
 }// end of static class

@@ -197,7 +197,6 @@ public class FunzioneService extends AService {
     }// end of method
 
 
-
     /**
      * @return lista di code
      */
@@ -228,6 +227,26 @@ public class FunzioneService extends AService {
         }// end of if cycle
 
         return ordine + 1;
+    }// end of method
+
+
+    /**
+     * Saves a given entity.
+     * Use the returned instance for further operations
+     * as the save operation might have changed the entity instance completely.
+     *
+     * @param entityBean da salvare
+     *
+     * @return the saved entity
+     */
+    @Override
+    public AEntity save(AEntity entityBean) {
+
+        if (text.isEmpty(entityBean.id)) {
+            entityBean.id = ((Funzione) entityBean).getCompany().getCode() + ((Funzione) entityBean).getCode();
+        }// end of if cycle
+
+        return super.save(entityBean);
     }// end of method
 
 }// end of class

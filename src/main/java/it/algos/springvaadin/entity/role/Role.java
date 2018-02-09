@@ -47,7 +47,7 @@ import javax.validation.constraints.Size;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(ACost.TAG_ROL)
-@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.nonUsata)
+@AIEntity(roleTypeVisibility = EARoleType.developer, company = EACompanyRequired.nonUsata)
 @AIList(fields = {"ordine", "code"})
 @AIForm(fields = {"ordine", "code"},fieldsDev = EAFieldAccessibility.allways, fieldsAdmin = EAFieldAccessibility.never)
 @AIScript(sovrascrivibile = false)

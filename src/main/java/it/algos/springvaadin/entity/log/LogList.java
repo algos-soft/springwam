@@ -33,7 +33,6 @@ import java.util.List;
 @Scope("session")
 @Qualifier(ACost.TAG_LOG)
 @SpringView(name = ACost.VIEW_LOG_LIST)
-@AIView(roleTypeVisibility = EARoleType.admin)
 @AIScript(sovrascrivibile = true)
 public class LogList extends AList {
 

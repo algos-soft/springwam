@@ -7,12 +7,14 @@ import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
+import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.role.RoleForm;
 import it.algos.springvaadin.entity.role.RoleList;
 import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.lib.LibImage;
@@ -45,6 +47,7 @@ import java.util.List;
 @Slf4j
 @Scope("session")
 @SpringView(name = ACost.VIEW_HOME)
+@AIView(roleTypeVisibility = EARoleType.user)
 public class AHomeView extends AView {
 
     /**
@@ -127,15 +130,15 @@ public class AHomeView extends AView {
 
 
     private Layout getImage() {
-        String nomeRisorsaConSuffisso="amb3.jpg";
+        String nomeRisorsaConSuffisso = "amb3.jpg";
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSizeFull();
         int larImage = 650;
         int altImage = 400;
         double delta = 1.5;
-        int lar = ((Double)(larImage * delta)).intValue();
-        int alt =  ((Double)(altImage * delta)).intValue();
+        int lar = ((Double) (larImage * delta)).intValue();
+        int alt = ((Double) (altImage * delta)).intValue();
 
         Image image = resource.getImage(nomeRisorsaConSuffisso);
         image.setWidth(lar, Unit.PIXELS);

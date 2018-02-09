@@ -1,4 +1,4 @@
-package it.algos.springvaadin.entity.address;
+package it.algos.springwam.entity.iscrizione;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
@@ -17,13 +17,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.ACost;
+import it.algos.springwam.application.AppCost;
 
 /**
- * Project springvaadin
+ * Project springwam
  * Created by Algos
  * User: gac
- * Date: 2018-01-17_11:26:25
+ * Date: 2018-02-04_17:23:11
  * Estende la Entity astratta AList di tipo AView per visualizzare la Grid
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
@@ -35,10 +35,10 @@ import it.algos.springvaadin.lib.ACost;
  */
 @SpringComponent
 @Scope("session")
-@Qualifier(ACost.TAG_ADD)
-@SpringView(name = ACost.VIEW_ADD_LIST)
+@Qualifier(AppCost.TAG_ISC)
+@SpringView(name = AppCost.VIEW_ISC_LIST)
 @AIScript(sovrascrivibile = true)
-public class AddressList extends AList {
+public class IscrizioneList extends AList {
 
 
     /**
@@ -47,7 +47,7 @@ public class AddressList extends AList {
      * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
      * Se manca il MENU_NAME, di default usa il 'name' della view
      */
-    public static final String MENU_NAME = ACost.TAG_ADD;
+    public static final String MENU_NAME = AppCost.TAG_ISC;
 
 
     /**
@@ -71,8 +71,8 @@ public class AddressList extends AList {
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-    public AddressList(
-            @Lazy @Qualifier(ACost.TAG_ADD) IAPresenter presenter,
+    public IscrizioneList(
+            @Lazy @Qualifier(AppCost.TAG_ISC) IAPresenter presenter,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
         super(presenter, toolbar);
     }// end of Spring constructor

@@ -36,7 +36,6 @@ import it.algos.springwam.application.AppCost;
 @Scope("session")
 @Qualifier(AppCost.TAG_CRO)
 @SpringView(name = AppCost.VIEW_CRO_LIST)
-@AIView(roleTypeVisibility = EARoleType.developer)
 @AIScript(sovrascrivibile = true)
 public class CroceList extends AList {
 

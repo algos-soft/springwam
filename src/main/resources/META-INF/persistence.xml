@@ -42,6 +42,7 @@
         <class>it.algos.springwam.migration.UserAmb</class>
         <class>it.algos.springwam.migration.UtenteAmb</class>
         <class>it.algos.springwam.migration.UtenteRuoloAmb</class>
+        <class>it.algos.springwam.migration.TurnoAmb</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 

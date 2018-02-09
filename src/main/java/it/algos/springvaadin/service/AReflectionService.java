@@ -431,7 +431,7 @@ public class AReflectionService {
         //--controlla che i fields siano quelli richiesti
         //--se la lista dei nomi dei fields è nulla, li prende tutti
         if (array.isValid(fieldsTmp)) {
-            if (array.isValid(listaNomi) && !isDeveloper) {
+            if (array.isValid(listaNomi) || text.isValid(listaNomi) && !isDeveloper) {
                 for (String nome : listaNomi) {
                     for (Field field : fieldsTmp) {
                         fieldName = field.getName();

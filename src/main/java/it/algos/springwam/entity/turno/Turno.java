@@ -1,12 +1,10 @@
-package it.algos.springvaadin.entity.user;
+package it.algos.springwam.entity.turno;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import it.algos.springvaadin.entity.ACEntity;
-import it.algos.springvaadin.entity.role.Role;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.login.IAUser;
+import it.algos.springwam.entity.iscrizione.Iscrizione;
+import it.algos.springwam.entity.servizio.Servizio;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -21,10 +19,20 @@ import it.algos.springvaadin.enumeration.EACompanyRequired;
 import it.algos.springvaadin.enumeration.EAFieldAccessibility;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.entity.ACEntity;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springwam.application.AppCost;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * Created by gac on 11-nov-17
+ * Project springwam
+ * Created by Algos
+ * User: gac
+ * Date: 2018-02-04_17:19:25
+ * Estende la Entity astratta ACEntity che contiene il riferimento alla property Company
  * Estende la Entity astratta AEntity che contiene la key property ObjectId
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Document (facoltativo) per avere un nome della collection (DB Mongo) diverso dal nome della Entity
@@ -44,18 +52,19 @@ import it.algos.springvaadin.entity.AEntity;
  * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
  */
 @SpringComponent
-@Document(collection = "user")
+@Document(collection = "turno")
 @Scope("session")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = false)
-@Qualifier(ACost.TAG_USE)
-@AIEntity(roleTypeVisibility = EARoleType.developer, company = EACompanyRequired.obbligatoria)
-@AIList(dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@Qualifier(AppCost.TAG_TUR)
+@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
+@AIList(fields = {"giorno", "servizio"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni","titoloExtra","localitaExtra"})
 @AIScript(sovrascrivibile = false)
-public class User extends ACEntity implements IAUser {
+public class Turno extends ACEntity {
 
     /**
      * versione della classe per la serializzazione
@@ -64,105 +73,74 @@ public class User extends ACEntity implements IAUser {
 
 
     /**
-     * nickname di riferimento (obbligatorio, unico per company)
+     * giorno di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
      */
-    @NotEmpty
-    @Size(min = 3, max = 20)
-    @Indexed()
-    @AIField(
-            type = EAFieldType.text,
-            required = true,
-            focus = true,
-            name = "NickName",
-            widthEM = 12)
-    @AIColumn(name = "Nick", width = 300)
-    private String nickname;
+    @NotNull
+    @AIField(type = EAFieldType.localdate)
+    @AIColumn(width = 150)
+    private LocalDate giorno;
 
 
     /**
-     * password (obbligatoria o facoltativa, non unica)
+     * servizio di riferimento (obbligatorio)
+     * riferimento dinamico CON @DBRef
      */
-    @Size(min = 3, max = 20)
-    @AIField(
-            type = EAFieldType.text,
-            required = true,
-            widthEM = 12,
-            admin = EAFieldAccessibility.allways,
-            user = EAFieldAccessibility.showOnly)
-    @AIColumn(name = "Password", width = 200)
-    private String password;
-
-
-    /**
-     * ruolo (obbligatorio, non unico)
-     * riferimento dinamico con @DBRef (obbligatorio per il ComboBox)
-     */
+    @NotNull
     @DBRef
-    @AIField(type = EAFieldType.combo, required = true, clazz = Role.class)
-    @AIColumn(name = "Ruolo", width = 200)
-    public Role role;
+    @AIField(type = EAFieldType.combo, clazz = Servizio.class)
+    @AIColumn(width = 140)
+    private Servizio servizio;
 
 
     /**
-     * buttonUser abilitato (facoltativo, di default true)
+     * giorno, ora e minuto di inizio turno (obbligatorio)
      */
-    @AIField(type = EAFieldType.checkboxlabel, required = true, admin = EAFieldAccessibility.allways)
-    @AIColumn(name = "OK")
-    private boolean enabled;
+    @NotNull
+    @AIField(type = EAFieldType.localdatetime)
+    @AIColumn()
+    private LocalDateTime inizio;
 
 
     /**
-     * @return a string representation of the object.
+     * giorno, ora e minuto di fine turno (obbligatorio, suggerito da servizio)
      */
-    @Override
-    public String toString() {
-        return nickname;
-    }// end of method
-
-    /**
-     * @return the password (encrypted)
-     */
-    @Override
-    public String getEncryptedPassword() {
-        return null;
-    }// end of method
+    @NotNull
+    @AIField(type = EAFieldType.localdatetime)
+    @AIColumn()
+    private LocalDateTime fine;
 
 
     /**
-     * Validate a password for this current user.
-     *
-     * @param password the password
-     *
-     * @return true if valid
+     * iscrizioni dei volontari a questo turno (obbligatorio per un turno valido)
+     * riferimento statico SENZA @DBRef (embedded)
      */
-    @Override
-    public boolean validatePassword(String password) {
-        boolean valid = false;
-
-        if (isEnabled()) {
-            if (this.password.equals(password)) {
-                valid = true;
-            }// end of if cycle
-        }// end of if cycle
-
-        return valid;
-    }// end of method
+    @NotNull
+    private List<Iscrizione> iscrizioni;
 
 
     /**
-     * @return true if this user is admin
+     * motivazione del turno extra (facoltativo)
      */
-    @Override
-    public boolean isAdmin() {
-        return false;
-    }// end of method
+    @AIField(type = EAFieldType.text)
+    @AIColumn()
+    private String titoloExtra;
+
 
     /**
-     * @return true if this user is developer
+     * nome evidenziato della località per turni extra (facoltativo)
      */
-    @Override
-    public boolean isDeveloper() {
-        return false;
-    }// end of method
+    @AIField(type = EAFieldType.text)
+    @AIColumn()
+    private String localitaExtra;
+
+
+//    /**
+//     * @return a string representation of the object.
+//     */
+//    @Override
+//    public String toString() {
+//        return getCode();
+//    }// end of method
+
 
 }// end of entity class

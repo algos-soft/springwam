@@ -69,19 +69,21 @@ public class AColumnService {
 
         //--aggiunge una colonna di tipo Text per tutti i type, eccetto quelli indicati in questo switch statement
         //--le colonna 'saltate' qui, dovranno essere inserite come Component nella sotttoclasse xxxList.addColonna()
-        switch (type) {
-            case checkbox:
-            case checkboxlabel:
-                colonna = grid.addColumn(reflectionJavaField.getName());
-                this.add(grid, reflectionJavaField, type, colonna);
-                break;
-            case noone:
-                break;
-            default:
-                colonna = grid.addColumn(reflectionJavaField.getName());
-                this.add(grid, reflectionJavaField, type, colonna);
-                break;
-        } // end of switch statement
+        if (type != null) {
+            switch (type) {
+                case checkbox:
+                case checkboxlabel:
+                    colonna = grid.addColumn(reflectionJavaField.getName());
+                    this.add(grid, reflectionJavaField, type, colonna);
+                    break;
+                case noone:
+                    break;
+                default:
+                    colonna = grid.addColumn(reflectionJavaField.getName());
+                    this.add(grid, reflectionJavaField, type, colonna);
+                    break;
+            } // end of switch statement
+        }// end of if cycle
 
         return colonna;
     }// end of method
@@ -168,22 +170,22 @@ public class AColumnService {
 
         if (type == EAFieldType.localdate) {
             colonna.setRenderer(renderDate);
-            colonna.setWidth(WIDTH_LOCAL_DATE);
+            colonna.setWidth(width > 0 ? width : WIDTH_LOCAL_DATE);
         }// end of if cycle
 
         if (type == EAFieldType.localdatetime) {
             colonna.setRenderer(renderTime);
-            colonna.setWidth(WIDTH_LOCAL_DATE_TIME);
+            colonna.setWidth(width > 0 ? width : WIDTH_LOCAL_DATE_TIME);
         }// end of if cycle
 
         if (type == EAFieldType.icon) {
             colonna.setRenderer(renderIcon);
-            colonna.setWidth(WIDTH_TEXT_NORMAL);
+            colonna.setWidth(width > 0 ? width : WIDTH_TEXT_NORMAL);
         }// end of if cycle
 
         if (type == EAFieldType.json) {
             colonna.setRenderer(renderByte);
-            colonna.setWidth(WIDTH_BYTE);
+            colonna.setWidth(width > 0 ? width : WIDTH_BYTE);
         }// end of if cycle
 
         if (caption.equals(ACost.PROPERTY_ID)) {

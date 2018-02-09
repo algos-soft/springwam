@@ -669,33 +669,35 @@ public class AAnnotationService {
             }// end of if cycle
         }// end of if cycle
 
-        switch (roleTypeVisibility) {
-            case nobody:
-                visibile = false;
-                break;
-            case developer:
-                if (session.isDeveloper()) {
-                    visibile = true;
-                }// end of if cycle
-                break;
-            case admin:
-                if (session.isAdmin() || session.isDeveloper()) {
-                    visibile = true;
-                }// end of if cycle
-                break;
-            case user:
-                if (session.isUser() || session.isAdmin() || session.isDeveloper()) {
-                    visibile = true;
-                }// end of if cycle
-                break;
-            case guest:
-                visibile = false;
-                break;
-            default:
-                visibile = false;
-                log.warn("Switch - caso non definito");
-                break;
-        } // end of switch statement
+        if (roleTypeVisibility!=null) {
+            switch (roleTypeVisibility) {
+                case nobody:
+                    visibile = false;
+                    break;
+                case developer:
+                    if (session.isDeveloper()) {
+                        visibile = true;
+                    }// end of if cycle
+                    break;
+                case admin:
+                    if (session.isAdmin() || session.isDeveloper()) {
+                        visibile = true;
+                    }// end of if cycle
+                    break;
+                case user:
+                    if (session.isUser() || session.isAdmin() || session.isDeveloper()) {
+                        visibile = true;
+                    }// end of if cycle
+                    break;
+                case guest:
+                    visibile = false;
+                    break;
+                default:
+                    visibile = false;
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+        }// end of if cycle
 
         return visibile;
     }// end of method

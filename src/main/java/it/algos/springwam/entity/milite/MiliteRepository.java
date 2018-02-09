@@ -4,6 +4,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.lib.ACost;
+import it.algos.springwam.application.AppCost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -19,13 +20,15 @@ import java.util.List;
  * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  */
 @SpringComponent
-@Qualifier(ACost.TAG_MIL)
+@Qualifier(AppCost.TAG_MIL)
 @AIScript(sovrascrivibile = false)
 public interface MiliteRepository extends MongoRepository<Milite, String> {
 
     public Milite findByNickname(String nickname);
 
     public Milite findByCompanyAndNickname(Company company, String nickname);
+
+    public Milite findByCompanyAndNomeAndCognome(Company company, String nome, String cognome);
 
     public List<Milite> findByCompanyOrderByCognomeAsc(Company company);
 

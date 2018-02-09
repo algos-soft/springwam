@@ -32,7 +32,6 @@ import java.util.List;
 @Scope("session")
 @Qualifier(ACost.TAG_COM)
 @SpringView(name = ACost.VIEW_COM_LIST)
-@AIView(roleTypeVisibility = EARoleType.developer)
 @AIScript(sovrascrivibile = true)
 public class CompanyList extends AList {
 

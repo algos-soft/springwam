@@ -78,6 +78,7 @@ public class SpringwamBoot extends ABoot {
         migration.importAllFunzioniSetup();
         migration.importAllServiziSetup();
         migration.importAllMilitiSetup();
+        migration.importAllTurniSetup();
 //        this.company.findOrCrea();
 //        this.user.findOrCrea();
         croce.findOrCrea();

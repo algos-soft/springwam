@@ -37,7 +37,6 @@ import it.algos.springvaadin.lib.ACost;
 @Scope("session")
 @Qualifier(ACost.TAG_PER)
 @SpringView(name = ACost.VIEW_PER_LIST)
-@AIView(roleTypeVisibility = EARoleType.developer)
 @AIScript(sovrascrivibile = true)
 public class PersonaList extends AList {
 

@@ -1,11 +1,18 @@
 package it.algos.springwam.ui;
 
+import it.algos.springwam.entity.croce.Croce;
+import it.algos.springwam.entity.funzione.Funzione;
+import it.algos.springwam.entity.iscrizione.Iscrizione;
+import it.algos.springwam.entity.iscrizione.IscrizioneList;
+import it.algos.springwam.entity.milite.Milite;
+import it.algos.springwam.entity.servizio.Servizio;
+import it.algos.springwam.entity.turno.Turno;
+import it.algos.springwam.entity.turno.TurnoList;
 import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.footer.AFooter;
 import it.algos.springvaadin.service.AStartService;
 import it.algos.springwam.entity.milite.MiliteList;
 import it.algos.springwam.entity.milite.MiliteService;
-import it.algos.springwam.entity.utente.UtenteList;
 import it.algos.springwam.entity.servizio.ServizioList;
 import it.algos.springwam.entity.croce.CroceList;
 import it.algos.springwam.entity.funzione.FunzioneList;
@@ -23,8 +30,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Grid;
-import it.algos.springwam.entity.utente.UtenteRepository;
-import it.algos.springwam.entity.utente.UtenteService;
+import it.algos.springwam.tabellone.Tabellone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -101,10 +107,13 @@ public class SpringwamUI extends AUI {
      * La vista viene aggiunta allo SpringViewProvider usato da SpringNavigator
      */
     protected void addVisteSpecifiche() {
-        menuLayout.addView(CroceList.class);
-        menuLayout.addView(MiliteList.class);
-        menuLayout.addView(FunzioneList.class);
-        menuLayout.addView(ServizioList.class);
+		menuLayout.addView(Iscrizione.class,IscrizioneList.class);
+        menuLayout.addView(Croce.class,CroceList.class);
+        menuLayout.addView(Funzione.class,FunzioneList.class);
+        menuLayout.addView(Servizio.class,ServizioList.class);
+        menuLayout.addView(Tabellone.class);
+        menuLayout.addView(Milite.class,MiliteList.class);
+        menuLayout.addView(Turno.class,TurnoList.class);
     }// end of method
 
     /**

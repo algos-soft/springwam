@@ -60,8 +60,7 @@ public class ServizioAmb extends BaseEntity {
     }// end of constructor
 
 
-
-    public static List<ServizioAmb> findAllByCroce(CroceAmb company,EntityManager manager) {
+    public static List<ServizioAmb> findAllByCroce(CroceAmb company, EntityManager manager) {
         List<ServizioAmb> lista = new ArrayList<>();
         List<Object> resultlist = null;
         CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();

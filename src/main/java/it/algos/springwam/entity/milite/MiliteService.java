@@ -2,6 +2,7 @@ package it.algos.springwam.entity.milite;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
+import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.persona.PersonaService;
 import it.algos.springvaadin.entity.role.Role;
@@ -9,6 +10,8 @@ import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.IAUser;
 import it.algos.springvaadin.service.ALoginService;
+import it.algos.springwam.application.AppCost;
+import it.algos.springwam.entity.funzione.Funzione;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,7 +39,7 @@ import java.util.List;
 @SpringComponent
 @Service
 @Scope(value = "singleton", proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Qualifier(ACost.TAG_MIL)
+@Qualifier(AppCost.TAG_MIL)
 @AIScript(sovrascrivibile = false)
 public class MiliteService extends ALoginService {
 
@@ -67,7 +70,7 @@ public class MiliteService extends ALoginService {
      * Si usa un @Qualifier(), per avere la sottoclasse specifica
      * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
      */
-    public MiliteService(@Qualifier(ACost.TAG_MIL) MongoRepository repository) {
+    public MiliteService(@Qualifier(AppCost.TAG_MIL) MongoRepository repository) {
         super(repository);
         this.repository = (MiliteRepository) repository;
         super.entityClass = Milite.class;
@@ -250,6 +253,20 @@ public class MiliteService extends ALoginService {
 
 
     /**
+     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
+     *
+     * @param croce    di riferimento (obbligatoria visto che è EACompanyRequired.obbligatoria)
+     * @param nome:    (obbligatorio, non unico singolarmente nella company ma unico con cognome)
+     * @param cognome: (obbligatorio, non unico singolarmente nella company ma unico con nome)
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public Milite findByNomeCognome(Company croce, String nome, String cognome) {
+        return repository.findByCompanyAndNomeAndCognome(croce != null ? croce : (Company) login.getCompany(), nome, cognome);
+    }// end of method
+
+
+    /**
      * Returns all instances of the type
      * Usa MultiCompany, ma il developer può vedere anche tutto
      * Lista ordinata
@@ -262,6 +279,25 @@ public class MiliteService extends ALoginService {
         } else {
             return repository.findByCompanyOrderByCognomeAsc((Company) login.getCompany());
         }// end of if/else cycle
+    }// end of method
+
+    /**
+     * Saves a given entity.
+     * Use the returned instance for further operations
+     * as the save operation might have changed the entity instance completely.
+     *
+     * @param entityBean da salvare
+     *
+     * @return the saved entity
+     */
+    @Override
+    public AEntity save(AEntity entityBean) {
+
+        if (text.isEmpty(entityBean.id)) {
+            entityBean.id = ((Milite) entityBean).getCompany().getCode() + ((Milite) entityBean).getNickname();
+        }// end of if cycle
+
+        return super.save(entityBean);
     }// end of method
 
     /**
@@ -282,5 +318,6 @@ public class MiliteService extends ALoginService {
 
         return valida;
     }// end of method
+
 
 }// end of class

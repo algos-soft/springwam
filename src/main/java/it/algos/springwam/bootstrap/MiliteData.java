@@ -15,8 +15,6 @@ import it.algos.springwam.entity.croce.Croce;
 import it.algos.springwam.entity.croce.CroceService;
 import it.algos.springwam.entity.milite.Milite;
 import it.algos.springwam.entity.milite.MiliteService;
-import it.algos.springwam.entity.utente.Utente;
-import it.algos.springwam.entity.utente.UtenteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

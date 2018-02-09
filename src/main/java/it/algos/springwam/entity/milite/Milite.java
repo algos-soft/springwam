@@ -7,6 +7,7 @@ import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.enumeration.*;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.IAUser;
+import it.algos.springwam.application.AppCost;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,7 +52,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Qualifier(ACost.TAG_MIL)
+@Qualifier(AppCost.TAG_MIL)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"nome", "cognome"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm(fields = {"nome", "cognome"})

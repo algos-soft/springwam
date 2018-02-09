@@ -57,6 +57,22 @@ public class UserAmb extends BaseEntity {
 
 
     /**
+     * Recupera una istanza della Entity usando la query standard della Primary Key
+     * Nessun filtro sulla company, perché la primary key è unica
+     *
+     * @param id valore (unico) della Primary Key
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public static UtenteAmb find(long id, EntityManager manager) {
+        if (manager != null) {
+            return (UtenteAmb) AQuery.find(UtenteAmb.class, id, manager);
+        }// end of if cycle
+        return null;
+    }// end of static method
+
+
+    /**
      * Recupera una lista di records della Entity
      *
      * @return lista di alcune istanze della Entity

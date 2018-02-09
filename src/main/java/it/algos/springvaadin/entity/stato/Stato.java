@@ -48,7 +48,7 @@ import it.algos.springvaadin.entity.AEntity;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(ACost.TAG_STA)
-@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.nonUsata)
+@AIEntity(roleTypeVisibility = EARoleType.developer, company = EACompanyRequired.nonUsata)
 @AIList(dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm()
 @AIScript(sovrascrivibile = false)

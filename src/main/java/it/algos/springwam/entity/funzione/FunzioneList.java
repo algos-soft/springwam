@@ -47,7 +47,6 @@ import it.algos.springwam.application.AppCost;
 @Scope("session")
 @Qualifier(AppCost.TAG_FUN)
 @SpringView(name = AppCost.VIEW_FUN_LIST)
-@AIView(roleTypeVisibility = EARoleType.user)
 @AIScript(sovrascrivibile = true)
 public class FunzioneList extends AList {
 

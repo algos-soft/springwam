@@ -32,7 +32,6 @@ import java.util.List;
 @Scope("session")
 @Qualifier(ACost.TAG_STA)
 @SpringView(name = ACost.VIEW_STA_LIST)
-@AIView(roleTypeVisibility = EARoleType.developer)
 @AIScript(sovrascrivibile = true)
 public class StatoList extends AList {
 

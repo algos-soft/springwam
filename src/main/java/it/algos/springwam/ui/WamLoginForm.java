@@ -40,7 +40,7 @@ public class WamLoginForm extends ALoginForm {
      * @param service      iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      * @param fieldFactory
      */
-    public WamLoginForm(@Qualifier(AppCost.TAG_UTE) ALoginService service, IAFieldFactory fieldFactory) {
+    public WamLoginForm(@Qualifier(AppCost.TAG_MIL) ALoginService service, IAFieldFactory fieldFactory) {
         super(service);
         this.fieldFactory = fieldFactory;
     }// end of Spring constructor

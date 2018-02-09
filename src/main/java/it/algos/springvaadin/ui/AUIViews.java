@@ -3,16 +3,24 @@ package it.algos.springvaadin.ui;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import it.algos.springvaadin.app.AlgosApp;
+import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.entity.address.Address;
 import it.algos.springvaadin.entity.address.AddressList;
+import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.company.CompanyList;
+import it.algos.springvaadin.entity.log.Log;
 import it.algos.springvaadin.entity.log.LogList;
+import it.algos.springvaadin.entity.logtype.Logtype;
 import it.algos.springvaadin.entity.logtype.LogtypeList;
+import it.algos.springvaadin.entity.persona.Persona;
 import it.algos.springvaadin.entity.persona.PersonaList;
+import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.entity.role.RoleForm;
 import it.algos.springvaadin.entity.role.RoleList;
 import it.algos.springvaadin.entity.stato.Stato;
 import it.algos.springvaadin.entity.stato.StatoList;
 import it.algos.springvaadin.entity.user.UserList;
+import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.home.AHomeView;
 import it.algos.springvaadin.menu.MenuLayout;
 import it.algos.springvaadin.view.IAView;
@@ -70,7 +78,7 @@ public abstract class AUIViews extends AUIParams {
     protected void addAllViste() {
 //        //--l'eventuale menu Home è sempre il primo
 //        if (usaItemMenuHome) {
-        menuLayout.addView(AHomeView.class);
+        menuLayout.addView( AHomeView.class);
 //        }// end of if cycle
 
         this.addVisteStandard();
@@ -91,8 +99,7 @@ public abstract class AUIViews extends AUIParams {
      */
     protected void addVisteStandard() {
         if (AlgosApp.USE_SECURITY) {
-            menuLayout.addView(RoleList.class);
-            menuLayout.addView(UserList.class);
+            menuLayout.addView(Role.class, RoleList.class);
         }// end of if cycle
 
 //        if (LibParams.useVers()) {
@@ -105,15 +112,15 @@ public abstract class AUIViews extends AUIParams {
 //        menuLayout.addView(Persona.class, PersonaNavView.class);
 
         if (AlgosApp.USE_LOG) {
-            menuLayout.addView(LogList.class);
-            menuLayout.addView(LogtypeList.class);
+            menuLayout.addView(Log.class, LogList.class);
+            menuLayout.addView(Logtype.class, LogtypeList.class);
         }// end of if cycle
 
         if (AlgosApp.USE_MULTI_COMPANY) {
-            menuLayout.addView(CompanyList.class);
+            menuLayout.addView(Company.class, CompanyList.class);
         }// end of if cycle
-        menuLayout.addView(PersonaList.class);
-        menuLayout.addView(AddressList.class);
+        menuLayout.addView(Persona.class, PersonaList.class);
+        menuLayout.addView(Address.class, AddressList.class);
     }// end of method
 
     /**
@@ -145,10 +152,10 @@ public abstract class AUIViews extends AUIParams {
     /**
      * Adds a lazy view to the MenuBar
      *
-     * @param viewClass the view class to instantiate
+     * @param viewClazz the view class to instantiate
      */
-    protected void addView(Class<? extends IAView> viewClass) {
-        menuLayout.addView(viewClass);
+    protected void addView(Class<? extends AEntity> entityClazz, Class<? extends IAView> viewClazz) {
+        menuLayout.addView(entityClazz,viewClazz);
     }// end of method
 
 

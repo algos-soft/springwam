@@ -52,7 +52,7 @@ import it.algos.springwam.application.AppCost;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(AppCost.TAG_CRO)
-@AIEntity(roleTypeVisibility = EARoleType.user, company = EACompanyRequired.nonUsata)
+@AIEntity(roleTypeVisibility = EARoleType.developer, company = EACompanyRequired.nonUsata)
 @AIList(fields = {"code", "descrizione", "presidente", "contatto"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm(fields = {"code", "descrizione", "presidente", "contatto"})
 @AIScript(sovrascrivibile = false)

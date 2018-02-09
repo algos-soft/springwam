@@ -1,22 +1,24 @@
-package it.algos.springwam.entity.milite;
+package it.algos.springwam.entity.iscrizione;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
-import it.algos.springvaadin.annotation.AIScript;
+import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AForm;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
-import it.algos.springwam.application.AppCost;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springwam.application.AppCost;
 
 /**
- * Project springvaadin
+ * Project springwam
  * Created by Algos
  * User: gac
- * Date: 2018-01-31_15:21:40
+ * Date: 2018-02-04_17:23:11
  * Estende la Entity astratta AForm di tipo AView per visualizzare i fields
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
@@ -27,10 +29,10 @@ import org.springframework.context.annotation.Scope;
  */
 @SpringComponent
 @Scope("session")
-@Qualifier(AppCost.TAG_MIL)
-@SpringView(name = AppCost.VIEW_MIL_FORM)
+@Qualifier(AppCost.TAG_ISC)
+@SpringView(name = AppCost.VIEW_ISC_FORM)
 @AIScript(sovrascrivibile = true)
-public class MiliteForm extends AForm {
+public class IscrizioneForm extends AForm {
 
 
     /**
@@ -45,7 +47,7 @@ public class MiliteForm extends AForm {
      *
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-     public MiliteForm(@Lazy @Qualifier(AppCost.TAG_MIL) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+     public IscrizioneForm(@Lazy @Qualifier(AppCost.TAG_ISC) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
          super(presenter, toolbar);
      }// end of Spring constructor
 

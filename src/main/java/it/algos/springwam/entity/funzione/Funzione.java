@@ -53,7 +53,7 @@ import it.algos.springwam.application.AppCost;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(AppCost.TAG_FUN)
-@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
+@AIEntity(roleTypeVisibility = EARoleType.user, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"ordine", "sigla", "descrizione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm(fields = {"icona", "sigla", "descrizione", "note"})
 @AIScript(sovrascrivibile = false)

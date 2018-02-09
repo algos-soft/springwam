@@ -1,45 +1,48 @@
-package it.algos.springwam.entity.utente;
+package it.algos.springwam.tabellone;
 
-import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
-import javax.annotation.PostConstruct;
-import java.util.List;
-import it.algos.springvaadin.entity.AEntity;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.SpringView;
+import it.algos.springvaadin.annotation.AIScript;
+import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
-import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
-import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springwam.application.AppCost;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springwam.application.AppCost;
 
 /**
  * Project springwam
  * Created by Algos
  * User: gac
- * Date: 2018-01-16_10:27:41
+ * Date: gio, 08-feb-2018
+ * Time: 22:55
  * Estende la Entity astratta AList di tipo AView per visualizzare la Grid
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
  * Annotated with @AIView (facoltativo) per selezionarne la 'visibilità' secondo il ruolo dell'User collegato
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
+@Slf4j
 @SpringComponent
 @Scope("session")
-@Qualifier(AppCost.TAG_UTE)
-@SpringView(name = AppCost.VIEW_UTE_LIST)
-@AIView(roleTypeVisibility = EARoleType.admin)
-@AIScript(sovrascrivibile = true)
-public class UtenteList extends AList {
+@Qualifier(AppCost.TAG_TAB)
+@SpringView(name = AppCost.VIEW_TAB_LIST)
+@AIScript(sovrascrivibile = false)
+public class Tabellone extends AList {
 
+    @Autowired
+    private TabelloneMenuLayout tabMenuLayout;
+
+    public static final Resource VIEW_ICON = VaadinIcons.ASTERISK;
 
     /**
      * Label del menu (facoltativa)
@@ -47,16 +50,7 @@ public class UtenteList extends AList {
      * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
      * Se manca il MENU_NAME, di default usa il 'name' della view
      */
-    public static final String MENU_NAME = AppCost.TAG_UTE;
-
-
-    /**
-     * Icona visibile nel menu (facoltativa)
-     * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
-     * Se manca il MENU_NAME, di default usa il 'name' della view
-     */
-    public static final Resource VIEW_ICON = VaadinIcons.ASTERISK;
-
+    public static final String MENU_NAME = AppCost.TAG_TAB;
 
     /**
      * Costruttore @Autowired
@@ -71,25 +65,11 @@ public class UtenteList extends AList {
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-    public UtenteList(
-            @Lazy @Qualifier(AppCost.TAG_UTE) IAPresenter presenter,
+    public Tabellone(
+            @Lazy @Qualifier(AppCost.TAG_TAB) IAPresenter presenter,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
         super(presenter, toolbar);
     }// end of Spring constructor
 
-
-
-    /**
-     * Crea la scritta esplicativa
-     * Può essere sovrascritto per un'intestazione specifica (caption) della grid
-     */
-    @Override
-    protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
-        super.fixCaption(entityClazz, items);
-        if (login.isDeveloper()) {
-            caption += "</br>Lista visibile a tutti";
-            caption += "</br>Solo il developer vede queste note";
-        }// end of if cycle
-    }// end of method
-
 }// end of class
+

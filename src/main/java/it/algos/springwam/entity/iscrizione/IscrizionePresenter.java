@@ -1,4 +1,4 @@
-package it.algos.springwam.entity.utente;
+package it.algos.springwam.entity.iscrizione;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.presenter.APresenter;
@@ -18,18 +18,19 @@ import it.algos.springwam.application.AppCost;
  * Project springwam
  * Created by Algos
  * User: gac
- * Date: 2018-01-16_10:27:41
+ * Date: 2018-02-04_17:23:11
  * Estende la Entity astratta APresenter che gestisce la business logic
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con dei link @Autowired di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
 @Scope("session")
-@Qualifier(AppCost.TAG_UTE)
+@Qualifier(AppCost.TAG_ISC)
 @AIScript(sovrascrivibile = true)
-public class UtentePresenter extends APresenter {
+public class IscrizionePresenter extends APresenter {
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -37,12 +38,12 @@ public class UtentePresenter extends APresenter {
      * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
      * Regola il modello-dati specifico
      */
-    public UtentePresenter(
-                @Lazy @Qualifier(AppCost.TAG_UTE) IAService service,
-                @Lazy @Qualifier(AppCost.TAG_UTE) IAList list,
-                @Lazy @Qualifier(AppCost.TAG_UTE) IAForm form) {
+    public IscrizionePresenter(
+                @Lazy @Qualifier(AppCost.TAG_ISC) IAService service,
+                @Lazy @Qualifier(AppCost.TAG_ISC) IAList list,
+                @Lazy @Qualifier(AppCost.TAG_ISC) IAForm form) {
         super(service, list, form);
-        super.entityClass = Utente.class;
+        super.entityClass = Iscrizione.class;
      }// end of Spring constructor
 
 

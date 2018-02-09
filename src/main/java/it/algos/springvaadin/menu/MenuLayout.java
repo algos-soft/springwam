@@ -159,14 +159,30 @@ public class MenuLayout extends VerticalLayout {
      * Adds a view to the firstMenuBar
      * Chechk if the logged buttonUser is enabled to views this view
      *
+     * @param viewClazz   the view class to adds
+     */
+    public void addView(Class<? extends IAView> viewClazz) {
+        EARoleType roleTypeVisibility = annotation.getViewRoleType(viewClazz);
+        if (roleTypeVisibility != null) {
+            addView(roleTypeVisibility, viewClazz);
+        }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Adds a view to the firstMenuBar
+     * Chechk if the logged buttonUser is enabled to views this view
+     *
      * @param entityClazz the model class to check the visibility
      * @param viewClazz   the view class to adds
      */
     public void addView(Class<? extends AEntity> entityClazz, Class<? extends IAView> viewClazz) {
         //@todo RIMETTERE
-//        if (LibAnnotation.isEntityClassVisibile(entityClazz)) {
-        addView(viewClazz);
-//        }// end of if cycle
+
+        EARoleType roleTypeVisibility = annotation.getEntityRoleType(entityClazz);
+        if (roleTypeVisibility != null) {
+            addView(roleTypeVisibility, viewClazz);
+        }// end of if cycle
     }// end of method
 
 
@@ -180,11 +196,10 @@ public class MenuLayout extends VerticalLayout {
      * @param viewClass       the view class to adds
      * @param itemToAddBefore quello che si vuole inserire
      */
-    public void addViewBefore(Class<? extends IAView> viewClass, MenuBar.MenuItem itemToAddBefore) {
+    public void addViewBefore(EARoleType roleTypeVisibility, Class<? extends IAView> viewClass, MenuBar.MenuItem itemToAddBefore) {
         String navigatorInternalName = annotation.getViewName(viewClass);
         String captionMenuName = reflection.getPropertyStr(viewClass, MENU_NAME);
         Resource viewIcon = reflection.getPropertyRes(viewClass, "VIEW_ICON");
-        EARoleType roleTypeVisibility = annotation.getViewRoleType(viewClass);
 
         if (text.isEmpty(captionMenuName)) {
             captionMenuName = navigatorInternalName;
@@ -287,8 +302,8 @@ public class MenuLayout extends VerticalLayout {
      * @param viewClass       the view class to adds
      * @param viewClassBefore before quella che si vuole inserire
      */
-    public void addViewBefore(Class<? extends IAView> viewClass, Class<? extends IAView> viewClassBefore) {
-        this.addViewBefore(viewClass, reflection.getPropertyStr(viewClassBefore, MENU_NAME));
+    public void addViewBefore(EARoleType roleTypeVisibility, Class<? extends IAView> viewClass, Class<? extends IAView> viewClassBefore) {
+        this.addViewBefore(roleTypeVisibility, viewClass, reflection.getPropertyStr(viewClassBefore, MENU_NAME));
     }// end of method
 
 
@@ -302,8 +317,8 @@ public class MenuLayout extends VerticalLayout {
      * @param viewClass       the view class to adds
      * @param captionMenuName visibile nella barra di menu
      */
-    public void addViewBefore(Class<? extends IAView> viewClass, String captionMenuName) {
-        this.addViewBefore(viewClass, getMenu(captionMenuName));
+    public void addViewBefore(EARoleType roleTypeVisibility, Class<? extends IAView> viewClass, String captionMenuName) {
+        this.addViewBefore(roleTypeVisibility, viewClass, getMenu(captionMenuName));
     }// end of method
 
 
@@ -316,8 +331,8 @@ public class MenuLayout extends VerticalLayout {
      *
      * @param viewClass the view class to adds
      */
-    public void addView(Class<? extends IAView> viewClass) {
-        this.addViewBefore(viewClass, (MenuBar.MenuItem) null);
+    public void addView(EARoleType roleTypeVisibility, Class<? extends IAView> viewClass) {
+        this.addViewBefore(roleTypeVisibility, viewClass, (MenuBar.MenuItem) null);
     }// end of method
 
 

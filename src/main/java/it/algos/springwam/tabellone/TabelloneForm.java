@@ -1,4 +1,4 @@
-package it.algos.springwam.entity.milite;
+package it.algos.springwam.tabellone;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
@@ -8,15 +8,17 @@ import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springwam.application.AppCost;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 /**
- * Project springvaadin
+ * Project springwam
  * Created by Algos
  * User: gac
- * Date: 2018-01-31_15:21:40
+ * Date: gio, 08-feb-2018
+ * Time: 23:13
  * Estende la Entity astratta AForm di tipo AView per visualizzare i fields
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
@@ -25,13 +27,13 @@ import org.springframework.context.annotation.Scope;
  * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
+@Slf4j
 @SpringComponent
 @Scope("session")
-@Qualifier(AppCost.TAG_MIL)
-@SpringView(name = AppCost.VIEW_MIL_FORM)
-@AIScript(sovrascrivibile = true)
-public class MiliteForm extends AForm {
-
+@Qualifier(AppCost.TAG_TAB)
+@SpringView(name = AppCost.VIEW_TAB_FORM)
+@AIScript(sovrascrivibile = false)
+public class TabelloneForm extends AForm {
 
     /**
      * Costruttore @Autowired
@@ -45,10 +47,10 @@ public class MiliteForm extends AForm {
      *
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-     public MiliteForm(@Lazy @Qualifier(AppCost.TAG_MIL) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
-         super(presenter, toolbar);
-     }// end of Spring constructor
-
+    public TabelloneForm(
+            @Lazy @Qualifier(AppCost.TAG_TAB) IAPresenter presenter,
+            @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+        super(presenter, toolbar);
+    }// end of Spring constructor
 
 }// end of class
-

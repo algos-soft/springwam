@@ -1,12 +1,13 @@
-package it.algos.springvaadin.entity.user;
+package it.algos.springwam.entity.iscrizione;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import it.algos.springvaadin.entity.ACEntity;
-import it.algos.springvaadin.entity.role.Role;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.login.IAUser;
+import it.algos.springvaadin.entity.AEntity;
+import it.algos.springwam.entity.funzione.Funzione;
+import it.algos.springwam.entity.milite.Milite;
+import it.algos.springwam.entity.servizio.ServizioPresenter;
+import it.algos.springwam.entity.turno.Turno;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -21,10 +22,18 @@ import it.algos.springvaadin.enumeration.EACompanyRequired;
 import it.algos.springvaadin.enumeration.EAFieldAccessibility;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.entity.ACEntity;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springwam.application.AppCost;
+
+import java.time.LocalDateTime;
 
 /**
- * Created by gac on 11-nov-17
+ * Project springwam
+ * Created by Algos
+ * User: gac
+ * Date: 2018-02-04_17:23:11
+ * Estende la Entity astratta ACEntity che contiene il riferimento alla property Company
  * Estende la Entity astratta AEntity che contiene la key property ObjectId
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Document (facoltativo) per avere un nome della collection (DB Mongo) diverso dal nome della Entity
@@ -44,18 +53,19 @@ import it.algos.springvaadin.entity.AEntity;
  * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
  */
 @SpringComponent
-@Document(collection = "user")
+@Document(collection = "iscrizione")
 @Scope("session")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = false)
-@Qualifier(ACost.TAG_USE)
+@Qualifier(AppCost.TAG_ISC)
 @AIEntity(roleTypeVisibility = EARoleType.developer, company = EACompanyRequired.obbligatoria)
-@AIList(dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIList(fields = {"turno", "milite","funzione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIForm(fields = {"turno", "utente", "funzione"})
 @AIScript(sovrascrivibile = false)
-public class User extends ACEntity implements IAUser {
+public class Iscrizione extends AEntity {
 
     /**
      * versione della classe per la serializzazione
@@ -63,106 +73,81 @@ public class User extends ACEntity implements IAUser {
     private final static long serialVersionUID = 1L;
 
 
-    /**
-     * nickname di riferimento (obbligatorio, unico per company)
-     */
-    @NotEmpty
-    @Size(min = 3, max = 20)
-    @Indexed()
-    @AIField(
-            type = EAFieldType.text,
-            required = true,
-            focus = true,
-            name = "NickName",
-            widthEM = 12)
-    @AIColumn(name = "Nick", width = 300)
-    private String nickname;
+//    /**
+//     * turno di riferimento (obbligatorio)
+//     * riferimento dinamico CON @DBRef
+//     */
+//    @NotNull
+//    @DBRef
+//    @AIField(type = EAFieldType.link, clazz = ServizioPresenter.class)
+//    @AIColumn(width = 140)
+//    private Turno turno;
 
 
     /**
-     * password (obbligatoria o facoltativa, non unica)
+     * milite di riferimento (obbligatorio)
+     * riferimento dinamico CON @DBRef
      */
-    @Size(min = 3, max = 20)
-    @AIField(
-            type = EAFieldType.text,
-            required = true,
-            widthEM = 12,
-            admin = EAFieldAccessibility.allways,
-            user = EAFieldAccessibility.showOnly)
-    @AIColumn(name = "Password", width = 200)
-    private String password;
-
-
-    /**
-     * ruolo (obbligatorio, non unico)
-     * riferimento dinamico con @DBRef (obbligatorio per il ComboBox)
-     */
+    @NotNull
     @DBRef
-    @AIField(type = EAFieldType.combo, required = true, clazz = Role.class)
-    @AIColumn(name = "Ruolo", width = 200)
-    public Role role;
+    @AIField(type = EAFieldType.combo, clazz = Milite.class)
+    @AIColumn(width = 140)
+    private Milite milite;
 
 
     /**
-     * buttonUser abilitato (facoltativo, di default true)
+     * funzione per cui il milite/volontario/utente si iscrive (obbligatorio)
+     * riferimento dinamico CON @DBRef
      */
-    @AIField(type = EAFieldType.checkboxlabel, required = true, admin = EAFieldAccessibility.allways)
-    @AIColumn(name = "OK")
-    private boolean enabled;
+    @NotNull
+    @DBRef
+    @AIField(type = EAFieldType.combo, clazz = Funzione.class)
+    @AIColumn(width = 140)
+    private Funzione funzione;
 
 
     /**
-     * @return a string representation of the object.
+     * timestamp di creazione (obbligatorio, inserito in automatico)
+     * (usato per bloccare la cancIscrizione dopo un determinato intervallo di tempo)
      */
-    @Override
-    public String toString() {
-        return nickname;
-    }// end of method
-
-    /**
-     * @return the password (encrypted)
-     */
-    @Override
-    public String getEncryptedPassword() {
-        return null;
-    }// end of method
+    @NotNull
+    @AIField(type = EAFieldType.localdatetime)
+    @AIColumn(width = 140)
+    private LocalDateTime timestamp;
 
 
     /**
-     * Validate a password for this current user.
-     *
-     * @param password the password
-     *
-     * @return true if valid
+     * durata effettiva del turno del milite/volontario di questa iscrizione (obbligatorio, proposta come dal servizio)
      */
-    @Override
-    public boolean validatePassword(String password) {
-        boolean valid = false;
-
-        if (isEnabled()) {
-            if (this.password.equals(password)) {
-                valid = true;
-            }// end of if cycle
-        }// end of if cycle
-
-        return valid;
-    }// end of method
+    @NotNull
+    @AIField(type = EAFieldType.integer)
+    @AIColumn(width = 140)
+    private int durata;
 
 
     /**
-     * @return true if this user is admin
+     * eventuali problemi di presenza del milite/volontario di questa iscrizione nel turno
+     * serve per evidenziare il problema nel tabellone
      */
-    @Override
-    public boolean isAdmin() {
-        return false;
-    }// end of method
+    @AIField(type = EAFieldType.checkbox)
+    @AIColumn(width = 140)
+    private boolean esisteProblema;
+
 
     /**
-     * @return true if this user is developer
+     * se è stata inviata la notifica di inizio turno dal sistema di notifiche automatiche
      */
-    @Override
-    public boolean isDeveloper() {
-        return false;
-    }// end of method
+    @AIField(type = EAFieldType.checkbox)
+    private boolean notificaInviata;
+
+
+//    /**
+//     * @return a string representation of the object.
+//     */
+//    @Override
+//    public String toString() {
+//        return getCode();
+//    }// end of method
+
 
 }// end of entity class

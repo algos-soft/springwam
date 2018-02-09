@@ -12,6 +12,7 @@ import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
+import it.algos.springwam.application.AppCost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -34,9 +35,8 @@ import java.util.List;
  */
 @SpringComponent
 @Scope("session")
-@Qualifier(ACost.TAG_MIL)
-@SpringView(name = ACost.VIEW_MIL_LIST)
-@AIView(roleTypeVisibility = EARoleType.admin)
+@Qualifier(AppCost.TAG_MIL)
+@SpringView(name = AppCost.VIEW_MIL_LIST)
 @AIScript(sovrascrivibile = true)
 public class MiliteList extends AList {
 
@@ -47,7 +47,7 @@ public class MiliteList extends AList {
      * Nella menuBar appare invece visibile il MENU_NAME, indicato qui
      * Se manca il MENU_NAME, di default usa il 'name' della view
      */
-    public static final String MENU_NAME = ACost.TAG_MIL;
+    public static final String MENU_NAME = AppCost.TAG_MIL;
 
 
     /**
@@ -72,7 +72,7 @@ public class MiliteList extends AList {
      * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
     public MiliteList(
-            @Lazy @Qualifier(ACost.TAG_MIL) IAPresenter presenter,
+            @Lazy @Qualifier(AppCost.TAG_MIL) IAPresenter presenter,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
         super(presenter, toolbar);
     }// end of Spring constructor

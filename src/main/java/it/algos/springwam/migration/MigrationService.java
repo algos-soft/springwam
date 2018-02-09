@@ -10,17 +10,20 @@ import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.entity.user.User;
 import it.algos.springvaadin.entity.user.UserService;
+import it.algos.springvaadin.service.ADateService;
 import it.algos.springwam.entity.croce.Croce;
 import it.algos.springwam.entity.croce.CroceService;
 import it.algos.springwam.entity.croce.EAOrganizzazione;
 import it.algos.springwam.entity.funzione.Funzione;
 import it.algos.springwam.entity.funzione.FunzioneService;
+import it.algos.springwam.entity.iscrizione.Iscrizione;
+import it.algos.springwam.entity.iscrizione.IscrizioneService;
 import it.algos.springwam.entity.milite.Milite;
 import it.algos.springwam.entity.milite.MiliteService;
 import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.servizio.ServizioService;
-import it.algos.springwam.entity.utente.Utente;
-import it.algos.springwam.entity.utente.UtenteService;
+import it.algos.springwam.entity.turno.Turno;
+import it.algos.springwam.entity.turno.TurnoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -29,8 +32,16 @@ import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +61,9 @@ public class MigrationService {
     private CroceService croceService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private FunzioneService funzioneService;
 
     @Autowired
@@ -59,7 +73,13 @@ public class MigrationService {
     private MiliteService militeService;
 
     @Autowired
-    private RoleService roleService;
+    private IscrizioneService iscrizioneService;
+
+    @Autowired
+    private TurnoService turnoService;
+
+    @Autowired
+    private ADateService dateService;
 
 
     private EntityManager manager;
@@ -410,61 +430,14 @@ public class MigrationService {
         return listaFunzioni;
     }// end of method
 
-//    /**
-//     * Aggiunge le funzioni al servizio
-//     *
-//     * @param servizioOld della companyOld
-//     * @param servizioNew appena creato in springWam
-//     */
-//    private void servizioAddFunzioni(ServizioAmb servizioOld, Servizio servizioNew) {
-//        List<Funzione> listaFunzioni = new ArrayList<>();
-//        Funzione funz = null;
-//        int numeroFunzioniObbligatorie = servizioOld.getFunzioni_obbligatorie();
-//        long idFunzione1 = servizioOld.getFunzione1_id();
-//        long idFunzione2 = servizioOld.getFunzione2_id();
-//        long idFunzione3 = servizioOld.getFunzione3_id();
-//        long idFunzione4 = servizioOld.getFunzione4_id();
-//
-//        funz = mappaFunzioni.get(idFunzione1);
-//        if (funz != null) {
-//            funz.setObbligatoria(numeroFunzioniObbligatorie > 0);
-//            listaFunzioni.add(funz);
-//        }// end of if cycle
-//
-//        funz = mappaFunzioni.get(idFunzione2);
-//        if (funz != null) {
-//            funz.setObbligatoria(numeroFunzioniObbligatorie > 1);
-//            listaFunzioni.add(funz);
-//        }// end of if cycle
-//
-//        funz = mappaFunzioni.get(idFunzione3);
-//        if (funz != null) {
-//            funz.setObbligatoria(numeroFunzioniObbligatorie > 2);
-//            listaFunzioni.add(funz);
-//        }// end of if cycle
-//
-//        funz = mappaFunzioni.get(idFunzione4);
-//        if (funz != null) {
-//            funz.setObbligatoria(numeroFunzioniObbligatorie > 3);
-//            listaFunzioni.add(funz);
-//        }// end of if cycle
-//
-//        servizioNew.setFunzioni(listaFunzioni);
-//        try { // prova ad eseguire il codice
-//            servizioService.save(servizioNew);
-//        } catch (Exception unErrore) { // intercetta l'errore
-//            log.error(unErrore.toString());
-//        }// fine del blocco try-catch
-//    }// end of method
-
 
     /**
      * Importa tutti i militi esistenti in webambulanze, in fase iniziale di setup
      */
     public void importAllMilitiSetup() {
-//        if (militeService.count() == 0) {
-        importAllMiliti();
-//        }// end of if cycle
+        if (militeService.count() == 0) {
+            importAllMiliti();
+        }// end of if cycle
     }// end of constructor
 
 
@@ -489,10 +462,9 @@ public class MigrationService {
      */
     public void importMiliti(CroceAmb croceOld, Croce croceNew) {
         List<UserAmb> users = UserAmb.findAllByCroce(croceOld, manager);
-        List<UtenteAmb> utenti = UtenteAmb.findAll(croceOld, manager);
 
         for (UserAmb userOld : users) {
-            creaSingoloMilite(croceNew, utenti, userOld);
+            creaSingoloMilite(croceNew, userOld);
         }// end of for cycle
     }// end of constructor
 
@@ -506,24 +478,36 @@ public class MigrationService {
      * @param userOld  della companyOld
      * @param croceNew company usata in springWam
      */
-    private void creaSingoloMilite(Croce croceNew, List<UtenteAmb> utenti, UserAmb userOld) {
+    private void creaSingoloMilite(Croce croceNew, UserAmb userOld) {
         Milite entity;
         String nickname = userOld.getNickname();
         String password = userOld.getPass();
         Role role = getRuolo(userOld);
         boolean enabled = userOld.isEnabled();
+        UtenteAmb utenteOld = userOld.getMilite();
+        String nome = "";
+        String cognome = "";
+        boolean dipendente = false;
+
+        if (utenteOld != null) {
+            nome = utenteOld.getNome();
+            cognome = utenteOld.getCognome();
+            dipendente = utenteOld.isDipendente();
+        } else {
+            int a=87;
+        }// end of if/else cycle
+
 
         if (militeService.findByKeyUnica(croceNew, nickname) == null) {
-
             entity = new Milite();
             entity.setNickname(nickname);
             entity.setPassword(password);
             entity.setRole(role);
             entity.setEnabled(true);
-            entity.setNome(nickname);
-            entity.setCognome(nickname);
+            entity.setNome(nome);
+            entity.setCognome(cognome);
             entity.setEnabled(enabled);
-            entity.setDipendente(false);
+            entity.setDipendente(dipendente);
             entity.setInfermiere(false);
             entity.company = croceNew;
             militeService.save(entity);
@@ -574,30 +558,200 @@ public class MigrationService {
     }// end of method
 
 
-    //    private Utente regolaRuoliAssociazione(UtenteAmb militeOld, Utente utenteNew) {
-//        String tagIP = "I.P.";
-//        List<Long> listaRuoliUtente = UtenteRuoloAmb.getListAdmin(manager);
-//        UserAmb utente = UserAmb.getUtenteByMiliteID(manager, militeOld);
-//        long idKeyUtente = 0;
-//        if (utente != null) {
-//            idKeyUtente = utente.getId();
-//        }// end of if cycle
-//        boolean isAdmin = listaRuoliUtente.contains(idKeyUtente);
-//        boolean isDipendente = militeOld.isDipendente();
-//        boolean isInfermiere = militeOld.getCognome().startsWith(tagIP);
-//
-//        utenteNew.setAdmin(isAdmin);
-//        utenteNew.setDipendente(isDipendente);
-//        utenteNew.setInfermiere(isInfermiere);
-//
-//        try { // prova ad eseguire il codice
-//            utenteNew = (Utente) utenteService.save(utenteNew);
-//        } catch (Exception unErrore) { // intercetta l'errore
-//            log.error(unErrore.toString());
-//        }// fine del blocco try-catch
-//
-//        return utenteNew;
-//    }// end of method
+    /**
+     * Importa tutti i turni esistenti in webambulanze, in fase iniziale di setup
+     */
+    public void importAllTurniSetup() {
+        if (turnoService.count() == 0) {
+            importAllTurni();
+        }// end of if cycle
+    }// end of constructor
+
+
+    /**
+     * Importa tutti i turni esistenti in webambulanze
+     */
+    public void importAllTurni() {
+        Croce croceNew;
+        creaManagers();
+
+        for (CroceAmb croceOld : getAllCrociValide()) {
+            croceNew = getCroce(croceOld);
+            importTurni(croceOld, croceNew);
+        }// end of for cycle
+
+        chiudeManagers();
+    }// end of constructor
+
+
+    /**
+     * Importa i turni esistenti in una croce di webambulanze
+     */
+    public void importTurni(CroceAmb croceOld, Croce croceNew) {
+        Date primoGennaioDate = dateService.getPrimoGennaio(2018);
+        Timestamp inizio = new Timestamp(primoGennaioDate.getTime());
+        Date trentunoDicembreDate = dateService.getTrentunoDicembre(2018);
+        Timestamp fine = new Timestamp(trentunoDicembreDate.getTime());
+        List<TurnoAmb> turni = TurnoAmb.findAllByCroceAndYear(croceOld, inizio, fine, manager);
+
+        for (TurnoAmb turnoOld : turni) {
+            creaSingoloTurno(croceNew, turnoOld);
+        }// end of for cycle
+    }// end of constructor
+
+
+    /**
+     * Crea il singolo turno
+     * Non è detto che ci sia il login corretto per la company
+     * Quindi non posso usare il metodo userService.findOrCrea() che usa la company del login
+     * Quindi inserisco la company direttamente
+     *
+     * @param turnoOld della companyOld
+     * @param croceNew company usata in springWam
+     */
+    private void creaSingoloTurno(Croce croceNew, TurnoAmb turnoOld) {
+        Turno entity = null;
+        Servizio servizio = recuperaServizio(croceNew, turnoOld);
+        Date inizioOld = turnoOld.getInizio();
+        Date fineOld = turnoOld.getFine();
+        LocalDate giornoNew = dateService.dateToLocalDate(inizioOld);
+        LocalDateTime inizioNew = dateService.dateToLocalDateTime(inizioOld);
+        LocalDateTime fineNew = dateService.dateToLocalDateTime(fineOld);
+        List<Iscrizione> iscrizioni;
+        String titoloExtra = turnoOld.getTitolo_extra();
+        String localitaExtra = turnoOld.getLocalità_extra();
+        String note = turnoOld.getNote();
+
+        entity = new Turno();
+        entity.setGiorno(giornoNew);
+        entity.setServizio(servizio);
+        entity.setInizio(inizioNew);
+        entity.setFine(fineNew);
+        entity.setTitoloExtra(titoloExtra);
+        entity.setLocalitaExtra(localitaExtra);
+        entity.company = croceNew;
+        turnoService.save(entity);
+
+        iscrizioni = recuperaIscrizioni(turnoOld, entity);
+        entity.setIscrizioni(iscrizioni);
+        turnoService.save(entity);
+    }// end of method
+
+
+    private Servizio recuperaServizio(Croce croceNew, TurnoAmb turnoOld) {
+        Servizio servizioNew = null;
+        ServizioAmb servizioOld = null;
+        String sigla;
+
+        if (turnoOld != null) {
+            servizioOld = turnoOld.getTipo_turno();
+            if (servizioOld != null) {
+                sigla = servizioOld.getSigla();
+
+                if (!sigla.equals("")) {
+                    servizioNew = servizioService.findByKeyUnica(croceNew, sigla);
+                }// end of if cycle
+            }// end of if cycle
+        }// end of if cycle
+
+        return servizioNew;
+    }// end of method
+
+
+    private List<Iscrizione> recuperaIscrizioni(TurnoAmb turnoOld, Turno turnoNew) {
+        List<Iscrizione> iscrizioni = new ArrayList<>();
+        Iscrizione iscrizione;
+
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione1(), turnoOld.getFunzione1(), turnoOld.isProblemi_funzione1(), turnoNew);
+        if (iscrizione != null) {
+            iscrizioni.add(iscrizione);
+        }// end of if cycle
+
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione2(), turnoOld.getFunzione2(), turnoOld.isProblemi_funzione2(), turnoNew);
+        if (iscrizione != null) {
+            iscrizioni.add(iscrizione);
+        }// end of if cycle
+
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione3(), turnoOld.getFunzione3(), turnoOld.isProblemi_funzione3(), turnoNew);
+        if (iscrizione != null) {
+            iscrizioni.add(iscrizione);
+        }// end of if cycle
+
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione4(), turnoOld.getFunzione4(), turnoOld.isProblemi_funzione4(), turnoNew);
+        if (iscrizione != null) {
+            iscrizioni.add(iscrizione);
+        }// end of if cycle
+
+        if (iscrizioni.size() == 0) {
+            iscrizioni = null;
+        }// end of if cycle
+
+        return iscrizioni;
+    }// end of method
+
+
+    /**
+     * Crea la singola iscrizione (embedded)
+     * Non è detto che ci sia il login corretto per la company
+     * Quindi non posso usare il metodo userService.findOrCrea() che usa la company del login
+     * Quindi inserisco la company direttamente
+     */
+    private Iscrizione recuperaIscrizione(TurnoAmb turnoOld, UtenteAmb utenteOld, FunzioneAmb funzioneOld, boolean esisteProblema, Turno turnoNew) {
+        Iscrizione entity = null;
+        String siglaOld;
+        String codeNew;
+        Croce croceNew = (Croce) turnoNew.getCompany();
+        Funzione funzioneNew = null;
+        Milite militeNew;
+        LocalDateTime timestamp = LocalDateTime.now();
+        int durata = 0;
+        String nota = "";
+
+        if (utenteOld != null) {
+            militeNew = recuperaMilite(croceNew, utenteOld);
+        } else {
+            return null;
+        }// end of if/else cycle
+
+        if (funzioneOld != null) {
+            funzioneNew = recuperaFunzione(croceNew, funzioneOld);
+        }// end of if cycle
+
+        entity = new Iscrizione();
+        entity.setMilite(militeNew);
+        entity.setFunzione(funzioneNew);
+        entity.setTimestamp(timestamp);
+        entity.setDurata(durata);
+        entity.setEsisteProblema(esisteProblema);
+        entity.setNotificaInviata(false);
+        entity.note = nota;
+
+        return entity;
+    }// end of method
+
+
+    private Milite recuperaMilite(Croce croceNew, UtenteAmb utenteOld) {
+        Milite milite = null;
+        String nome = utenteOld.getNome();
+        String cognome = utenteOld.getCognome();
+
+        milite = militeService.findByNomeCognome(croceNew, nome, cognome);
+
+        return milite;
+    }// end of method
+
+
+    private Funzione recuperaFunzione(Croce croceNew, FunzioneAmb funzioneOld) {
+        Funzione funzione = null;
+        String siglaOld;
+        String codeNew;
+
+        siglaOld = funzioneOld.getSigla();
+        codeNew = siglaOld;
+        funzione = funzioneService.findByKeyUnica(croceNew, codeNew);
+
+        return funzione;
+    }// end of method
 
 
     /**
@@ -652,5 +806,31 @@ public class MigrationService {
 
         return croceNew;
     }// end of constructor
+
+
+    public List<TurnoAmb> findAllByCroceAndYear(CroceAmb company, int anno, EntityManager manager) {
+        List<TurnoAmb> lista = new ArrayList<>();
+        List<Object> resultlist = null;
+        Date primoGennaioDate = dateService.getPrimoGennaio(anno);
+        Timestamp primoGennaio = new Timestamp(primoGennaioDate.getTime());
+        Date trentunoDicembreDate = dateService.getTrentunoDicembre(anno);
+        Timestamp trentunoDicembre = new Timestamp(trentunoDicembreDate.getTime());
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+        CriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery();
+        Root<TurnoAmb> from = criteriaQuery.from(TurnoAmb.class);
+        criteriaQuery.where(criteriaBuilder.equal(from.get("croce"), company));
+        criteriaQuery.where(criteriaBuilder.greaterThan(from.get("inizio"), primoGennaio));
+        criteriaQuery.where(criteriaBuilder.lessThan(from.get("fine"), trentunoDicembre));
+        CriteriaQuery<Object> select = criteriaQuery.select(from);
+        select.orderBy(criteriaBuilder.asc(from.get("giorno")));
+        TypedQuery<Object> typedQuery = manager.createQuery(select);
+        resultlist = typedQuery.getResultList();
+
+        for (Object entity : resultlist) {
+            lista.add((TurnoAmb) entity);
+        }// end of for cycle
+
+        return lista;
+    }// end of method
 
 }// end of class

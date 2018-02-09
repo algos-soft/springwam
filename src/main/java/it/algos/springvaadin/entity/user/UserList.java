@@ -41,7 +41,6 @@ import java.util.List;
 @Scope("session")
 @Qualifier(ACost.TAG_USE)
 @SpringView(name = ACost.VIEW_USE_LIST)
-@AIView(roleTypeVisibility = EARoleType.admin)
 @AIScript(sovrascrivibile = false)
 public class UserList extends AList {
 

@@ -57,7 +57,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(AppCost.TAG_SER)
-@AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
+@AIEntity(roleTypeVisibility = EARoleType.user, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"ordine", "code", "descrizione", "oraInizio", "oraFine", "visibile", "colore"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm(fields = {"code", "descrizione", "colore", "orario", "oraInizio", "minutiInizio", "oraFine", "minutiFine", "visibile", "note"})
 @AIScript(sovrascrivibile = false)

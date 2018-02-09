@@ -1,4 +1,4 @@
-package it.algos.springwam.entity.utente;
+package it.algos.springwam.entity.turno;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
@@ -18,20 +18,21 @@ import it.algos.springwam.application.AppCost;
  * Project springwam
  * Created by Algos
  * User: gac
- * Date: 2018-01-16_10:27:41
+ * Date: 2018-02-04_17:19:25
  * Estende la Entity astratta AForm di tipo AView per visualizzare i fields
  * Annotated with @SpringComponent (obbligatorio)
  * Annotated with @Scope (obbligatorio = 'session')
  * Annotated with @Qualifier (obbligatorio) per permettere a Spring di istanziare la sottoclasse specifica
  * Annotated with @SpringView (obbligatorio) per gestire la visualizzazione di questa view con SprinNavigator
+ * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
 @SpringComponent
 @Scope("session")
-@Qualifier(AppCost.TAG_UTE)
-@SpringView(name = AppCost.VIEW_UTE_FORM)
+@Qualifier(AppCost.TAG_TUR)
+@SpringView(name = AppCost.VIEW_TUR_FORM)
 @AIScript(sovrascrivibile = true)
-public class UtenteForm extends AForm {
+public class TurnoForm extends AForm {
 
 
     /**
@@ -46,7 +47,7 @@ public class UtenteForm extends AForm {
      *
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-     public UtenteForm(@Lazy @Qualifier(AppCost.TAG_UTE) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+     public TurnoForm(@Lazy @Qualifier(AppCost.TAG_TUR) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
          super(presenter, toolbar);
      }// end of Spring constructor
 
