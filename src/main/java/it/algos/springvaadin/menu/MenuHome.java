@@ -17,6 +17,7 @@ import it.algos.springvaadin.service.ATextService;
 import it.algos.springvaadin.view.IAView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
@@ -33,7 +34,8 @@ import java.util.List;
 @Slf4j
 @SpringComponent
 @Scope("session")
-public class MenuHome extends VerticalLayout {
+@Qualifier(ACost.TAG_MENU_LAYOUT)
+public class MenuHome extends AMenu {
 
     /**
      * Inietta da Spring come 'session'

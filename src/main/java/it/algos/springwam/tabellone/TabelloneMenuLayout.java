@@ -8,10 +8,12 @@ import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.home.AHomeView;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALoginButton;
+import it.algos.springvaadin.menu.AMenu;
 import it.algos.springvaadin.service.ATextService;
 import it.algos.springwam.application.AppCost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +28,8 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @SpringComponent
 @Scope("session")
-public class TabelloneMenuLayout extends VerticalLayout {
+@Qualifier(AppCost.TAG_TAB)
+public class TabelloneMenuLayout extends AMenu {
 
 
     /**

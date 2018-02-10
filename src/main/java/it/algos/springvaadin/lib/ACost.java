@@ -60,6 +60,9 @@ public abstract class ACost {
     public final static String TAG_STA = "stato";
     public final static String TAG_PER = "persona";
     public final static String TAG_PRE = "pref";
+    public final static String TAG_MENU_LAYOUT = "menulayout";
+    public final static String TAG_MENU_HOME = "menuhome";
+    public final static String TAG_MENU_TABELLONE = "menutabellone";
 
     public final static String VIEW_HOME = "home";
     public final static String VIEW_ROL_LIST = "rolelist";

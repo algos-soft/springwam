@@ -52,7 +52,14 @@ public class TabellonePresenter extends APresenter {
      * Spring costruisce al volo, quando serve, una implementazione di AService (come previsto dal @Qualifier)
      * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
      */
-   private TabelloneService service;
+    private TabelloneService service;
+
+    /**
+     * Il tabellone viene iniettato dal costruttore, in modo che sia disponibile nella superclasse,
+     * Spring costruisce al volo, quando serve, una implementazione di AList (come previsto dal @Qualifier)
+     * Qui si una una interfaccia locale (col casting nel costruttore) per usare i metodi specifici
+     */
+    private Tabellone list;
 
     /**
      * Costruttore @Autowired (nella superclasse)
@@ -61,14 +68,14 @@ public class TabellonePresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public TabellonePresenter(
-             @Qualifier(AppCost.TAG_TAB) IAService service,
-             @Qualifier(AppCost.TAG_TAB) IAList list,
-             @Qualifier(AppCost.TAG_TAB) IAForm form) {
+            @Qualifier(AppCost.TAG_TAB) IAService service,
+            @Qualifier(AppCost.TAG_TAB) IAList list,
+            @Qualifier(AppCost.TAG_TAB) IAForm form) {
         super(service, list, form);
         this.service = (TabelloneService) service;
+        this.list = (Tabellone) list;
         super.entityClass = Riga.class;
     }// end of Spring constructor
-
 
 
     /**
@@ -85,15 +92,20 @@ public class TabellonePresenter extends APresenter {
      * Passa il controllo alla view con i dati necessari
      */
     public void setList() {
+        setList(LocalDate.now(), 7);
+    }// end of method
+
+
+    public void setList(LocalDate giornoInizio, int giorni) {
         List items = null;
         List<Field> columns = null;
 
-        columns = service.getListFields();
+        columns = creaColonnaServizio();
         if (array.isEmpty(columns)) {
             log.warn("Tabellone non ha giorni selezionati");
         }// end of if cycle
 
-        items = service.findAll();
+        items = creaRighe(giornoInizio, giorni);
         if (array.isEmpty(items)) {
             log.info("Tabellone non ha nessun turno");
         }// end of if cycle
@@ -102,8 +114,8 @@ public class TabellonePresenter extends APresenter {
     }// end of method
 
 
-    public List<Riga> creaRighe() {
-        return creaRighe(LocalDate.now(), 7);
+    public List<Field> creaColonnaServizio() {
+        return service.getListFields();
     }// end of method
 
 

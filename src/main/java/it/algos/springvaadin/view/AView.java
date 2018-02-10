@@ -9,6 +9,7 @@ import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.form.AForm;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.menu.IAMenu;
 import it.algos.springvaadin.menu.MenuLayout;
 import it.algos.springvaadin.panel.APanel;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -19,6 +20,7 @@ import it.algos.springvaadin.toolbar.AListToolbar;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
@@ -73,7 +75,8 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Componente grafico obbligatorio
      */
     @Autowired
-    protected MenuLayout menuLayout;
+    @Qualifier(ACost.TAG_MENU_LAYOUT)
+    protected IAMenu menuLayout;
 
 
     /**
@@ -190,7 +193,7 @@ public abstract class AView extends VerticalLayout implements IAView {
 
         //--componente grafico obbligatorio
         menuLayout = creaMenu();
-        this.addComponent(menuLayout);
+        this.addComponent(menuLayout.getMenu());
 
         //--componente grafico facoltativo
         topLayout = creaTop(entityClazz, items);
@@ -203,9 +206,11 @@ public abstract class AView extends VerticalLayout implements IAView {
         this.addComponent(bodyLayout);
 
         //--componente grafico facoltativo
-        bottomLayout = creaBottom(source, typeButtons);
-        if (topLayout != null) {
-            this.addComponent(bottomLayout);
+        if (typeButtons != null) {
+            bottomLayout = creaBottom(source, typeButtons);
+            if (topLayout != null) {
+                this.addComponent(bottomLayout);
+            }// end of if cycle
         }// end of if cycle
 
         this.setExpandRatio(bodyLayout, 1);
@@ -232,7 +237,7 @@ public abstract class AView extends VerticalLayout implements IAView {
 
         //--componente grafico obbligatorio
         menuLayout = creaMenu();
-        this.addComponent(menuLayout);
+        this.addComponent(menuLayout.getMenu());
 
         //--componente grafico facoltativo
         topLayout = creaTop(entityClazz, null);
@@ -245,9 +250,11 @@ public abstract class AView extends VerticalLayout implements IAView {
         this.addComponent(bodyLayout);
 
         //--componente grafico facoltativo
-        bottomLayout = creaBottom(source, typeButtons);
-        if (topLayout != null) {
-            this.addComponent(bottomLayout);
+        if (typeButtons != null) {
+            bottomLayout = creaBottom(source, typeButtons);
+            if (topLayout != null) {
+                this.addComponent(bottomLayout);
+            }// end of if cycle
         }// end of if cycle
 
         this.setExpandRatio(bodyLayout, 1);
@@ -262,7 +269,7 @@ public abstract class AView extends VerticalLayout implements IAView {
      *
      * @return MenuLayout
      */
-    protected MenuLayout creaMenu() {
+    protected IAMenu creaMenu() {
         menuLayout.start();
         return menuLayout;
     }// end of method
@@ -361,7 +368,7 @@ public abstract class AView extends VerticalLayout implements IAView {
      */
     @Override
     public void removeComponents() {
-        this.removeComponent(menuLayout);
+        this.removeComponent(menuLayout.getMenu());
     }// end of method
 
 

@@ -1,10 +1,16 @@
 package it.algos.springwam.tabellone;
 
+import com.vaadin.event.LayoutEvents;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.ALoginService;
 import it.algos.springvaadin.service.AReflectionService;
@@ -101,6 +107,16 @@ public class TabelloneService extends AService {
     }// end of method
 
 
+    public List creaColonne(LocalDate giornoInizio, int giorni) {
+        List colonne = new ArrayList<>();
+
+
+        return colonne;
+    }// end of method
+
+
+
+
 //    /**
 //     * Costruisce le righe della grid (tabellone)
 //     * Per adesso 7 giorni @todo provvisorio
@@ -186,22 +202,22 @@ public class TabelloneService extends AService {
         return columns;
     }// end of method
 
-    /**
-     * Returns all entities of the type.
-     * <p>
-     * Senza filtri
-     * Ordinati per ID
-     * <p>
-     * Methods of this library return Iterable<T>, while the rest of my code expects Collection<T>
-     * L'annotation standard di JPA prevede un ritorno di tipo Iterable, mentre noi usiamo List
-     * Eseguo qui la conversione, che rimane trasparente al resto del programma
-     *
-     * @return all entities
-     */
-    @Override
-    public List<? extends AEntity> findAll() {
-        return creaRighe(LocalDate.now(), 7);
-    }// end of method
+//    /**
+//     * Returns all entities of the type.
+//     * <p>
+//     * Senza filtri
+//     * Ordinati per ID
+//     * <p>
+//     * Methods of this library return Iterable<T>, while the rest of my code expects Collection<T>
+//     * L'annotation standard di JPA prevede un ritorno di tipo Iterable, mentre noi usiamo List
+//     * Eseguo qui la conversione, che rimane trasparente al resto del programma
+//     *
+//     * @return all entities
+//     */
+//    @Override
+//    public List<? extends AEntity> findAll() {
+//        return creaRighe(LocalDate.now(), 7);
+//    }// end of method
 
 
     /**
