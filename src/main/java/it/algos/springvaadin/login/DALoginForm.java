@@ -2,16 +2,11 @@ package it.algos.springvaadin.login;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
-import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.field.ATextField;
 import it.algos.springvaadin.field.IAFieldFactory;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.ALoginService;
-import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.toolbar.IAToolbar;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 

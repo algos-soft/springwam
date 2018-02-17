@@ -1,10 +1,8 @@
 package it.algos.springvaadin.service;
 
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
-import lombok.extern.slf4j.Slf4j;
+import it.algos.springvaadin.enumeration.EATypeButton;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -90,7 +88,7 @@ public interface IAService {
      *
      * @return lista (type) di bottoni visibili nella toolbar della view AList
      */
-    public List<EAButtonType> getListTypeButtons();
+    public List<EATypeButton> getListTypeButtons();
 
 
     /**
@@ -99,7 +97,7 @@ public interface IAService {
      *
      * @return lista (type) di bottoni visibili nella toolbar della view AForm
      */
-    public List<EAButtonType> getFormTypeButtons();
+    public List<EATypeButton> getFormTypeButtons();
 
 
     /**

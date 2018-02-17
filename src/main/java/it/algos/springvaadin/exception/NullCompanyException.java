@@ -1,7 +1,5 @@
 package it.algos.springvaadin.exception;
 
-import com.vaadin.ui.Notification;
-
 /**
  * Project springvaadin
  * Created by Algos

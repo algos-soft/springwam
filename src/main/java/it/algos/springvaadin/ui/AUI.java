@@ -4,22 +4,14 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.entity.user.UserService;
-import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.footer.AFooter;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
-import it.algos.springvaadin.login.ALoginButton;
-import it.algos.springvaadin.login.IAUser;
-import it.algos.springvaadin.menu.MenuLayout;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
-import javax.crypto.AEADBadTagException;
 
 /**
  * Created by gac on 30/05/17.

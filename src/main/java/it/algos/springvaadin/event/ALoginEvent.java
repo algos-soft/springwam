@@ -1,11 +1,8 @@
 package it.algos.springvaadin.event;
 
 import it.algos.springvaadin.enumeration.EALoginTypes;
-import it.algos.springvaadin.enumeration.EATypeField;
 import it.algos.springvaadin.login.IAUser;
 import org.springframework.context.ApplicationEvent;
-
-import java.util.EventObject;
 
 /**
  * Login event object

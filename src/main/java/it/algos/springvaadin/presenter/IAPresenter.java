@@ -1,17 +1,8 @@
 package it.algos.springvaadin.presenter;
 
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
-import it.algos.springvaadin.event.AButtonEvent;
-import it.algos.springvaadin.event.AEvent;
-import it.algos.springvaadin.event.AFieldEvent;
 import it.algos.springvaadin.event.IAListener;
-import it.algos.springvaadin.field.AField;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-
-import java.lang.reflect.Field;
-import java.util.List;
+import org.springframework.context.ApplicationEvent;
 
 /**
  * Project springvaadin
@@ -64,6 +55,15 @@ public interface IAPresenter extends IAListener {
      * @param entityBean istanza da creare/elaborare
      */
     public void fireForm(AEntity entityBean);
+
+
+    /**
+     * Usa lo SpringNavigator per cambiare view ed andare ad AForm
+     *
+     * @param entityBean istanza da creare/elaborare
+     * @param source     presenter che ha chiamato questo form
+     */
+    public void fireForm(AEntity entityBean, IAPresenter source);
 
 
     /**

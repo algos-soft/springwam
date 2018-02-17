@@ -1,23 +1,20 @@
 package it.algos.springvaadin.entity.address;
 
-import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
-import javax.annotation.PostConstruct;
-import java.util.List;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.SpringView;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
-import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
-import it.algos.springvaadin.enumeration.EARoleType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.ACost;
+
+import java.util.List;
 
 /**
  * Project springvaadin
@@ -78,7 +75,6 @@ public class AddressList extends AList {
     }// end of Spring constructor
 
 
-
     /**
      * Crea la scritta esplicativa
      * Può essere sovrascritto per un'intestazione specifica (caption) della grid
@@ -87,8 +83,11 @@ public class AddressList extends AList {
     protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
         super.fixCaption(entityClazz, items);
         if (login.isDeveloper()) {
-            caption += "</br>Lista visibile a tutti";
-            caption += "</br>Solo il developer vede queste note";
+            caption += "</br>Lista visibile solo al developer";
+            caption += "</br>NON usa la company";
+            caption += "</br>L'entity è 'embedded' nelle collezioni che la usano (no @Annotation property DbRef)";
+            caption += "</br>In pratica questa lista non dovrebbe mai essere usata (serve come test o per le sottoclassi specifiche)";
+
         }// end of if cycle
     }// end of method
 

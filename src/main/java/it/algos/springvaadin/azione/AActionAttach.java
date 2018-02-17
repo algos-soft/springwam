@@ -5,10 +5,8 @@ import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;

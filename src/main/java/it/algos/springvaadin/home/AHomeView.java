@@ -1,41 +1,27 @@
 package it.algos.springvaadin.home;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.app.AlgosApp;
-import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.role.RoleForm;
-import it.algos.springvaadin.entity.role.RoleList;
-import it.algos.springvaadin.entity.user.UserService;
-import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.LibImage;
 import it.algos.springvaadin.lib.LibResource;
-import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.menu.MenuHome;
-import it.algos.springvaadin.menu.MenuLayout;
-import it.algos.springvaadin.panel.APanel;
-import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.AResourceService;
 import it.algos.springvaadin.view.AView;
 import it.algos.springvaadin.view.IAView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 /**
  * Project springvaadin
@@ -130,7 +116,7 @@ public class AHomeView extends AView {
 
 
     private Layout getImage() {
-        String nomeRisorsaConSuffisso = "amb3.jpg";
+        String nomeImmagineConSuffisso = "amb3.jpg";
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSizeFull();
@@ -140,11 +126,9 @@ public class AHomeView extends AView {
         int lar = ((Double) (larImage * delta)).intValue();
         int alt = ((Double) (altImage * delta)).intValue();
 
-        Image image = resource.getImage(nomeRisorsaConSuffisso);
+        Image image = resource.getImage(nomeImmagineConSuffisso);
         image.setWidth(lar, Unit.PIXELS);
         image.setHeight(alt, Unit.PIXELS);
-//        layout.setWidth(650 * 2, Unit.PIXELS);
-//        layout.setHeight(400 * 2, Unit.PIXELS);
 
         layout.addComponent(image);
         layout.setComponentAlignment(image, Alignment.MIDDLE_CENTER);

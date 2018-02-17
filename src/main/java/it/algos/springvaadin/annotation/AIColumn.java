@@ -1,7 +1,6 @@
 package it.algos.springvaadin.annotation;
 
 import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.enumeration.EARoleType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

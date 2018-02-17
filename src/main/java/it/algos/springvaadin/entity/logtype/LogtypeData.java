@@ -2,7 +2,6 @@ package it.algos.springvaadin.entity.logtype;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.data.AData;
-import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.IAService;
 import lombok.extern.slf4j.Slf4j;

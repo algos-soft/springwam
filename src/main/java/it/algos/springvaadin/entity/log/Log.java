@@ -1,21 +1,19 @@
 package it.algos.springvaadin.entity.log;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import it.algos.springvaadin.entity.logtype.Logtype;
-import it.algos.springvaadin.enumeration.*;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.context.annotation.Scope;
-import lombok.*;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.entity.ACEntity;
+import it.algos.springvaadin.entity.logtype.Logtype;
+import it.algos.springvaadin.enumeration.*;
+import it.algos.springvaadin.lib.ACost;
+import lombok.*;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**

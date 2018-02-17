@@ -4,13 +4,16 @@ import com.vaadin.spring.annotation.SpringComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Project springvaadin
@@ -27,11 +30,15 @@ public class ADateService {
 
     /**
      * Convert java.util.Date to java.time.LocalDate
+     * Date HA ore, minuti e secondi
+     * LocalDate NON ha ore, minuti e secondi
+     * Si perdono quindi le ore i minuti ed i secondi di Date
      *
      * @param data da convertire
      *
-     * @return data locale
+     * @return data locale (deprecated)
      */
+    @Deprecated
     public LocalDate dateToLocalDate(Date data) {
         Instant instant = Instant.ofEpochMilli(data.getTime());
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
@@ -39,7 +46,27 @@ public class ADateService {
 
 
     /**
+     * Convert java.time.LocalDate to java.util.Date
+     * LocalDate NON ha ore, minuti e secondi
+     * Date HA ore, minuti e secondi
+     * La Date ottenuta ha il tempo regolato a mezzanotte
+     *
+     * @param localDate da convertire
+     *
+     * @return data (deprecated)
+     */
+    @Deprecated
+    public Date localDateToDate(LocalDate localDate) {
+        Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }// end of method
+
+
+    /**
      * Convert java.util.Date to java.time.LocalDateTime
+     * Date HA ore, minuti e secondi
+     * LocalDateTime HA ore, minuti e secondi
+     * Non si perde nulla
      *
      * @param data da convertire
      *
@@ -52,25 +79,33 @@ public class ADateService {
 
 
     /**
-     * Convert java.time.LocalDate to java.util.Date
+     * Convert java.time.LocalDateTime to java.util.Date
+     * LocalDateTime HA ore, minuti e secondi
+     * Date HA ore, minuti e secondi
+     * Non si perde nulla
      *
-     * @param localDate da convertire
+     * @param localDateTime da convertire
      *
      * @return data (deprecated)
      */
-    public Date localDateToDate(LocalDate localDate) {
-        Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    @Deprecated
+    public Date localDateTimeToDate(LocalDateTime localDateTime) {
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }// end of method
 
 
     /**
      * Convert java.time.LocalDate to java.time.LocalDateTime
+     * LocalDate NON ha ore, minuti e secondi
+     * LocalDateTime HA ore, minuti e secondi
+     * La LocalDateTime ottenuta ha il tempo regolato a mezzanotte
      *
      * @param localDate da convertire
      *
      * @return data con ore e minuti alla mezzanotte
      */
+    @Deprecated
     public LocalDateTime localDateToLocalDateTime(LocalDate localDate) {
         Date date = localDateToDate(localDate);
         Instant istante = date.toInstant();
@@ -80,6 +115,9 @@ public class ADateService {
 
     /**
      * Convert java.time.LocalDateTime to java.time.LocalDate
+     * LocalDateTime HA ore, minuti e secondi
+     * LocalDate NON ha ore, minuti e secondi
+     * Si perdono quindi le ore i minuti ed i secondi di Date
      *
      * @param localDateTime da convertire
      *
@@ -91,26 +129,32 @@ public class ADateService {
 
 
     /**
-     * Convert java.time.LocalDateTime to java.util.Date
+     * Restituisce una stringa nel formato d-M-yy
+     * <p>
+     * Returns a string representation of the date <br>
+     * Not using leading zeroes in day <br>
+     * Two numbers for year <b>
      *
-     * @param localDateTime da convertire
+     * @param localDate da rappresentare
      *
-     * @return data (deprecated)
+     * @return la data sotto forma di stringa
      */
-    public Date localDateTimeToDate(LocalDateTime localDateTime) {
-        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        return Date.from(instant);
+    public String getWeekLong(LocalDate localDate) {
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.applyPattern("EEEE d");
+        return format.format(localDateToDate(localDate));
     }// end of method
 
 
     /**
      * Ritorna il numero della settimana dell'anno di una data fornita.
-     * <p>
+     * Usa Calendar
      *
      * @param data fornita
      *
      * @return il numero della settimana dell'anno
      */
+    @Deprecated
     public int getWeekYear(Date data) {
         Calendar calendario = getCal(data);
         return calendario.get(Calendar.WEEK_OF_YEAR);
@@ -119,12 +163,13 @@ public class ADateService {
 
     /**
      * Ritorna il numero della settimana del mese di una data fornita.
-     * <p>
+     * Usa Calendar
      *
      * @param data fornita
      *
      * @return il numero della settimana del mese
      */
+    @Deprecated
     public int getWeekMonth(Date data) {
         Calendar calendario = getCal(data);
         return calendario.get(Calendar.WEEK_OF_MONTH);
@@ -133,40 +178,41 @@ public class ADateService {
 
     /**
      * Ritorna il numero del giorno dell'anno di una data fornita.
-     * <p>
+     * Usa LocalDate internamente, perché Date è deprecato
      *
      * @param data fornita
      *
      * @return il numero del giorno dell'anno
      */
+    @Deprecated
     public int getDayYear(Date data) {
-        Calendar calendario = getCal(data);
-        return calendario.get(Calendar.DAY_OF_YEAR);
+        return dateToLocalDate(data).getDayOfYear();
     }// end of method
 
 
     /**
      * Ritorna il numero del giorno del mese di una data fornita.
-     * <p>
+     * Usa LocalDate internamente, perché Date è deprecato
      *
      * @param data fornita
      *
      * @return il numero del giorno del mese
      */
-    public int getDayMonth(Date data) {
-        Calendar calendario = getCal(data);
-        return calendario.get(Calendar.DAY_OF_MONTH);
+    @Deprecated
+    public int getDayOfMonth(Date data) {
+        return dateToLocalDate(data).getDayOfMonth();
     }// end of method
 
 
     /**
      * Ritorna il numero del giorno della settimana di una data fornita.
-     * <p>
+     * Usa Calendar
      *
      * @param data fornita
      *
      * @return il numero del giorno della settimana (1=dom, 7=sab)
      */
+    @Deprecated
     public int getDayWeek(Date data) {
         Calendar calendario = getCal(data);
         return calendario.get(Calendar.DAY_OF_WEEK);
@@ -174,154 +220,143 @@ public class ADateService {
 
 
     /**
+     * Ritorna il giorno (testo) della settimana di una data fornita.
+     *
+     * @param localDate fornita
+     *
+     * @return il giorno della settimana in forma breve
+     */
+    public String getDayWeekShort(LocalDate localDate) {
+        return localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
+    }// end of method
+
+
+    /**
+     * Ritorna il giorno (testo) della settimana di una data fornita.
+     * Usa LocalDate internamente, perché Date è deprecato
+     *
+     * @param data fornita
+     *
+     * @return il giorno della settimana in forma breve
+     */
+    @Deprecated
+    public String getDayWeekShort(Date data) {
+        return getDayWeekShort(dateToLocalDate(data));
+    }// end of method
+
+
+    /**
+     * Ritorna il giorno (testo) della settimana di una data fornita.
+     *
+     * @param localDate fornita
+     *
+     * @return il giorno della settimana in forma estesa
+     */
+    public String getDayWeekFull(LocalDate localDate) {
+        return localDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+    }// end of method
+
+
+    /**
+     * Ritorna il giorno (testo) della settimana di una data fornita.
+     * Usa LocalDate internamente, perché Date è deprecato
+     *
+     * @param data fornita
+     *
+     * @return il giorno della settimana in forma estesa
+     */
+    @Deprecated
+    public String getDayWeekFull(Date data) {
+        return getDayWeekFull(dateToLocalDate(data));
+    }// end of method
+
+
+    /**
      * Ritorna il numero delle ore di una data fornita.
-     * <p>
+     * Usa LocalDateTime internamente, perché Date è deprecato
      *
      * @param data fornita
      *
      * @return il numero delle ore
      */
+    @Deprecated
     public int getOre(Date data) {
-        Calendar calendario = getCal(data);
-        return calendario.get(Calendar.HOUR_OF_DAY);
+        return dateToLocalDateTime(data).getHour();
     }// end of method
 
 
     /**
      * Ritorna il numero dei minuti di una data fornita.
-     * <p>
+     * Usa LocalDateTime internamente, perché Date è deprecato
      *
      * @param data fornita
      *
      * @return il numero dei minuti
      */
+    @Deprecated
     public int getMinuti(Date data) {
-        Calendar calendario = getCal(data);
-        return calendario.get(Calendar.MINUTE);
+        return dateToLocalDateTime(data).getMinute();
     }// end of method
 
 
     /**
      * Ritorna il numero dei secondi di una data fornita.
-     * <p>
+     * Usa LocalDateTime internamente, perché Date è deprecato
      *
      * @param data fornita
      *
      * @return il numero dei secondi
      */
+    @Deprecated
     public int getSecondi(Date data) {
-        Calendar calendario = getCal(data);
-        return calendario.get(Calendar.SECOND);
+        return dateToLocalDateTime(data).getSecond();
     }// end of method
 
 
     /**
      * Ritorna il numero dell'anno di una data fornita.
-     * <p>
+     * Usa LocalDate internamente, perché Date è deprecato
      *
      * @return il numero dell'anno
      */
+    @Deprecated
     public int getYear(Date data) {
-        Calendar calendario = getCal(data);
-        return calendario.get(Calendar.YEAR);
-    }// end of method
-
-
-    /**
-     * Ritorna il numero del giorno dell'anno della data corrente.
-     * <p>
-     *
-     * @return il numero del giorno dell'anno
-     */
-    public int getDayYear() {
-        return getDayYear(new Date());
-    }// end of method
-
-
-    /**
-     * Ritorna il numero del giorno del mese della data corrente.
-     * <p>
-     *
-     * @return il numero del giorno del mese
-     */
-    public int getDayMonth() {
-        return getDayMonth(new Date());
-    }// end of method
-
-
-    /**
-     * Ritorna il numero del giorno della settimana della data corrente.
-     * <p>
-     *
-     * @return il numero del giorno della settimana (1=dom, 7=sab)
-     */
-    public int getDayWeek() {
-        return getDayWeek(new Date());
-    }// end of method
-
-
-    /**
-     * Ritorna il numero delle ore della data corrente.
-     *
-     * @return il numero delle ore
-     */
-    public int getOre() {
-        return getOre(new Date());
-    }// end of method
-
-
-    /**
-     * Ritorna il numero dei minuti della data corrente.
-     *
-     * @return il numero dei minuti
-     */
-    public int getMinuti() {
-        return getMinuti(new Date());
-    }// end of method
-
-
-    /**
-     * Ritorna il numero dei secondi della data corrente.
-     *
-     * @return il numero dei secondi
-     */
-    public int getSecondi() {
-        return getSecondi(new Date());
-    }// end of method
-
-
-    /**
-     * Ritorna il numero dell'anno della data corrente.
-     *
-     * @return il numero dei secondi
-     */
-    public int getYear() {
-        return getYear(new Date());
+        return dateToLocalDate(data).getYear();
     }// end of method
 
 
     /**
      * Costruisce la data per il 1° gennaio dell'anno corrente.
-     * <p>
      *
      * @return primo gennaio dell'anno
      */
-    public Date getPrimoGennaio() {
-        return creaData(1, 1, this.getYear());
+    public LocalDate getPrimoGennaio() {
+        return getPrimoGennaio(LocalDate.now().getYear());
     }// end of method
 
 
     /**
      * Costruisce la data per il 1° gennaio dell'anno indicato.
-     * <p>
      *
      * @param anno di riferimento
      *
      * @return primo gennaio dell'anno
      */
-    public Date getPrimoGennaio(int anno) {
-        return creaData(1, 1, anno);
+    public LocalDate getPrimoGennaio(int anno) {
+        return LocalDate.of(anno, 1, 1);
     }// end of method
+
+
+    /**
+     * Costruisce la localData per il giorno dell'anno indicato.
+     *
+     * @param giorno di riferimento (numero progressivo dell'anno)
+     *
+     * @return localData
+     */
+    public LocalDate getLocalDateByDay(int giorno) {
+        return LocalDate.ofYearDay(LocalDate.now().getYear(), giorno);
+    }// end of single test
 
 
     /**

@@ -2,9 +2,7 @@ package it.algos.springvaadin.service;
 
 import com.mongodb.MongoClient;
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.app.AppProperties;
 import it.algos.springvaadin.entity.AEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -28,8 +26,8 @@ import java.util.List;
 public class AMongoService {
 
 
-    @Autowired
-    private AppProperties properties;
+//    @Autowired
+//    private AppProperties properties;
 
     private MongoClient mongo;
     private MongoOperations mongoOps;
@@ -43,7 +41,7 @@ public class AMongoService {
     @PostConstruct
     private void inizia() {
         mongo = new MongoClient("localhost", 27017);
-        mongoOps = new MongoTemplate(mongo, properties.getDatabase());
+        mongoOps = new MongoTemplate(mongo, "springvaadintest");//@todo rimettere properties
     }// end of method
 
 

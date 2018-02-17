@@ -1,15 +1,7 @@
 package it.algos.springvaadin.azione;
 
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.event.IAListener;
-import it.algos.springvaadin.grid.AGrid;
 import it.algos.springvaadin.grid.IAGrid;
-import it.algos.springvaadin.presenter.IAPresenter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
-
-import java.util.EventObject;
 
 /**
  * Project springvaadin

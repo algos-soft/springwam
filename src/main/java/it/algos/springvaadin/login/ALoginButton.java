@@ -1,24 +1,15 @@
 package it.algos.springvaadin.login;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.Resource;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
-import it.algos.springvaadin.annotation.AIView;
-import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.event.ALoginEvent;
 import it.algos.springvaadin.event.ALogoutEvent;
 import it.algos.springvaadin.event.AProfileChangeEvent;
-import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.listener.ALoginListener;
 import it.algos.springvaadin.listener.ALogoutListener;
 import it.algos.springvaadin.listener.AProfileChangeListener;
-import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.toolbar.IAToolbar;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 

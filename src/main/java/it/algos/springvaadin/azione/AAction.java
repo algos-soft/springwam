@@ -4,14 +4,8 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.event.IAListener;
-import it.algos.springvaadin.grid.AGrid;
 import it.algos.springvaadin.grid.IAGrid;
-import it.algos.springvaadin.presenter.IAPresenter;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Lazy;
-
-import java.util.EventObject;
 
 /**
  * Created by gac on 26/7/17

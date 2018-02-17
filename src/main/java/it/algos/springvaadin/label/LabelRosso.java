@@ -4,9 +4,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Label;
-import it.algos.springvaadin.service.AHtmlService;
-import it.algos.springvaadin.service.ATextService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 @SpringComponent

@@ -1,19 +1,16 @@
 package it.algos.springvaadin.entity.logtype;
 
+import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.entity.role.Role;
+import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
-import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
@@ -122,6 +119,17 @@ public class LogtypeService extends AService {
     }// end of method
 
 
+    /**
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
+     *
+     * @param entityBean nuova da creare
+     */
+    @Override
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return findByKeyUnica(((Logtype) entityBean).getCode()) != null;
+    }// end of method
+
 
     /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
@@ -149,37 +157,16 @@ public class LogtypeService extends AService {
     }// end of method
 
 
-
     /**
-     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Opportunità di usare una idKey specifica.
      * Invocato appena prima del save(), solo per una nuova entity
      *
-     * @param entityBean nuova da creare
-     */
-    @Override
-    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
-        return findByKeyUnica(((Logtype) entityBean).getCode()) != null;
-    }// end of method
-
-
-    /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
-     *
      * @param entityBean da salvare
-     *
-     * @return the saved entity
      */
-    @Override
-    public AEntity save(AEntity entityBean) {
-
-        if (text.isEmpty(entityBean.id)) {
-            entityBean.id = ((Logtype)entityBean).getCode();
-        }// end of if cycle
-
-        return super.save(entityBean);
+    protected void creaIdKeySpecifica(AEntity entityBean) {
+        entityBean.id = ((Logtype)entityBean).getCode();
     }// end of method
+
 
     /**
      * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),

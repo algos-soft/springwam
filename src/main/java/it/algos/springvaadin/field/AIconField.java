@@ -4,8 +4,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.LibResource;
-import it.algos.springvaadin.service.AAnnotationService;
 import it.algos.springvaadin.service.AResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -73,15 +71,15 @@ public class AIconField extends AField {
      */
     @Override
     public void doSetValue(Object value) {
-        VaadinIcons icona = null;
-        int codePoint = 0;
-
-        if (value != null && value instanceof Integer) {
-            codePoint = (int) value;
-            icona = resource.getVaadinIcon(codePoint);
-        }// end of if cycle
-
-        button.setIcon(icona);
+//        VaadinIcons icona = null;
+//        int codePoint = 0;
+//
+//        if (value != null && value instanceof Integer) {
+//            codePoint = (int) value;
+//            icona = resource.getVaadinIcon(codePoint);
+//        }// end of if cycle
+//
+//        button.setIcon(icona);
     }// end of method
 
 }// end of class

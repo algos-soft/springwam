@@ -1,23 +1,17 @@
 package it.algos.springvaadin.service;
 
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.company.CompanyService;
-import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.login.ALoginButton;
 import it.algos.springvaadin.login.IAUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * Created by gac on 01/06/17.
@@ -63,7 +57,6 @@ public class AStartService {
     public void checkCookies(VaadinRequest request) {
         Cookie[] requestCookies = request.getCookies();
         IAUser user;
-        boolean valido;
         String nickname = "";
         String password = "";
         String company = "";
@@ -84,13 +77,25 @@ public class AStartService {
             }// end of for cycle
         }// end of if cycle
 
-        nickname= nickname.replaceAll("/xspc/"," ");
+        checkUtente(nickname, password);
+    }// end of static method
+
+
+    public boolean checkUtente(String nickname, String password) {
+        IAUser user;
+        boolean valido = false;
+
+        nickname = nickname.replaceAll("/xspc/", " ");
         user = userService.findByNickname(nickname);
         if (user != null && userService.passwordValida(nickname, password)) {
             login.esegueLogin(nickname, password);
             loginButton.updateUI();
+            valido = true;
         }// end of if cycle
-    }// end of static method
+
+        return valido;
+    }// end of  method
+
 
 //    /**
 //     * Controlla il login della security

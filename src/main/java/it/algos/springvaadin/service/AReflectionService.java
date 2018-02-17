@@ -2,7 +2,6 @@ package it.algos.springvaadin.service;
 
 import com.vaadin.server.Resource;
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.annotation.AIColumn;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.AEntity;
@@ -14,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Project springvaadin
@@ -502,6 +504,6 @@ public class AReflectionService {
         }// end of if cycle
 
         return true;
-    }// end of static method
+    }// end of method
 
-}// end of class
+}// end of service class

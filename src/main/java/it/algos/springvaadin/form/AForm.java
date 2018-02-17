@@ -1,24 +1,21 @@
 package it.algos.springvaadin.form;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.HasValue;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.field.ATextAreaField;
 import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.menu.IAMenu;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.AAnnotationService;
 import it.algos.springvaadin.service.AFieldService;
-import it.algos.springvaadin.service.AHtmlService;
 import it.algos.springvaadin.service.AReflectionService;
 import it.algos.springvaadin.toolbar.AFormToolbar;
-import it.algos.springvaadin.toolbar.AListToolbar;
-import it.algos.springvaadin.toolbar.AToolbar;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springvaadin.view.AView;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +26,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Project springvaadin
@@ -112,24 +108,18 @@ public abstract class AForm extends AView implements IAForm {
     }// end of method
 
 
-//    /**
-//     * Creazione di una view (AForm) contenente i fields
-//     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
-//     * Ricrea tutto ogni volta che la view diventa attiva
-//     * La view comprende:
-//     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-//     * 2) Top: Contenitore grafico per la caption
-//     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-//     * 4) Bottom - Barra dei bottoni inferiore
-//     *
-//     * @param source              di riferimento per gli eventi
-//     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-//     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-//     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
-//     */
-//    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EAButtonType> typeButtons) {
-//        super.start(source, entityClazz, entityBean, reflectedJavaFields, typeButtons);
-//    }// end of method
+    /**
+     * Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * Un eventuale menuBar specifica può essere iniettata dalla sottoclasse concreta
+     * Le sottoclassi possono aggiungere/modificare i menu che verranno ripristinati all'uscita della view
+     * Componente grafico obbligatorio
+     *
+     * @return MenuLayout
+     */
+    protected IAMenu creaMenu() {
+        return null;
+    }// end of method
+
 
 
     /**
@@ -142,8 +132,7 @@ public abstract class AForm extends AView implements IAForm {
 
         caption = className != null ? className + " - " : "";
 
-//        if (entityBean != null && entityBean.getId() != null) {
-        if (false) {
+        if (entityBean != null && entityBean.getId() != null) {
             caption += CAPTION_EDIT;
         } else {
             caption += CAPTION_CREATE;
@@ -382,7 +371,7 @@ public abstract class AForm extends AView implements IAForm {
      * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
      */
     @Override
-    protected VerticalLayout creaBottom(IAPresenter source, List<EAButtonType> typeButtons) {
+    protected VerticalLayout creaBottom(IAPresenter source, List<EATypeButton> typeButtons) {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();

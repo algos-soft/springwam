@@ -1,8 +1,8 @@
 package it.algos.springvaadin.annotation;
 
+import it.algos.springvaadin.enumeration.EAFieldAccessibility;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.enumeration.EAFieldAccessibility;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

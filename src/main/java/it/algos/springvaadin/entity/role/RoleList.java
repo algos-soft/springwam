@@ -1,28 +1,17 @@
 package it.algos.springvaadin.entity.role;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Resource;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Label;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.annotation.AIView;
-import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
-import it.algos.springvaadin.view.AView;
-import it.algos.springvaadin.view.IAView;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-
-import java.util.List;
 
 /**
  * Created by gac on 11-nov-17

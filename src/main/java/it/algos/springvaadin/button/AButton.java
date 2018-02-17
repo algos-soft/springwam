@@ -3,17 +3,14 @@ package it.algos.springvaadin.button;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Button;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.AButtonEvent;
-import it.algos.springvaadin.event.AEvent;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
-import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
 
 import javax.annotation.PostConstruct;
 
@@ -53,7 +50,7 @@ public class AButton extends Button {
      * Enumeration utilizzata per 'marcare' un evento, in fase di generazione
      * Enumeration utilizzata per 'riconoscerlo' nel metodo onApplicationEvent()
      */
-    protected EAButtonType type;
+    protected EATypeButton type;
 
 
     /**
@@ -122,12 +119,12 @@ public class AButton extends Button {
      * Non si poteva fare prima perché la LibParams non è 'visibile' durante la fase iniziale gestita  da Spring
      *
      * @param publisher   degli eventi a livello Application
-     * @param type        del bottone, secondo la Enumeration EAButtonType
+     * @param type        del bottone, secondo la Enumeration EATypeButton
      * @param source      dell'evento generato dal bottone
      * @param target      a cui indirizzare l'evento generato dal bottone
      * @param sourceField che contiene il bottone bottone
      */
-    void inizializza(ApplicationEventPublisher publisher, EAButtonType type, IAListener source, IAListener target, AField sourceField, AEntity entityBean) {
+    void inizializza(ApplicationEventPublisher publisher, EATypeButton type, IAListener source, IAListener target, AField sourceField, AEntity entityBean) {
         this.setPublisher(publisher);
         this.setType(type);
         this.setSource(source);
@@ -206,7 +203,7 @@ public class AButton extends Button {
     }// end of method
 
 
-    public void setType(EAButtonType type) {
+    public void setType(EATypeButton type) {
         this.type = type;
     }// end of method
 
@@ -218,7 +215,7 @@ public class AButton extends Button {
         this.sourceField = sourceField;
     }// end of method
 
-    public EAButtonType getType() {
+    public EATypeButton getType() {
         return type;
     }// end of method
 

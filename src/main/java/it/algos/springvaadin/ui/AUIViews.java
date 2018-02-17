@@ -1,6 +1,5 @@
 package it.algos.springvaadin.ui;
 
-import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.AEntity;
@@ -15,12 +14,9 @@ import it.algos.springvaadin.entity.logtype.LogtypeList;
 import it.algos.springvaadin.entity.persona.Persona;
 import it.algos.springvaadin.entity.persona.PersonaList;
 import it.algos.springvaadin.entity.role.Role;
-import it.algos.springvaadin.entity.role.RoleForm;
 import it.algos.springvaadin.entity.role.RoleList;
 import it.algos.springvaadin.entity.stato.Stato;
 import it.algos.springvaadin.entity.stato.StatoList;
-import it.algos.springvaadin.entity.user.UserList;
-import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.home.AHomeView;
 import it.algos.springvaadin.menu.MenuLayout;
 import it.algos.springvaadin.view.IAView;

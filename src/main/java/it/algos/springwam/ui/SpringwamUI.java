@@ -94,6 +94,19 @@ public class SpringwamUI extends AUI {
 
 
     /**
+     * Legge i cookies dalla request (user, password, company)
+     * Regola il Login della sessione
+     * Scorporato per permettere di sovrascriverlo nelle sottoclassi
+     *
+     * @param request the Vaadin request that caused this UI to be created
+     */
+    protected void checkCookies(VaadinRequest request) {
+        super.checkCookies(request);
+        startService.checkUtente("Porcari Stefano", "7777");//@Todo Test Provvisorio
+    }// end of method
+
+
+    /**
      * Creazione delle viste (moduli) specifiche dell'applicazione.
      * La superclasse AlgosUIParams crea (flag true/false) le viste (moduli) usate da tutte le applicazioni
      * I flag si regolano in @PostConstruct:init()
@@ -107,13 +120,13 @@ public class SpringwamUI extends AUI {
      * La vista viene aggiunta allo SpringViewProvider usato da SpringNavigator
      */
     protected void addVisteSpecifiche() {
-		menuLayout.addView(Iscrizione.class,IscrizioneList.class);
-        menuLayout.addView(Croce.class,CroceList.class);
-        menuLayout.addView(Funzione.class,FunzioneList.class);
-        menuLayout.addView(Servizio.class,ServizioList.class);
+        menuLayout.addView(Iscrizione.class, IscrizioneList.class);
+        menuLayout.addView(Croce.class, CroceList.class);
+        menuLayout.addView(Funzione.class, FunzioneList.class);
+        menuLayout.addView(Servizio.class, ServizioList.class);
         menuLayout.addView(Tabellone.class);
-        menuLayout.addView(Milite.class,MiliteList.class);
-        menuLayout.addView(Turno.class,TurnoList.class);
+        menuLayout.addView(Milite.class, MiliteList.class);
+        menuLayout.addView(Turno.class, TurnoList.class);
     }// end of method
 
     /**

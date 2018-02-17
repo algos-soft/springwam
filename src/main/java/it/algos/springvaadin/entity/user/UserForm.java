@@ -1,16 +1,20 @@
 package it.algos.springvaadin.entity.user;
+
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.form.AForm;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Created by gac on TIMESTAMP
@@ -45,7 +49,6 @@ public class UserForm extends AForm {
      public UserForm(@Lazy @Qualifier(ACost.TAG_USE) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
          super(presenter, toolbar);
      }// end of Spring constructor
-
 
 }// end of class
 

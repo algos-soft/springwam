@@ -1,14 +1,11 @@
 package it.algos.springvaadin.entity.user;
-import com.vaadin.icons.VaadinIcons;
+
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.APresenter;
-import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.service.IAService;
-import it.algos.springvaadin.list.IAList;
 import it.algos.springvaadin.form.IAForm;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Autowired;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.list.IAList;
+import it.algos.springvaadin.presenter.APresenter;
+import it.algos.springvaadin.service.IAService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;

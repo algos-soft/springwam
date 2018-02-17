@@ -1,21 +1,17 @@
 package it.algos.springvaadin.entity.company;
 
+import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.address.Address;
 import it.algos.springvaadin.entity.persona.Persona;
-import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
-import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
@@ -142,6 +138,18 @@ public class CompanyService extends AService {
 
 
     /**
+     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
+     * Invocato appena prima del save(), solo per una nuova entity
+     *
+     * @param entityBean nuova da creare
+     */
+    @Override
+    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
+        return findByKeyUnica(((Company) entityBean).getCode()) != null;
+    }// end of method
+
+
+    /**
      * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
      *
      * @param code codice di riferimento (obbligatorio)
@@ -154,36 +162,6 @@ public class CompanyService extends AService {
 
 
     /**
-     * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
-     * Invocato appena prima del save(), solo per una nuova entity
-     *
-     * @param entityBean nuova da creare
-     */
-    @Override
-    protected boolean isEsisteEntityKeyUnica(AEntity entityBean) {
-        return findByKeyUnica(((Company) entityBean).getCode()) != null;
-    }// end of method
-
-    /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
-     *
-     * @param entityBean da salvare
-     *
-     * @return the saved entity
-     */
-    @Override
-    public AEntity save(AEntity entityBean) {
-
-        if (text.isEmpty(entityBean.id)) {
-            entityBean.id = ((Company)entityBean).getCode();
-        }// end of if cycle
-
-        return super.save(entityBean);
-    }// end of method
-
-    /**
      * Returns all instances of the type
      * La Entity è EACompanyRequired.nonUsata. Non usa Company.
      * Lista ordinata
@@ -194,5 +172,17 @@ public class CompanyService extends AService {
     public List findAll() {
         return repository.findByOrderByCodeAsc();
     }// end of method
+
+
+    /**
+     * Opportunità di usare una idKey specifica.
+     * Invocato appena prima del save(), solo per una nuova entity
+     *
+     * @param entityBean da salvare
+     */
+    protected void creaIdKeySpecifica(AEntity entityBean) {
+        entityBean.id = ((Company)entityBean).getCode();
+    }// end of method
+
 
 }// end of class

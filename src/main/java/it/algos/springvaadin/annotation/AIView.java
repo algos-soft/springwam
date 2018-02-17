@@ -1,7 +1,6 @@
 package it.algos.springvaadin.annotation;
 
 import it.algos.springvaadin.enumeration.EARoleType;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

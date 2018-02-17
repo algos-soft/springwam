@@ -9,7 +9,6 @@ import it.algos.webbase.web.lib.LibDate;
 import it.algos.webbase.web.query.AQuery;
 import lombok.Data;
 import org.eclipse.persistence.annotations.ReadOnly;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 

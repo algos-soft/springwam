@@ -3,16 +3,12 @@ package it.algos.springvaadin.bootstrap;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.logtype.LogtypeData;
-import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.entity.role.RoleData;
-import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.entity.stato.StatoData;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 
 /**
  * Created by gac on 10/06/17

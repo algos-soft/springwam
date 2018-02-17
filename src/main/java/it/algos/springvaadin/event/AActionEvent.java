@@ -3,7 +3,6 @@ package it.algos.springvaadin.event;
 
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeAction;
-import org.springframework.context.ApplicationListener;
 
 /**
  * Created by gac on 04/06/17.

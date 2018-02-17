@@ -2,17 +2,14 @@ package it.algos.springvaadin.entity.persona;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
-import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.form.AForm;
+import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.ACost;
 
 /**
  * Project springvaadin

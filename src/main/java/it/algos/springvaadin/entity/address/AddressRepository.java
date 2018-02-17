@@ -1,12 +1,10 @@
 package it.algos.springvaadin.entity.address;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import org.bson.types.ObjectId;
+import it.algos.springvaadin.annotation.AIScript;
+import it.algos.springvaadin.lib.ACost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import java.util.List;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
 
 /**
  * Project springvaadin

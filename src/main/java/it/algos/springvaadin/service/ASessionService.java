@@ -1,13 +1,10 @@
 package it.algos.springvaadin.service;
 
-import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.enumeration.EAAttribute;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
-
-import javax.management.Attribute;
 
 /**
  * Project springvaadin

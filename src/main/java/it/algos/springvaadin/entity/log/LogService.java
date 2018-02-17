@@ -2,20 +2,17 @@ package it.algos.springvaadin.entity.log;
 
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.logtype.Logtype;
 import it.algos.springvaadin.entity.logtype.LogtypeService;
 import it.algos.springvaadin.enumeration.EALogLevel;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -167,6 +164,7 @@ public class LogService extends AService {
     public List findAll() {
         return repository.findByOrderByEventoDesc();
     }// end of method
+
 
     /**
      * Registra un log di una entity modificata

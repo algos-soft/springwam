@@ -3,18 +3,18 @@ package it.algos.springvaadin.list;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
-import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.entity.role.RoleService;
-import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.grid.AGrid;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.service.*;
+import it.algos.springvaadin.service.AAnnotationService;
+import it.algos.springvaadin.service.AColumnService;
+import it.algos.springvaadin.service.AHtmlService;
+import it.algos.springvaadin.service.AReflectionService;
 import it.algos.springvaadin.toolbar.AListToolbar;
-import it.algos.springvaadin.toolbar.AToolbar;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springvaadin.view.AView;
 import lombok.extern.slf4j.Slf4j;
@@ -175,7 +175,7 @@ public abstract class AList extends AView implements IAList {
      * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
      */
     @Override
-    protected VerticalLayout creaBottom(IAPresenter source, List<EAButtonType> typeButtons) {
+    protected VerticalLayout creaBottom(IAPresenter source, List<EATypeButton> typeButtons) {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();
@@ -202,11 +202,11 @@ public abstract class AList extends AView implements IAList {
 //    /**
 //     * Abilita o disabilita lo specifico bottone della Toolbar
 //     *
-//     * @param type   del bottone, secondo la Enumeration EAButtonType
+//     * @param type   del bottone, secondo la Enumeration EATypeButton
 //     * @param status abilitare o disabilitare
 //     */
 //    @Override
-//    public void enableButton(EAButtonType type, boolean status){
+//    public void enableButton(EATypeButton type, boolean status){
 //        toolbar.enableButton(type, status);
 //    }// end of method
 

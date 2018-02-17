@@ -2,12 +2,10 @@ package it.algos.springvaadin.entity.log;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.event.AEvent;
-import org.bson.types.ObjectId;
+import it.algos.springvaadin.entity.company.Company;
+import it.algos.springvaadin.lib.ACost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.entity.company.Company;
 
 import java.time.LocalDateTime;
 import java.util.List;

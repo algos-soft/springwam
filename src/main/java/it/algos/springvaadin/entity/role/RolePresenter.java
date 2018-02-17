@@ -2,13 +2,11 @@ package it.algos.springvaadin.entity.role;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.APresenter;
-import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.service.IAService;
-import it.algos.springvaadin.list.IAList;
 import it.algos.springvaadin.form.IAForm;
-import it.algos.springvaadin.toolbar.IAToolbar;
+import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.list.IAList;
+import it.algos.springvaadin.presenter.APresenter;
+import it.algos.springvaadin.service.IAService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;

@@ -220,5 +220,26 @@ public class Servizio extends ACEntity {
         return getCode();
     }// end of method
 
+    /**
+     * Ritorna una stringa che rappresenta l'orario dalle... alle...
+     */
+    public String getStrOrario() {
+        if (isOrario()) {
+            return strHM(oraInizio) + ":" + strHM(minutiInizio) + " - " + strHM(oraFine) + ":" + strHM(minutiFine);
+        } else {
+            return "Variabile";
+        }// end of if/else cycle
+    }// end of method
+
+    /**
+     * @return il numero di ore o minuti formattato su 2 caratteri fissi
+     */
+    private String strHM(int num) {
+        String s = "" + num;
+        if (s.length() == 1) {
+            s = "0" + s;
+        }
+        return s;
+    }
 
 }// end of entity class

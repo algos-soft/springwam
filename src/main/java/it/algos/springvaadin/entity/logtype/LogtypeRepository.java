@@ -1,10 +1,10 @@
 package it.algos.springvaadin.entity.logtype;
+
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import org.bson.types.ObjectId;
+import it.algos.springvaadin.lib.ACost;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import it.algos.springvaadin.lib.ACost;
 
 import java.util.List;
 

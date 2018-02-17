@@ -2,8 +2,6 @@ package it.algos.springvaadin.field;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.toolbar.IAToolbar;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;

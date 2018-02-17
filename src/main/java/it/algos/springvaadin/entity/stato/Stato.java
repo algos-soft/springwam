@@ -1,23 +1,22 @@
 package it.algos.springvaadin.entity.stato;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EACompanyRequired;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.lib.ACost;
+import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.context.annotation.Scope;
-import lombok.*;
-import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.enumeration.EAListButton;
-import it.algos.springvaadin.enumeration.EACompanyRequired;
-import it.algos.springvaadin.enumeration.EAFieldAccessibility;
-import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.entity.AEntity;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by gac on 11-nov-17

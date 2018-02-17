@@ -3,7 +3,6 @@ package it.algos.springwam.tabellone;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.form.IAForm;
 import it.algos.springvaadin.list.IAList;
 import it.algos.springvaadin.presenter.APresenter;
@@ -100,22 +99,12 @@ public class TabellonePresenter extends APresenter {
         List items = null;
         List<Field> columns = null;
 
-        columns = creaColonnaServizio();
-        if (array.isEmpty(columns)) {
-            log.warn("Tabellone non ha giorni selezionati");
-        }// end of if cycle
-
         items = creaRighe(giornoInizio, giorni);
         if (array.isEmpty(items)) {
             log.info("Tabellone non ha nessun turno");
         }// end of if cycle
 
-        list.start(this, entityClass, columns, items, null);
-    }// end of method
-
-
-    public List<Field> creaColonnaServizio() {
-        return service.getListFields();
+        list.start(this, entityClass, null, items, null);
     }// end of method
 
 

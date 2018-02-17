@@ -2,14 +2,12 @@ package it.algos.springvaadin.button;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
-import it.algos.springvaadin.presenter.IAPresenter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
 
 /**
  * Project springvaadin
@@ -19,7 +17,7 @@ import org.springframework.context.ApplicationListener;
  * Time: 15:34
  * <p>
  * Factory class per la nuovo dei bottoni
- * Crea ogni bottone del tpo richiesto e previsto nella Enumeration EAButtonType
+ * Crea ogni bottone del tpo richiesto e previsto nella Enumeration EATypeButton
  * Nella nuovo viene iniettato il parametro obbligatorio della 'sorgente' dell'evento generato dal bottone
  * Eventuali altri parametri facoltativi (target, entityBean), possono essere aggiunti. Da altre classi.
  */
@@ -62,7 +60,7 @@ public class AButtonFactory implements IAButtonFactory {
     /**
      * Creazione di un bottone
      *
-     * @param type        del bottone, secondo la Enumeration EAButtonType
+     * @param type        del bottone, secondo la Enumeration EATypeButton
      * @param source      dell'evento generato dal bottone
      * @param target      a cui indirizzare l'evento generato dal bottone
      * @param sourceField che contiene il bottone bottone
@@ -70,7 +68,7 @@ public class AButtonFactory implements IAButtonFactory {
      * @return il bottone creato
      */
     @Override
-    public AButton crea(EAButtonType type, IAListener source, IAListener target, AField sourceField) {
+    public AButton crea(EATypeButton type, IAListener source, IAListener target, AField sourceField) {
         return crea(type, source, target, sourceField, null);
     }// end of method
 
@@ -78,7 +76,7 @@ public class AButtonFactory implements IAButtonFactory {
     /**
      * Creazione di un bottone
      *
-     * @param type        del bottone, secondo la Enumeration EAButtonType
+     * @param type        del bottone, secondo la Enumeration EATypeButton
      * @param source      dell'evento generato dal bottone
      * @param target      a cui indirizzare l'evento generato dal bottone
      * @param sourceField che contiene il bottone bottone
@@ -86,7 +84,7 @@ public class AButtonFactory implements IAButtonFactory {
      * @return il bottone creato
      */
 //    @Override
-    public AButton crea(EAButtonType type, IAListener source, IAListener target, AField sourceField, AEntity entityBean) {
+    public AButton crea(EATypeButton type, IAListener source, IAListener target, AField sourceField, AEntity entityBean) {
         AButton button = buttonFactory.apply(AButton.class);
 
         if (button != null) {

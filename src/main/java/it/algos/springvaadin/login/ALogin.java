@@ -1,12 +1,11 @@
 package it.algos.springvaadin.login;
 
-import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.user.User;
-import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.event.ALoginEvent;
 import it.algos.springvaadin.footer.AFooter;
@@ -17,14 +16,11 @@ import it.algos.springvaadin.listener.ALogoutListener;
 import it.algos.springvaadin.listener.AProfileChangeListener;
 import it.algos.springvaadin.service.ACookieService;
 import it.algos.springvaadin.service.ALoginService;
-import it.algos.springvaadin.service.ATextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 
-import javax.servlet.http.Cookie;
 import java.util.ArrayList;
 
 /**

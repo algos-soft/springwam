@@ -14,6 +14,7 @@
     <property name="tagIdea" value="${tagMain}/java"/>
     <property name="tagAlgos" value="it/algos"/>
     <property name="tagPathJava" value="${tagIdea}/${tagAlgos}"/>
+    <property name="tagPom" value="pom.xml"/>
     <!--Fine dei tag-->
 
 
@@ -29,6 +30,8 @@
     <target name="init" description="Regola alcuni valori">
         <property name="srcVaadin" value="${pathJavaFramework}"/>
         <property name="destVaadin" value="${pathBaseProject}/${tagPathJava}/${nomeBaseFramework}"/>
+        <property name="srcPom" value="${pathBaseFramework}/${tagPom}"/>
+        <property name="destPom" value="${basedir}/../${tagPom}"/>
     </target>
 
 
@@ -42,7 +45,12 @@
     </target>
 
 
-    <target name="updateProgetto" depends="init,deleteOldVaadin,copiaVaadin"
+    <target name="copiaPom" depends="init" description="Ricopia il file pomn.xml">
+        <copyfile src="${srcPom}" dest="${destPom}"/>
+    </target>
+
+
+    <target name="updateProgetto" depends="init,deleteOldVaadin,copiaVaadin,copiaPom"
             description="Ricopia tutta la struttura di springvaadin">
     </target>
 

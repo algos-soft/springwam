@@ -1,12 +1,6 @@
 package it.algos.springvaadin.enumeration;
 
-import com.google.common.primitives.Longs;
-import com.vaadin.server.Resource;
-import com.vaadin.ui.Image;
-
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by gac on 30 lug 2016.

@@ -1,19 +1,11 @@
 package it.algos.springvaadin.entity.role;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.ui.Notification;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.entity.address.Address;
-import it.algos.springvaadin.entity.company.Company;
-import it.algos.springvaadin.entity.persona.Persona;
-import it.algos.springvaadin.entity.stato.Stato;
-import it.algos.springvaadin.entity.user.User;
-import it.algos.springvaadin.exception.NullCompanyException;
+import it.algos.springvaadin.entity.logtype.Logtype;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.service.AFieldService;
 import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.service.ASessionService;
 import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,18 +132,6 @@ public class RoleService extends AService {
 
 
     /**
-     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
-     *
-     * @param code di riferimento (obbligatorio)
-     *
-     * @return istanza della Entity, null se non trovata
-     */
-    public Role findByKeyUnica(String code) {
-        return repository.findByCode(code);
-    }// end of method
-
-
-    /**
      * Opportunità di controllare (per le nuove schede) che la key unica non esista già.
      * Invocato appena prima del save(), solo per una nuova entity
      *
@@ -164,23 +144,28 @@ public class RoleService extends AService {
 
 
     /**
-     * Saves a given entity.
-     * Use the returned instance for further operations
-     * as the save operation might have changed the entity instance completely.
+     * Recupera una istanza della Entity usando la query della property specifica (obbligatoria ed unica)
+     *
+     * @param code di riferimento (obbligatorio)
+     *
+     * @return istanza della Entity, null se non trovata
+     */
+    public Role findByKeyUnica(String code) {
+        return repository.findByCode(code);
+    }// end of method
+
+
+    /**
+     * Opportunità di usare una idKey specifica.
+     * Invocato appena prima del save(), solo per una nuova entity
      *
      * @param entityBean da salvare
-     *
-     * @return the saved entity
      */
-    @Override
-    public AEntity save(AEntity entityBean) {
-
-        if (text.isEmpty(entityBean.id)) {
-            entityBean.id = ((Role)entityBean).getCode();
-        }// end of if cycle
-
-        return super.save(entityBean);
+    protected void creaIdKeySpecifica(AEntity entityBean) {
+        entityBean.id = ((Role)entityBean).getCode();
     }// end of method
+
+
 
     /**
      * Ordine di presentazione (obbligatorio, unico per tutte le eventuali company),

@@ -1,8 +1,5 @@
 package it.algos.springvaadin.repository;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 /**
  * Project springvaadin
  * Created by Algos

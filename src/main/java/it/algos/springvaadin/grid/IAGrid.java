@@ -1,9 +1,7 @@
 package it.algos.springvaadin.grid;
 
-import com.vaadin.shared.Registration;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.presenter.IAPresenter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.List;

@@ -77,7 +77,7 @@ public class StatoData extends AData {
      */
     private void creaStati() {
         String fileName = "stati.txt";
-        List<String> righe = resource.readText(fileName);
+        List<String> righe = resource.readAllLines(fileName);
 
         if (array.isValid(righe)) {
             service.deleteAll();
@@ -110,13 +110,17 @@ public class StatoData extends AData {
         }// end of if cycle
         if (parti.length > 2) {
             alfaTre = parti[2];
-            bandiera = resource.getImgBytes(alfaTre.toUpperCase() + suffix);
+            bandiera = resource.getImageBytes(alfaTre.toUpperCase() + suffix);
         }// end of if cycle
         if (parti.length > 3) {
             numerico = parti[3];
         }// end of if cycle
 
-        service.findOrCrea(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
+        try { // prova ad eseguire il codice
+            service.findOrCrea(ordine, nome, alfaDue, alfaTre, numerico, bandiera);
+        } catch (Exception unErrore) { // intercetta l'errore
+            log.error(unErrore.toString());
+        }// fine del blocco try-catch
 
         if (bandiera == null || bandiera.length == 0) {
             log.warn("Stato: " + riga + " - Manca la bandiera");

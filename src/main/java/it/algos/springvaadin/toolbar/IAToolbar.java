@@ -1,12 +1,8 @@
 package it.algos.springvaadin.toolbar;
 
-import com.vaadin.ui.Component;
 import it.algos.springvaadin.button.AButton;
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
-import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.presenter.IAPresenter;
-import org.springframework.context.ApplicationListener;
 
 import java.util.List;
 
@@ -37,7 +33,7 @@ public interface IAToolbar {
      * @param source      dell'evento generato dai bottoni
      * @param typeButtons da visualizzare
      */
-    public void inizializza(IAPresenter source, List<EAButtonType> typeButtons);
+    public void inizializza(IAPresenter source, List<EATypeButton> typeButtons);
 
 
 //    /**
@@ -155,6 +151,6 @@ public interface IAToolbar {
      *
      * @param type del bottone, secondo la Enumeration AButtonType
      */
-    public AButton getButton(EAButtonType type);
+    public AButton getButton(EATypeButton type);
 
 }// end of interface

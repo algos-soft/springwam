@@ -1,20 +1,15 @@
 package it.algos.springvaadin.entity.address;
+
+import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.stato.Stato;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
-import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-
-import java.util.List;
 
 /**
  * Created by gac on TIMESTAMP

@@ -1,18 +1,15 @@
 package it.algos.springvaadin.entity.user;
 
-import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.label.LabelVerde;
 import it.algos.springvaadin.lib.ACost;
@@ -23,7 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.util.List;
 

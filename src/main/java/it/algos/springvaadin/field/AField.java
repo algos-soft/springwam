@@ -8,13 +8,12 @@ import com.vaadin.ui.CustomField;
 import com.vaadin.ui.TextField;
 import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.event.AFieldEvent;
 import it.algos.springvaadin.enumeration.EATypeField;
+import it.algos.springvaadin.event.AFieldEvent;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.service.ATextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
 
 import javax.annotation.PostConstruct;
 

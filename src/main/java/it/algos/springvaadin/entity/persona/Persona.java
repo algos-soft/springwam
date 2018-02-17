@@ -1,27 +1,23 @@
 package it.algos.springvaadin.entity.persona;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.address.Address;
 import it.algos.springvaadin.entity.address.AddressPresenter;
+import it.algos.springvaadin.enumeration.EACompanyRequired;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.lib.ACost;
+import lombok.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.context.annotation.Scope;
-import lombok.*;
-import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.enumeration.EAListButton;
-import it.algos.springvaadin.enumeration.EACompanyRequired;
-import it.algos.springvaadin.enumeration.EAFieldAccessibility;
-import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.entity.ACEntity;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.lib.ACost;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.Size;
 
 /**
  * Project springvaadin
@@ -82,7 +78,7 @@ public class Persona extends ACEntity {
     /**
      * cognome (obbligatorio, non unica)
      */
-    @NotEmpty
+//    @NotEmpty
     @AIField(type = EAFieldType.text, required = true, firstCapital = true)
     @AIColumn(width = 200)
     private String cognome;

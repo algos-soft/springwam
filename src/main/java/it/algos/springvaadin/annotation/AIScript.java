@@ -1,8 +1,5 @@
 package it.algos.springvaadin.annotation;
 
-import it.algos.springvaadin.enumeration.EAListButton;
-import lombok.extern.slf4j.Slf4j;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

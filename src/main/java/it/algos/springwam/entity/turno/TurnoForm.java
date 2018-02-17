@@ -6,13 +6,17 @@ import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AForm;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.toolbar.IAToolbar;
+import it.algos.springwam.entity.servizio.ServizioFieldFunzioni;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cglib.core.internal.Function;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springwam.application.AppCost;
+
+import java.lang.reflect.Field;
 
 /**
  * Project springwam
@@ -35,6 +39,15 @@ import it.algos.springwam.application.AppCost;
 public class TurnoForm extends AForm {
 
 
+    private final static String ISCRIZIONI = "iscrizioni";
+
+    /**
+     * Funzione specificata in AlgosConfiguration
+     */
+    @Autowired
+    private Function<Class<? extends AField>, AField> fieldFactory;
+
+
     /**
      * Costruttore @Autowired
      * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
@@ -51,6 +64,38 @@ public class TurnoForm extends AForm {
          super(presenter, toolbar);
      }// end of Spring constructor
 
+    /**
+     * Aggiunge al binder eventuali fields specifici, prima di trascrivere la entityBean nel binder
+     * Sovrascritto
+     * Dopo aver creato un AField specifico, usare il metodo super.addFieldBinder() per:
+     * Aggiungere AField al binder
+     * Aggiungere AField ad una fieldList interna
+     * Inizializzare AField
+     */
+    @Override
+    protected void addSpecificAlgosFields() {
+        Field javaField = reflection.getField(entityBean.getClass(), ISCRIZIONI);
+        AField fieldIscrizioni = null;
+
+        //--crea un AField e regola le varie properties grafiche (caption, visible, editable, width, ecc)
+        fieldIscrizioni = fieldFactory.apply(TurnoFieldIscrizioni.class);
+        fieldIscrizioni.inizializza(ISCRIZIONI, presenter);
+        fieldIscrizioni.setCaption(annotation.getFormFieldName(javaField));
+        fieldIscrizioni.setEntityBean(entityBean);
+        fieldIscrizioni.setWidth("34em");
+
+        if (fieldIscrizioni != null) {
+//            super.addFieldBinder(javaField, fieldIscrizioni);
+        }// end of if cycle
+
+
+//        //--aggiunge AField alla lista interna, necessaria per ''recuperare'' un singolo algosField dal nome
+//        fieldList.add(fieldIscrizioni);
+//
+//        //--Inizializza il field
+//        fieldIscrizioni.initContent();
+
+    }// end of method
 
 }// end of class
 

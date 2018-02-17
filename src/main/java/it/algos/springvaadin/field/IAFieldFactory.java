@@ -3,7 +3,6 @@ package it.algos.springvaadin.field;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.event.IAListener;
-import org.springframework.context.ApplicationListener;
 
 import java.lang.reflect.Field;
 

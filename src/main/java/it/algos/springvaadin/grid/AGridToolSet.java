@@ -1,11 +1,9 @@
 package it.algos.springvaadin.grid;
 
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.azione.AAction;
 import it.algos.springvaadin.azione.IAAction;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 

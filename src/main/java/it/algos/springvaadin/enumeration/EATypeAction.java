@@ -14,6 +14,7 @@ public enum EATypeAction {
     attach,
     click,
     doppioClick,
+    editLink,
     singleSelectionChanged,
     multiSelectionChanged,
     valueChange,

@@ -2,7 +2,6 @@ package it.algos.springvaadin.service;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.entity.user.User;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.IAUser;
 import lombok.extern.slf4j.Slf4j;

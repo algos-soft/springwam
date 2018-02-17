@@ -8,8 +8,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.ALoginService;
@@ -272,7 +272,7 @@ public class TabelloneService extends AService {
      *
      * @return lista (type) di bottoni visibili nella toolbar della view AList
      */
-    public List<EAButtonType> getListTypeButtons() {
+    public List<EATypeButton> getListTypeButtons() {
         return null;
     }// end of method
 

@@ -1,21 +1,16 @@
 package it.algos.springvaadin.menu;
 
-import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.login.ALoginButton;
-import it.algos.springvaadin.panel.APanel;
 import it.algos.springvaadin.service.AAnnotationService;
-import it.algos.springvaadin.service.AArrayService;
 import it.algos.springvaadin.service.AReflectionService;
 import it.algos.springvaadin.service.ATextService;
 import it.algos.springvaadin.view.IAView;

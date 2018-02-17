@@ -2,8 +2,8 @@ package it.algos.springvaadin.entity;
 
 import it.algos.springvaadin.annotation.AIColumn;
 import it.algos.springvaadin.annotation.AIField;
-import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.enumeration.EAFieldAccessibility;
+import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.enumeration.EARoleType;
 import lombok.Getter;
 

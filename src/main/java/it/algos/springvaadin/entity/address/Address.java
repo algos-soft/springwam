@@ -1,27 +1,24 @@
 package it.algos.springvaadin.entity.address;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.annotation.*;
+import it.algos.springvaadin.entity.ACEntity;
+import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.stato.Stato;
-import it.algos.springvaadin.service.ATextService;
+import it.algos.springvaadin.enumeration.EACompanyRequired;
+import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.enumeration.EAListButton;
+import it.algos.springvaadin.enumeration.EARoleType;
+import it.algos.springvaadin.lib.ACost;
+import lombok.*;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.context.annotation.Scope;
-import lombok.*;
-import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.enumeration.EAListButton;
-import it.algos.springvaadin.enumeration.EACompanyRequired;
-import it.algos.springvaadin.enumeration.EAFieldAccessibility;
-import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.annotation.*;
-import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.entity.AEntity;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by gac on 11-nov-17
@@ -56,7 +53,7 @@ import it.algos.springvaadin.entity.AEntity;
 @AIList(fields = {"indirizzo", "localita", "cap", "stato"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm(fields = {"indirizzo", "localita", "cap", "stato"})
 @AIScript(sovrascrivibile = false)
-public class Address extends AEntity {
+public class Address extends ACEntity {
 
     /**
      * versione della classe per la serializzazione

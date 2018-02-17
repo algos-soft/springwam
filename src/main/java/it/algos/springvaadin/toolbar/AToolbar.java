@@ -6,7 +6,7 @@ import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.button.AButtonFactory;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -60,10 +60,10 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param source  dell'evento generato dai bottoni
      * @param typeButtons da visualizzare
      */
-    public void inizializza(IAPresenter source, List<EAButtonType> typeButtons) {
+    public void inizializza(IAPresenter source, List<EATypeButton> typeButtons) {
         this.deleteAllButtons();
 
-        for (EAButtonType singleTypeButton : typeButtons) {
+        for (EATypeButton singleTypeButton : typeButtons) {
             creaAddButton(singleTypeButton, source);
         }// end of for cycle
 
@@ -94,7 +94,7 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param source dell'evento generato dal bottone
      */
 //    @Override
-    public AButton creaAddButton(EAButtonType type, IAPresenter source) {
+    public AButton creaAddButton(EATypeButton type, IAPresenter source) {
         return creaAddButton(type, source, source, (AEntity) null, (AField) null);
     }// end of method
 
@@ -107,7 +107,7 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param sourceField di un altro modulo che ha richiesto, tramite bottone, la visualizzazione del form
      */
 //    @Override
-    public AButton creaAddButton(EAButtonType type, IAPresenter source, IAListener target, AEntity entityBean, AField sourceField) {
+    public AButton creaAddButton(EATypeButton type, IAPresenter source, IAListener target, AEntity entityBean, AField sourceField) {
         AButton button = buttonFactory.crea(type, source, target, sourceField, entityBean);
 
         if (button != null) {
@@ -126,7 +126,7 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param source dell'evento generato dal bottone
      */
 //    @Override
-    public AButton creaAddButtonSecondaRiga(EAButtonType type, IAListener source) {
+    public AButton creaAddButtonSecondaRiga(EATypeButton type, IAListener source) {
         if (this.getComponentCount() == 1) {
             this.addComponent(secondaRiga);
         }// end of if cycle
@@ -143,7 +143,7 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param sourceField di un altro modulo che ha richiesto, tramite bottone, la visualizzazione del form
      */
 //    @Override
-    public AButton creaAddButtonSecondaRiga(EAButtonType type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
+    public AButton creaAddButtonSecondaRiga(EATypeButton type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
         AButton button = buttonFactory.crea(type, source, target, sourceField, entityBean);
 
         if (button != null) {
@@ -210,7 +210,7 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param type   del bottone, secondo la Enumeration AButtonType
      * @param status abilitare o disabilitare
      */
-    public void enableButton(EAButtonType type, boolean status) {
+    public void enableButton(EATypeButton type, boolean status) {
         AButton button = this.getButton(type);
 
         if (button != null) {
@@ -226,7 +226,7 @@ public abstract class AToolbar extends VerticalLayout implements IAToolbar {
      * @param type del bottone, secondo la Enumeration AButtonType
      */
     @Override
-    public AButton getButton(EAButtonType type) {
+    public AButton getButton(EATypeButton type) {
         Component comp = null;
         AButton button = null;
 

@@ -2,9 +2,7 @@ package it.algos.springvaadin.entity.role;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.lib.ACost;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

@@ -588,7 +588,7 @@ public class MigrationService {
      * Importa i turni esistenti in una croce di webambulanze
      */
     public void importTurni(CroceAmb croceOld, Croce croceNew) {
-        Date primoGennaioDate = dateService.getPrimoGennaio(2018);
+        Date primoGennaioDate = dateService.localDateToDate(dateService.getPrimoGennaio(2018));
         Timestamp inizio = new Timestamp(primoGennaioDate.getTime());
         Date trentunoDicembreDate = dateService.getTrentunoDicembre(2018);
         Timestamp fine = new Timestamp(trentunoDicembreDate.getTime());
@@ -811,7 +811,7 @@ public class MigrationService {
     public List<TurnoAmb> findAllByCroceAndYear(CroceAmb company, int anno, EntityManager manager) {
         List<TurnoAmb> lista = new ArrayList<>();
         List<Object> resultlist = null;
-        Date primoGennaioDate = dateService.getPrimoGennaio(anno);
+        Date primoGennaioDate = dateService.localDateToDate(dateService.getPrimoGennaio(anno));
         Timestamp primoGennaio = new Timestamp(primoGennaioDate.getTime());
         Date trentunoDicembreDate = dateService.getTrentunoDicembre(anno);
         Timestamp trentunoDicembre = new Timestamp(trentunoDicembreDate.getTime());

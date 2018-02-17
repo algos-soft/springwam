@@ -5,9 +5,6 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
-import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springvaadin.home.AHomeView;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALoginButton;
@@ -21,8 +18,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Project springvaadin

@@ -4,22 +4,18 @@ import com.vaadin.data.HasValue;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.MultiSelect;
 import com.vaadin.ui.SingleSelect;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.role.Role;
-import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.AArrayService;
 import it.algos.springvaadin.service.AColumnService;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,10 +1,11 @@
 package it.algos.springvaadin.lib;
 
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Image;
-import it.algos.springvaadin.app.AlgosApp;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -13,6 +14,9 @@ import java.nio.file.Paths;
 /**
  * Classe statica di libreria per il recupero delle risorse dal server
  */
+@SpringComponent
+@Service
+@Scope("singleton")
 public abstract class LibResource {
 
 //    /**
@@ -145,25 +149,25 @@ public abstract class LibResource {
 //    }// end of static method
 
 
-//    /**
-//     * Create an Image from a name
-//     * <p>
-//     *
-//     * @param name nome dell'immagine
-//     *
-//     * @return the image
-//     */
-//    public static Image getImage(String name) {
-//        Image image = null;
+    /**
+     * Create an Image from a name
+     * <p>
+     *
+     * @param name nome dell'immagine
+     *
+     * @return the image
+     */
+    public static Image getImage(String name) {
+        Image image = null;
 //        Resource res = LibResource.getImgResource(name);
 //
 //        if (res != null) {
 //            image = new Image();
 //            image.setSource(res);
 //        }// end of if cycle
-//
-//        return image;
-//    }// end of static method
+
+        return image;
+    }// end of static method
 
 //    public static VaadinIcons getVaadinIcon(int codePoint) {
 //        VaadinIcons icona = null;

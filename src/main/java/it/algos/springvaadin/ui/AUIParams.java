@@ -1,7 +1,6 @@
 package it.algos.springvaadin.ui;
 
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.service.AStartService;
@@ -226,6 +225,7 @@ public abstract class AUIParams extends UI {
         if (AlgosApp.USE_CHECK_COOKIES) {
             startService.checkCookies(request);
         }// end of if cycle
+
     }// end of method
 
 

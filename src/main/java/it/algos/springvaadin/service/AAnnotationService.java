@@ -5,7 +5,6 @@ import com.vaadin.spring.annotation.SpringView;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.*;
-import it.algos.springvaadin.view.AView;
 import it.algos.springvaadin.view.IAView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

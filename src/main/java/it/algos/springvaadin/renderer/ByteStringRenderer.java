@@ -4,7 +4,6 @@ import com.vaadin.ui.renderers.TextRenderer;
 import elemental.json.Json;
 import elemental.json.JsonValue;
 import it.algos.springvaadin.enumeration.EAPrefType;
-import lombok.extern.slf4j.Slf4j;
 
 
 /**

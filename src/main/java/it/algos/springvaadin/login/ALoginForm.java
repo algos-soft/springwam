@@ -1,19 +1,12 @@
 package it.algos.springvaadin.login;
 
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.PaintException;
-import com.vaadin.server.PaintTarget;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
-import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.dialog.AConfirmDialog;
-import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.company.Company;
-import it.algos.springvaadin.entity.user.User;
-import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.field.ACheckBoxField;
 import it.algos.springvaadin.field.ATextField;
 import it.algos.springvaadin.lib.ACost;
@@ -21,10 +14,7 @@ import it.algos.springvaadin.lib.LibVaadin;
 import it.algos.springvaadin.listener.ALoginListener;
 import it.algos.springvaadin.service.ACookieService;
 import it.algos.springvaadin.service.ALoginService;
-import it.algos.springvaadin.service.AReflectionService;
-import it.algos.springvaadin.service.AService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 

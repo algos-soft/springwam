@@ -1,27 +1,20 @@
 package it.algos.springvaadin.entity.user;
 
+import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.AIScript;
-import it.algos.springvaadin.app.AlgosApp;
-import it.algos.springvaadin.entity.ACEntity;
-import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.entity.role.Role;
 import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.login.IAUser;
 import it.algos.springvaadin.service.ALoginService;
-import it.algos.springvaadin.service.AService;
-import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
-import com.vaadin.spring.annotation.SpringComponent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 

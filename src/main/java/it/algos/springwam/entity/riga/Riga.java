@@ -52,7 +52,7 @@ public class Riga extends AEntity {
     @Indexed()
     @AIField(type = EAFieldType.date)
     @AIColumn()
-    private LocalDate giorno;
+    private LocalDate giornoIniziale;
 
 
     /**
@@ -62,7 +62,7 @@ public class Riga extends AEntity {
     @NotNull
     @Indexed()
     @AIField(type = EAFieldType.text)
-    @AIColumn()
+    @AIColumn(width = 200)
     private Servizio servizio;
 
 

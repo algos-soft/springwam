@@ -1,7 +1,5 @@
 package it.algos.springvaadin.enumeration;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Project springvaadin
  * Created by Algos

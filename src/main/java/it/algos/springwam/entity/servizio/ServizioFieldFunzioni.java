@@ -27,9 +27,9 @@ import java.util.List;
  * Date: dom, 05-nov-2017
  * Time: 15:43
  */
+@Slf4j
 @SpringComponent
 @Scope("prototype")
-@Slf4j
 public class ServizioFieldFunzioni extends AField {
 
 
@@ -58,6 +58,7 @@ public class ServizioFieldFunzioni extends AField {
     /**
      * Crea (o ricrea dopo una clonazione) il componente base
      */
+    @Override
     public void creaContent() {
         int width = 170;
         grid = new Grid(Funzione.class);
@@ -322,6 +323,7 @@ public class ServizioFieldFunzioni extends AField {
      * target     Obbligatorio (window, dialog, presenter) a cui indirizzare l'evento
      * entityBean Opzionale (entityBean) in elaborazione
      */
+    @Override
     public void publish() {
         if (source != null) {
             publisher.publishEvent(new AFieldEvent(EATypeField.fieldModificato, source, target, entityBean, this));
@@ -332,6 +334,7 @@ public class ServizioFieldFunzioni extends AField {
     /**
      * Aggiunge il listener al field
      */
+    @Override
     protected void addListener() {
 //        if (radio != null) {
 //            radio.addValueChangeListener(new HasValue.ValueChangeListener<String>() {

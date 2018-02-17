@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@Qualifier(AppCost.TAG_SER)
+//@Qualifier(AppCost.TAG_SER)
 @AIScript(sovrascrivibile = false)
 public class RigaService extends AService {
 
@@ -58,15 +58,15 @@ public class RigaService extends AService {
      * All properties
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
-     * @param giorno   di riferimento (obbligatorio)
+     * @param giornoIniziale   di riferimento (obbligatorio)
      * @param servizio di riferimento (obbligatorio)
      * @param turni    effettuati (facoltativi, di norma 7)
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Riga newEntity(LocalDate giorno, Servizio servizio, List<Turno> turni) {
+    public Riga newEntity(LocalDate giornoIniziale, Servizio servizio, List<Turno> turni) {
         Riga entity = Riga.builder()
-                .giorno(giorno)
+                .giornoIniziale(giornoIniziale)
                 .servizio(servizio)
                 .turni(turni)
                 .build();

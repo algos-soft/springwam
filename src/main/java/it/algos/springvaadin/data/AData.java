@@ -2,9 +2,7 @@ package it.algos.springvaadin.data;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.lib.ACost;
-import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.IAService;
-import it.algos.springvaadin.toolbar.IAToolbar;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;

@@ -3,14 +3,12 @@ package it.algos.springvaadin.field;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.button.IAButtonFactory;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.enumeration.EAButtonType;
 import it.algos.springvaadin.enumeration.EAFieldType;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.IAListener;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 
 import java.lang.reflect.Field;
@@ -225,7 +223,7 @@ public class AFieldFactory implements IAFieldFactory {
 //                    break;
                 case icon:
                     field = fieldFactory.apply(AIconField.class);
-                    field.setButton(buttonFactory.crea(EAButtonType.image, source, source, field));
+                    field.setButton(buttonFactory.crea(EATypeButton.image, source, source, field));
                     break;
 //                case json:
 //                    field = fieldFactory.apply(AJSonField.class);

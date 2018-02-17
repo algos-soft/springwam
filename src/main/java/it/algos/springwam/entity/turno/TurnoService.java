@@ -91,6 +91,22 @@ public class TurnoService extends AService {
     /**
      * Creazione in memoria di una nuova entity che NON viene salvata
      * Eventuali regolazioni iniziali delle property
+     * Properties obbligatorie
+     * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
+     *
+     * @param giorno   di inizio turno (obbligatorio, calcolato da inizio - serve per le query)
+     * @param servizio di riferimento (obbligatorio)
+     *
+     * @return la nuova entity appena creata (non salvata)
+     */
+    public Turno newEntity(LocalDate giorno, Servizio servizio) {
+        return newEntity(giorno, servizio, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+    }// end of method
+
+
+    /**
+     * Creazione in memoria di una nuova entity che NON viene salvata
+     * Eventuali regolazioni iniziali delle property
      * All properties
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      * La company viene controllata nel metodo AService.addCompany()

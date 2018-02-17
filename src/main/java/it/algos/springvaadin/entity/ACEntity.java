@@ -6,7 +6,6 @@ import it.algos.springvaadin.entity.company.Company;
 import it.algos.springvaadin.enumeration.EAFieldAccessibility;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
