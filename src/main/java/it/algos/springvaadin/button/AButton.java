@@ -7,6 +7,8 @@ import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.AButtonEvent;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.form.AForm;
+import it.algos.springvaadin.presenter.APresenter;
 import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,7 +184,6 @@ public class AButton extends Button {
             log.error("AButton: manca il target nel bottone " + type);
             return;
         }// end of if cycle
-
 
         AButtonEvent evento = new AButtonEvent(type, source, target, entityBean, sourceField);
         publisher.publishEvent(evento);

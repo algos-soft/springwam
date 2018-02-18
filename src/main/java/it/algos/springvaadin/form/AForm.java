@@ -79,10 +79,10 @@ public abstract class AForm extends AView implements IAForm {
      * Se ci sono DUE o più costruttori, va in errore
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
-     * @param presenter iniettato da Spring
+     * @param gestore iniettato da Spring
      */
-    public AForm(IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
-        super(presenter, toolbar);
+    public AForm(IAPresenter gestore, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+        super(gestore, toolbar);
     }// end of Spring constructor
 
 
@@ -102,8 +102,8 @@ public abstract class AForm extends AView implements IAForm {
         //--Il punto di ingresso invocato da SpringNavigator è unico e gestito dalla supeclasse AView
         //--Questa classe diversifica la chiamata al Presenter a seconda del tipo di view (List, Form, ... altro)
         //--Il Presenter prepara/elabora i dati e poi ripassa il controllo al metodo AList.start() di questa view
-        if (presenter != null) {
-            presenter.setForm();
+        if (gestore != null) {
+            gestore.setForm();
         }// end of if cycle
     }// end of method
 
@@ -146,11 +146,11 @@ public abstract class AForm extends AView implements IAForm {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param source              presenter di riferimento per i componenti da cui vengono generati gli eventi
+     * @param gestore              presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
     @Override
-    protected void creaBody(IAPresenter source, List<Field> reflectedJavaFields) {
+    protected void creaBody(IAPresenter gestore, List<Field> reflectedJavaFields) {
         /**
          * Crea un nuovo binder per questo Form e questa Entity
          * Costruisce i componenti grafici AFields (di tipo CustomField), in base ai reflectedFields ricevuti dal service
@@ -188,11 +188,11 @@ public abstract class AForm extends AView implements IAForm {
      * Aggiunge i componenti grafici AField al layout
      * Eventuali regolazioni specifiche per i fields, dopo la trascrizione della entityBean nel binder
      *
-     * @param source              presenter di riferimento da cui vengono generati gli eventi
+     * @param gestore              presenter di riferimento da cui vengono generati gli eventi
      * @param layout              in cui inserire i campi (window o panel)
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
-    protected void fixFields(IAPresenter source, Layout layout, List<Field> reflectedJavaFields) {
+    protected void fixFields(IAPresenter gestore, Layout layout, List<Field> reflectedJavaFields) {
         AField algosField;
 
         //--Ricostruisce una fieldList interna

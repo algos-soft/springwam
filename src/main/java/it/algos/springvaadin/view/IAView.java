@@ -4,6 +4,10 @@ import com.vaadin.navigator.View;
 import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
+import it.algos.springvaadin.presenter.IAPresenter;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Project springvaadin
@@ -31,7 +35,7 @@ public interface IAView extends View {
 //     * @param items       da visualizzare nella Grid
 //     * @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
 //     */
-//    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, AEntity entityBean, List<Field> columns, List items, List<EATypeButton> typeButtons) ;
+//    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, AEntity entityBean, List<Field> columns, List items, List<EATypeButton> typeButtons);
 
 
     /**

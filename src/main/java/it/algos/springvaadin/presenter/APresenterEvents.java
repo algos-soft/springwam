@@ -10,9 +10,13 @@ import it.algos.springvaadin.event.AEvent;
 import it.algos.springvaadin.event.AFieldEvent;
 import it.algos.springvaadin.field.AField;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
+
+import java.lang.reflect.Proxy;
 
 /**
  * Created by gac on 18/06/17.
@@ -40,23 +44,21 @@ public abstract class APresenterEvents implements IAPresenter {
         AEntity entityBean = event.getEntityBean();
         AField sourceField = event.getSourceField();
 
-        String thisClassCode = thisClazz.getSimpleName();
-        String courceClassCode = sourceClazz.getSimpleName();
-        String targetClassCode = targetClazz.getSimpleName();
 
-        if (event instanceof AFieldEvent && targetClassCode.equals(thisClassCode)) {
+        if (event instanceof AFieldEvent && targetClazz == thisClazz) {
             onFieldEvent((AFieldEvent) event, source, target, entityBean, sourceField);
         }// end of if cycle
 
-        if (event instanceof AButtonEvent && targetClassCode.equals(thisClassCode)) {
+        if (event instanceof AButtonEvent && targetClazz == thisClazz) {
             onListEvent((AButtonEvent) event);
         }// end of if cycle
 
-        if (event instanceof AActionEvent && targetClassCode.equals(thisClassCode)) {
+        if (event instanceof AActionEvent && targetClazz == thisClazz) {
             onGridAction((AActionEvent) event);
         }// end of if cycle
 
     }// end of method
+
 
 
     /**

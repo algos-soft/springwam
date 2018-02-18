@@ -92,11 +92,11 @@ public abstract class AList extends AView implements IAList {
      * Se ci sono DUE o più costruttori, va in errore
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
-     * @param presenter iniettato da Spring
+     * @param gestore iniettato da Spring
      * @param toolbar   iniettato da Spring
      */
-    public AList(IAPresenter presenter, @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
-        super(presenter, toolbar);
+    public AList(IAPresenter gestore, @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
+        super(gestore, toolbar);
     }// end of Spring constructor
 
 
@@ -116,8 +116,8 @@ public abstract class AList extends AView implements IAList {
         //--Il punto di ingresso invocato da SpringNavigator è unico e gestito dalla supeclasse AView
         //--Questa classe diversifica la chiamata al Presenter a seconda del tipo di view (List, Form, ... altro)
         //--Il Presenter prepara/elabora i dati e poi ripassa il controllo al metodo AList.start() di questa view
-        if (presenter != null) {
-            presenter.setList();
+        if (gestore != null) {
+            gestore.setList();
         }// end of if cycle
     }// end of method
 

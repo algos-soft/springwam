@@ -32,6 +32,11 @@ public abstract class AEvent extends ApplicationEvent {
     protected IAListener target;
 
 
+    //--Opzionale nome della classe (di tipo IAListener) a cui indirizzare l'evento
+    //--Serve per bypasasare i proxy
+    protected String targetSimpleClassName;
+
+
     //--Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
     protected AEntity entityBean;
 
@@ -112,4 +117,11 @@ public abstract class AEvent extends ApplicationEvent {
         return sourceField;
     }// end of method
 
+    public String getTargetSimpleClassName() {
+        return targetSimpleClassName;
+    }
+
+    public void setTargetSimpleClassName(String targetSimpleClassName) {
+        this.targetSimpleClassName = targetSimpleClassName;
+    }
 }// end of abstract class

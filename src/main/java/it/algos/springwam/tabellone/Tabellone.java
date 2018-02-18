@@ -128,10 +128,10 @@ public class Tabellone extends AList {
      * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
      * The injected bean will only be fully created when it’s first needed.
      *
-     * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param gestore iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-    public Tabellone(@Lazy @Qualifier(AppCost.TAG_TAB) IAPresenter presenter) {
-        super(presenter, null);
+    public Tabellone(@Lazy @Qualifier(AppCost.TAG_TAB) IAPresenter gestore) {
+        super(gestore, null);
         addStyleName("ctabellone");
     }// end of Spring constructor
 
@@ -298,7 +298,7 @@ public class Tabellone extends AList {
         //apre una scheda (form) in edit o new
         Notification.show("Click nella Grid, TURNO -> " + riga.getServizio().getCode() + " " + giorno);
 
-        publisher.publishEvent(new AActionEvent(EATypeAction.editLink, presenter, turnoPresenter, turno));
+        publisher.publishEvent(new AActionEvent(EATypeAction.editLink, gestore, turnoPresenter, turno));
     }// end of method
 
 

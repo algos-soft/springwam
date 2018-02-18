@@ -62,11 +62,11 @@ public abstract class AView extends VerticalLayout implements IAView {
     /**
      * Gestore principale per la 'business logic' del modulo, iniettato da Spring nel costruttore
      */
-    protected IAPresenter presenter;
+    public IAPresenter gestore;
 
 
     /**
-     * Chiamante di questo fvorm (di solito il presenter)
+     * Chiamante di questo form (di solito il presenter)
      */
     public IAPresenter source;
 
@@ -128,11 +128,11 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Se ci sono DUE o più costruttori, va in errore
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
-     * @param presenter iniettato da Spring
+     * @param gestore iniettato da Spring
      */
-    public AView(IAPresenter presenter, IAToolbar toolbar) {
+    public AView(IAPresenter gestore, IAToolbar toolbar) {
         super();
-        this.presenter = presenter;
+        this.gestore = gestore;
         this.toolbar = toolbar;
     }// end of Spring constructor
 
@@ -235,6 +235,25 @@ public abstract class AView extends VerticalLayout implements IAView {
      * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
      */
     public void start(Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
+        start(gestore, entityClazz, reflectedJavaFields, typeButtons);
+    }// end of method
+
+    /**
+     * Creazione di una view (AForm) contenente i fields
+     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
+     * Ricrea tutto ogni volta che la view diventa attiva
+     * La view comprende:
+     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * 2) Top: Contenitore grafico per la caption
+     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 4) Bottom - Barra dei bottoni inferiore
+     *
+     * @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
+     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
+     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
+     */
+    public void start(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
         this.removeAllComponents();
 
         //--componente grafico obbligatorio
@@ -316,11 +335,12 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
+     * @param gestore     presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
      * @param columns     visibili ed ordinate della Grid
      * @param items       da visualizzare nella Grid
      */
-    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+    protected void creaBody(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
     }// end of method
 
 
@@ -342,7 +362,7 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      */
-    protected VerticalLayout creaBottom(IAPresenter source, List<EATypeButton> typeButtons) {
+    protected VerticalLayout creaBottom(IAPresenter gestore, List<EATypeButton> typeButtons) {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();

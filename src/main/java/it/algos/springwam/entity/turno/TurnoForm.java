@@ -79,7 +79,7 @@ public class TurnoForm extends AForm {
 
         //--crea un AField e regola le varie properties grafiche (caption, visible, editable, width, ecc)
         fieldIscrizioni = fieldFactory.apply(TurnoFieldIscrizioni.class);
-        fieldIscrizioni.inizializza(ISCRIZIONI, presenter);
+        fieldIscrizioni.inizializza(ISCRIZIONI, gestore);
         fieldIscrizioni.setCaption(annotation.getFormFieldName(javaField));
         fieldIscrizioni.setEntityBean(entityBean);
         fieldIscrizioni.setWidth("34em");

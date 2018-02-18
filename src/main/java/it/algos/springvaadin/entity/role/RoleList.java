@@ -59,13 +59,13 @@ public class RoleList extends AList {
      * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
      * The injected bean will only be fully created when it’s first needed.
      *
-     * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
-     * @param toolbar   iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param gestore iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param toolbar iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
     public RoleList(
-            @Lazy @Qualifier(ACost.TAG_ROL) IAPresenter presenter,
+            @Lazy @Qualifier(ACost.TAG_ROL) IAPresenter gestore,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
-        super(presenter, toolbar);
+        super(gestore, toolbar);
     }// end of Spring constructor
 
 

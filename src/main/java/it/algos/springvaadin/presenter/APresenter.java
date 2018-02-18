@@ -59,13 +59,13 @@ public abstract class APresenter extends APresenterEvents {
     @Autowired
     public ATextService text;
 
+
     @Autowired
     AUIParams params;
 
-    /**
-     * Il modello-dati specifico viene regolato dalla sottoclasse nel costruttore
-     */
-    protected Class<? extends AEntity> entityClass;
+
+    @Autowired
+    private LogService logger;
 
 
     /**
@@ -86,8 +86,12 @@ public abstract class APresenter extends APresenterEvents {
     protected IAForm form;
 
 
-    @Autowired
-    private LogService logger;
+    /**
+     * Il modello-dati specifico viene regolato dalla sottoclasse nel costruttore
+     */
+    protected Class<? extends AEntity> entityClass;
+
+
 
     /**
      * Costruttore @Autowired (nella sottoclasse concreta)
