@@ -157,7 +157,7 @@ public class ATextService {
      * Elimina dal testo il tagFinale, se esiste
      * <p>
      * Esegue solo se il testo è valido
-     * Se tagIniziale è vuoto, restituisce il testo
+     * Se tagFinale è vuoto, restituisce il testo
      * Elimina spazi vuoti iniziali e finali
      *
      * @param testoIn   ingresso
@@ -172,6 +172,32 @@ public class ATextService {
             tagFinale = tagFinale.trim();
             if (testoOut.endsWith(tagFinale)) {
                 testoOut = testoOut.substring(0, testoOut.length() - tagFinale.length());
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return testoOut.trim();
+    }// end of method
+
+
+    /**
+     * Elimina il testo da tagFinale in poi
+     * <p>
+     * Esegue solo se il testo è valido
+     * Se tagInterrompi è vuoto, restituisce il testo
+     * Elimina spazi vuoti iniziali e finali
+     *
+     * @param testoIn   ingresso
+     * @param tagInterrompi da dove inizia il testo da eliminare
+     *
+     * @return test ridotto in uscita
+     */
+    public String levaCodaDa(final String testoIn, String tagInterrompi) {
+        String testoOut = testoIn.trim();
+
+        if (this.isValid(testoOut) && this.isValid(tagInterrompi)) {
+            tagInterrompi = tagInterrompi.trim();
+            if (testoOut.contains(tagInterrompi)) {
+                testoOut = testoOut.substring(0, testoOut.indexOf(tagInterrompi));
             }// fine del blocco if
         }// fine del blocco if
 

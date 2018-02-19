@@ -65,7 +65,7 @@ public class RoleList extends AList {
     public RoleList(
             @Lazy @Qualifier(ACost.TAG_ROL) IAPresenter gestore,
             @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
-        super(gestore, toolbar);
+        super( gestore, toolbar);
     }// end of Spring constructor
 
 

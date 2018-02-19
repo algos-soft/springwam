@@ -4,11 +4,13 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.enumeration.EATypeField;
+import it.algos.springvaadin.event.*;
 import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.event.AButtonEvent;
 import it.algos.springvaadin.event.AEvent;
 import it.algos.springvaadin.event.AFieldEvent;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -27,6 +30,9 @@ public abstract class APresenterEvents implements IAPresenter {
 
     @Autowired
     protected ApplicationEventPublisher publisher;
+
+    @Autowired
+    protected ATextService text;
 
 
     /**
@@ -43,22 +49,28 @@ public abstract class APresenterEvents implements IAPresenter {
         ApplicationListener target = event.getTarget();
         AEntity entityBean = event.getEntityBean();
         AField sourceField = event.getSourceField();
+        String thisClassName = this.getClass().getCanonicalName();
+        String targetClassName = event.getTarget().getClass().getCanonicalName();
 
+        Object targetObject = event.getTarget();
+        if (AopUtils.isAopProxy(targetObject)) {
+            targetClassName = targetObject.toString();
+            targetClassName = text.levaCodaDa(targetClassName, "@");
+        }// end of if cycle
 
-        if (event instanceof AFieldEvent && targetClazz == thisClazz) {
+        if (event instanceof AFieldEvent && targetClassName.equals(thisClassName)) {
             onFieldEvent((AFieldEvent) event, source, target, entityBean, sourceField);
         }// end of if cycle
 
-        if (event instanceof AButtonEvent && targetClazz == thisClazz) {
+        if (event instanceof AButtonEvent && targetClassName.equals(thisClassName)) {
             onListEvent((AButtonEvent) event);
         }// end of if cycle
 
-        if (event instanceof AActionEvent && targetClazz == thisClazz) {
+        if (event instanceof AActionEvent && targetClassName.equals(thisClassName)) {
             onGridAction((AActionEvent) event);
         }// end of if cycle
 
     }// end of method
-
 
 
     /**
@@ -184,6 +196,7 @@ public abstract class APresenterEvents implements IAPresenter {
 //                break;
             case editLink:
                 this.fireForm(entityBean, (IAPresenter) source);
+                this.fireForm(entityBean, (IAPresenter)source);
                 break;
             case doppioClick:
                 this.fireForm(entityBean);
@@ -205,3 +218,4 @@ public abstract class APresenterEvents implements IAPresenter {
     }// end of method
 
 }// end of class
+

@@ -83,6 +83,7 @@ public abstract class AList extends AView implements IAList {
 //    @Autowired
 //    private APanel panel;
 
+
     /**
      * Costruttore @Autowired (nella sottoclasse concreta)
      * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation.

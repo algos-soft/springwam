@@ -37,12 +37,11 @@ public class MilitePresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public MilitePresenter(
-                @Lazy @Qualifier(AppCost.TAG_MIL) IAService service,
-                @Lazy @Qualifier(AppCost.TAG_MIL) IAList list,
-                @Lazy @Qualifier(AppCost.TAG_MIL) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Milite.class;
-     }// end of Spring constructor
+            @Lazy @Qualifier(AppCost.TAG_MIL) IAService service,
+            @Lazy @Qualifier(AppCost.TAG_MIL) IAList list,
+            @Lazy @Qualifier(AppCost.TAG_MIL) IAForm form) {
+        super(Milite.class, service, list, form);
+    }// end of Spring constructor
 
 
 }// end of class

@@ -27,18 +27,26 @@ import org.springframework.context.annotation.Scope;
 public class LogPresenter extends APresenter {
 
     /**
-     * Costruttore @Autowired (nella superclasse)
+     * Costruttore @Autowired
+     * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation
      * Si usa un @Qualifier(), per avere la sottoclasse specifica
      * Si usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
-     * Regola il modello-dati specifico
+     * Use @Lazy to avoid the Circular Dependency
+     * A simple way to break the cycle is saying Spring to initialize one of the beans lazily.
+     * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
+     * The injected bean will only be fully created when it’s first needed.
+     * Regola il modello-dati specifico nella chiamata al costruttore della superclasse
+     *
+     * @param service iniettato da Spring
+     * @param list iniettato da Spring
+     * @param form iniettato da Spring
      */
     public LogPresenter(
-                @Lazy @Qualifier(ACost.TAG_LOG) IAService service,
-                @Lazy @Qualifier(ACost.TAG_LOG) IAList list,
-                @Lazy @Qualifier(ACost.TAG_LOG) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Log.class;
-     }// end of Spring constructor
+            @Lazy @Qualifier(ACost.TAG_LOG) IAService service,
+            @Lazy @Qualifier(ACost.TAG_LOG) IAList list,
+            @Lazy @Qualifier(ACost.TAG_LOG) IAForm form) {
+        super(Log.class, service, list, form);
+    }// end of Spring constructor
 
 
 }// end of class

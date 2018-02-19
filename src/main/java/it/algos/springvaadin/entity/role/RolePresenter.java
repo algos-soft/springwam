@@ -40,6 +40,7 @@ public class RolePresenter extends APresenter {
      * A simple way to break the cycle is saying Spring to initialize one of the beans lazily.
      * That is: instead of fully initializing the bean, it will create a proxy to inject it into the other bean.
      * The injected bean will only be fully created when it’s first needed.
+     * Regola il modello-dati specifico nella chiamata al costruttore della superclasse
      *
      * @param service iniettato da Spring
      * @param list iniettato da Spring
@@ -49,8 +50,7 @@ public class RolePresenter extends APresenter {
             @Lazy @Qualifier(ACost.TAG_ROL) IAService service,
             @Lazy @Qualifier(ACost.TAG_ROL) IAList list,
             @Lazy @Qualifier(ACost.TAG_ROL) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Role.class;
+        super(Role.class,service, list, form);
     }// end of Spring constructor
 
 

@@ -1,4 +1,5 @@
 package it.algos.springwam.entity.turno;
+
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.presenter.APresenter;
@@ -39,12 +40,11 @@ public class TurnoPresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public TurnoPresenter(
-                @Lazy @Qualifier(AppCost.TAG_TUR) IAService service,
-                @Lazy @Qualifier(AppCost.TAG_TUR) IAList list,
-                @Lazy @Qualifier(AppCost.TAG_TUR) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Turno.class;
-     }// end of Spring constructor
+            @Lazy @Qualifier(AppCost.TAG_TUR) IAService service,
+            @Lazy @Qualifier(AppCost.TAG_TUR) IAList list,
+            @Lazy @Qualifier(AppCost.TAG_TUR) IAForm form) {
+        super(Turno.class, service, list, form);
+    }// end of Spring constructor
 
 
 }// end of class

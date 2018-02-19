@@ -1,4 +1,5 @@
 package it.algos.springwam.entity.servizio;
+
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.presenter.APresenter;
@@ -38,12 +39,11 @@ public class ServizioPresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public ServizioPresenter(
-                @Lazy @Qualifier(AppCost.TAG_SER) IAService service,
-                @Lazy @Qualifier(AppCost.TAG_SER) IAList list,
-                @Lazy @Qualifier(AppCost.TAG_SER) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Servizio.class;
-     }// end of Spring constructor
+            @Lazy @Qualifier(AppCost.TAG_SER) IAService service,
+            @Lazy @Qualifier(AppCost.TAG_SER) IAList list,
+            @Lazy @Qualifier(AppCost.TAG_SER) IAForm form) {
+        super(Servizio.class, service, list, form);
+    }// end of Spring constructor
 
 
 }// end of class

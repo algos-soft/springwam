@@ -1,4 +1,5 @@
 package it.algos.springwam.entity.iscrizione;
+
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.presenter.APresenter;
@@ -39,12 +40,11 @@ public class IscrizionePresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public IscrizionePresenter(
-                @Lazy @Qualifier(AppCost.TAG_ISC) IAService service,
-                @Lazy @Qualifier(AppCost.TAG_ISC) IAList list,
-                @Lazy @Qualifier(AppCost.TAG_ISC) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Iscrizione.class;
-     }// end of Spring constructor
+            @Lazy @Qualifier(AppCost.TAG_ISC) IAService service,
+            @Lazy @Qualifier(AppCost.TAG_ISC) IAList list,
+            @Lazy @Qualifier(AppCost.TAG_ISC) IAForm form) {
+        super(Iscrizione.class, service, list, form);
+    }// end of Spring constructor
 
 
 }// end of class

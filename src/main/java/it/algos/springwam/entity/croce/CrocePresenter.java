@@ -1,4 +1,5 @@
 package it.algos.springwam.entity.croce;
+
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.presenter.APresenter;
@@ -38,12 +39,11 @@ public class CrocePresenter extends APresenter {
      * Regola il modello-dati specifico
      */
     public CrocePresenter(
-                @Lazy @Qualifier(AppCost.TAG_CRO) IAService service,
-                @Lazy @Qualifier(AppCost.TAG_CRO) IAList list,
-                @Lazy @Qualifier(AppCost.TAG_CRO) IAForm form) {
-        super(service, list, form);
-        super.entityClass = Croce.class;
-     }// end of Spring constructor
+            @Lazy @Qualifier(AppCost.TAG_CRO) IAService service,
+            @Lazy @Qualifier(AppCost.TAG_CRO) IAList list,
+            @Lazy @Qualifier(AppCost.TAG_CRO) IAForm form) {
+        super(Croce.class, service, list, form);
+    }// end of Spring constructor
 
 
 }// end of class

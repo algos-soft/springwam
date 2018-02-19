@@ -70,10 +70,9 @@ public class TabellonePresenter extends APresenter {
             @Qualifier(AppCost.TAG_TAB) IAService service,
             @Qualifier(AppCost.TAG_TAB) IAList list,
             @Qualifier(AppCost.TAG_TAB) IAForm form) {
-        super(service, list, form);
+        super(Riga.class, service, list, form);
         this.service = (TabelloneService) service;
         this.list = (Tabellone) list;
-        super.entityClass = Riga.class;
     }// end of Spring constructor
 
 
