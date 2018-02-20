@@ -166,7 +166,7 @@ public abstract class AForm extends AView implements IAForm {
         layout.setHeightUndefined();
 
         //--rimanda ad un metodo separato per poterlo sovrascrivere
-        fixFields(source, layout, reflectedJavaFields);
+        fixFields(gestore, layout, reflectedJavaFields);
 
         //--inserisce il layout con i fields in un pannello scorrevole
         bodyLayout.setContent(layout);
@@ -204,7 +204,7 @@ public abstract class AForm extends AView implements IAForm {
         //--spazzola la lista di javaField
         for (Field reflectedField : reflectedJavaFields) {
             //--crea un AField e regola le varie properties grafiche (caption, visible, editable, width, ecc)
-            algosField = fieldService.create(source, reflectedField, entityBean);
+            algosField = fieldService.create(gestore, reflectedField, entityBean);
 
             //--Aggiunge AField al binder
             //--Aggiunge AField ad una fieldList interna

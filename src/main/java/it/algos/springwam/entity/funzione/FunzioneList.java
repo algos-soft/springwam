@@ -120,7 +120,7 @@ public class FunzioneList extends AList {
     @Override
     protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
         super.creaBody(source, entityClazz, columns, items);
-        grid.getGrid().setRowHeight(47);
+//        grid.getGrid().setRowHeight(47);
         addColumnIcona();
     }// end of method
 

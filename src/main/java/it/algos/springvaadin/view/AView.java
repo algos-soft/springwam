@@ -211,7 +211,7 @@ public abstract class AView extends VerticalLayout implements IAView {
         //--componente grafico facoltativo
         if (typeButtons != null) {
             bottomLayout = creaBottom(source, typeButtons);
-            if (topLayout != null) {
+            if (bottomLayout != null) {
                 this.addComponent(bottomLayout);
             }// end of if cycle
         }// end of if cycle

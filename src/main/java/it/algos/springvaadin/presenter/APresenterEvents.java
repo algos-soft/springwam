@@ -4,7 +4,6 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.enumeration.EATypeField;
-import it.algos.springvaadin.event.*;
 import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.event.AButtonEvent;
 import it.algos.springvaadin.event.AEvent;
@@ -12,14 +11,10 @@ import it.algos.springvaadin.event.AFieldEvent;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
  * Created by gac on 18/06/17.
@@ -195,7 +190,6 @@ public abstract class APresenterEvents implements IAPresenter {
 //                click();
 //                break;
             case editLink:
-                this.fireForm(entityBean, (IAPresenter) source);
                 this.fireForm(entityBean, (IAPresenter)source);
                 break;
             case doppioClick:
@@ -218,4 +212,3 @@ public abstract class APresenterEvents implements IAPresenter {
     }// end of method
 
 }// end of class
-

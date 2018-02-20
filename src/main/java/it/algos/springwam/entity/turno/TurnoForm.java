@@ -2,9 +2,19 @@ package it.algos.springwam.entity.turno;
 
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+import it.algos.springvaadin.button.AButton;
+import it.algos.springvaadin.button.AButtonFactory;
+import it.algos.springvaadin.component.AHorizontalLayout;
+import it.algos.springvaadin.entity.AEntity;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AForm;
+import it.algos.springvaadin.menu.IAMenu;
 import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.toolbar.AFormToolbar;
+import it.algos.springvaadin.toolbar.AToolbar;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springwam.entity.servizio.ServizioFieldFunzioni;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +27,8 @@ import it.algos.springvaadin.lib.ACost;
 import it.algos.springwam.application.AppCost;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Project springwam
@@ -39,13 +51,21 @@ import java.lang.reflect.Field;
 public class TurnoForm extends AForm {
 
 
-    private final static String ISCRIZIONI = "iscrizioni";
+    /**
+     * Factory per la creazione dei bottoni
+     */
+    @Autowired
+    private AButtonFactory buttonFactory;
 
     /**
      * Funzione specificata in AlgosConfiguration
      */
     @Autowired
     private Function<Class<? extends AField>, AField> fieldFactory;
+
+    private final static String TORNA = "Torna al tabellone";
+
+    private final static String ISCRIZIONI = "iscrizioni";
 
 
     /**
@@ -60,9 +80,92 @@ public class TurnoForm extends AForm {
      *
      * @param presenter iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-     public TurnoForm(@Lazy @Qualifier(AppCost.TAG_TUR) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
-         super(presenter, toolbar);
-     }// end of Spring constructor
+    public TurnoForm(@Lazy @Qualifier(AppCost.TAG_TUR) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+        super(presenter, toolbar);
+    }// end of Spring constructor
+
+
+    /**
+     * Creazione di una view (AForm) contenente i fields
+     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
+     * Ricrea tutto ogni volta che la view diventa attiva
+     * La view comprende:
+     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * 2) Top: Contenitore grafico per la caption
+     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 4) Bottom - Barra dei bottoni inferiore
+     *
+     * @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
+     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
+     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
+     */
+    @Override
+    public void start(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
+        this.removeAllComponents();
+
+        //--componente grafico facoltativo
+        this.addComponent(creaMenuTurno(source));
+
+        //--componente grafico facoltativo
+        topLayout = creaTop(entityClazz, null);
+        if (topLayout != null) {
+            this.addComponent(topLayout);
+        }// end of if cycle
+
+        //--componente grafico obbligatorio
+        this.creaBody(gestore, reflectedJavaFields);
+        this.addComponent(bodyLayout);
+
+        //--componente grafico facoltativo
+        this.addComponent(creaBottomTurno(gestore, source));
+
+        this.setExpandRatio(bodyLayout, 1);
+    }// end of method
+
+
+    /**
+     * Crea un bottone annulla in alto, per ritornare al Tabellone
+     */
+    private AButton creaMenuTurno(IAPresenter gestore) {
+        AButton button = buttonFactory.crea(EATypeButton.annulla, source, gestore, null, entityBean);
+        button.setWidth("12em");
+        button.setCaption(TORNA);
+        return button;
+    }// end of method
+
+
+    /**
+     * Crea due bottoni in basso:
+     * Annulla
+     * Conferma
+     */
+    private AFormToolbar creaBottomTurno(IAPresenter gestore, IAPresenter source) {
+        ((AFormToolbar) toolbar).deleteAllButtons();
+
+        AButton buttonAnnulla = ((AFormToolbar) toolbar).creaAddButton(EATypeButton.annulla, source);
+        buttonAnnulla.setWidth("12em");
+        buttonAnnulla.setCaption(TORNA);
+
+        ((AFormToolbar) toolbar).creaAddButton(EATypeButton.registra, gestore, gestore, null, null);
+
+        return (AFormToolbar) toolbar;
+    }// end of method
+
+
+    /**
+     * Crea la scritta esplicativa
+     * Può essere sovrascritto per un'intestazione specifica (caption) della grid
+     */
+    @Override
+    protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
+        if (entityBean != null && entityBean.getId() != null) {
+            caption = "Modifica di un turno previsto";
+        } else {
+            caption = "Creazione di un nuovo turno";
+        }// end of if/else cycle
+    }// end of method
+
 
     /**
      * Aggiunge al binder eventuali fields specifici, prima di trascrivere la entityBean nel binder

@@ -86,10 +86,12 @@ public class Tabellone extends AList {
 
 
     @Autowired
-    protected TurnoService turnoService;
+    private TurnoService turnoService;
 
     @Autowired
-    protected TurnoPresenter turnoPresenter;
+    private TurnoPresenter turnoPresenter;
+
+    private TabellonePresenter gestore;
 
 
     /**
@@ -130,8 +132,9 @@ public class Tabellone extends AList {
      *
      * @param gestore iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-    public Tabellone(@Lazy @Qualifier(AppCost.TAG_TAB) IAPresenter gestore) {
+    public Tabellone(@Lazy @Qualifier(AppCost.TAG_TAB) TabellonePresenter gestore) {
         super(gestore, null);
+        this.gestore=gestore;
         addStyleName("ctabellone");
     }// end of Spring constructor
 
@@ -175,7 +178,7 @@ public class Tabellone extends AList {
         grid.getGrid().setRowHeight(85);
         grid.getGrid().setSelectionMode(Grid.SelectionMode.NONE);
 
-        addListener();
+//        addListener(); //@todo il layout della cella lo 'copre' e non prende il click
         columnsTurni(items);
     }// end of method
 
@@ -257,8 +260,8 @@ public class Tabellone extends AList {
     private void columnTurno(LocalDate giornoInizio, int delta) {
         LocalDate giorno = giornoInizio.plusDays(delta);
         int userId = giorno.getDayOfYear();
-
-        Grid.Column colonna = grid.getGrid().addComponentColumn(new TurnoCell(giorno));
+        TurnoCell cella = new TurnoCell(publisher, turnoService,  gestore, turnoPresenter, giorno);
+        Grid.Column colonna = grid.getGrid().addComponentColumn(cella);
         fixColumn(colonna, userId + "", dateService.getWeekLong(giorno), LAR_COLONNE);
     }// end of method
 
@@ -297,7 +300,6 @@ public class Tabellone extends AList {
 
         //apre una scheda (form) in edit o new
         Notification.show("Click nella Grid, TURNO -> " + riga.getServizio().getCode() + " " + giorno);
-
         publisher.publishEvent(new AActionEvent(EATypeAction.editLink, gestore, turnoPresenter, turno));
     }// end of method
 
@@ -325,52 +327,6 @@ public class Tabellone extends AList {
         return turno;
     }// end of method
 
-
-//    private class TurnoCell implements ValueProvider {
-//
-//        private LocalDate giornoInizio;
-//        private int delta;
-//
-//        TurnoCell(LocalDate giornoInizio, int delta) {
-//            this.giornoInizio = giornoInizio;
-//        }// end of constructor
-//
-//        @Override
-//        public Object apply(Object riga) {
-//            Turno turno;
-//            Servizio servizio = ((Riga) riga).getServizio();
-//            List<Turno> turni = ((Riga) riga).getTurni();
-//
-//            if (turni != null && turni.size() > 0) {
-//                try { // prova ad eseguire il codice
-//                    turno = turni.get(delta);
-//                    VerticalLayout layout = new VerticalLayout();
-//                    layout.setMargin(false);
-//
-//                    if (turno != null) {
-//                        layout.addComponent(new LabelRosso("Esiste"));
-//                    } else {
-//                        layout.addComponent(new Label(TURNO_VUOTO, ContentMode.HTML));
-//                    }// end of if/else cycle
-//
-//                    layout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
-//                        @Override
-//                        public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
-//                            clickCell(turno != null ? turno : turnoService.newEntity(giornoInizio, servizio));
-//                        }// end of inner method
-//                    });// end of anonymous inner class
-//
-//                    return layout;
-//                } catch (Exception unErrore) { // intercetta l'errore
-//                    log.error(unErrore.toString());
-//                }// fine del blocco try-catch
-//            } else {
-//                return "";
-//            }// end of if/else cycle
-//
-//            return "";
-//        }// end of if cycle
-//    }// end of method
 
 }// end of class
 
