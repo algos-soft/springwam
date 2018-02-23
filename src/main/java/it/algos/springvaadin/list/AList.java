@@ -94,7 +94,7 @@ public abstract class AList extends AView implements IAList {
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
      * @param gestore iniettato da Spring
-     * @param toolbar   iniettato da Spring
+     * @param toolbar iniettato da Spring
      */
     public AList(IAPresenter gestore, @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
         super(gestore, toolbar);
@@ -102,24 +102,87 @@ public abstract class AList extends AView implements IAList {
 
 
     /**
-     * Metodo invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
+     * Metodo di ingresso nella view (nella sottoclasse concreta)
+     * Viene invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
      * Elimina il riferimento al menuLayout nella view 'uscente' (oldView) perché il menuLayout è un 'singleton'
      * Elimina tutti i componenti della view 'entrante' (this)
-     * Aggiunge il riferimento al menuLayout nella view 'entrante' (this)
-     * Passa il controllo al Presenter
+     * Passa il controllo al gestore che gestisce questa view (individuato nel costruttore della sottoclasse concreta)
+     * Questa classe diversifica la chiamata al presenter a seconda del tipo di view (List, Form, ... altro)
+     * Il gestore prepara/elabora i dati e poi ripassa il controllo al metodo AList.start() di questa view
      */
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        //--Regolazioni comuni a tutte le views
+        //--Regolazioni comuni a tutte le views (list e form)
         super.enter(event);
 
-        //--Passa il controllo al Presenter
-        //--Il punto di ingresso invocato da SpringNavigator è unico e gestito dalla supeclasse AView
-        //--Questa classe diversifica la chiamata al Presenter a seconda del tipo di view (List, Form, ... altro)
-        //--Il Presenter prepara/elabora i dati e poi ripassa il controllo al metodo AList.start() di questa view
+        //--Passa il controllo al gestore che gestisce questa view
         if (gestore != null) {
             gestore.setList();
         }// end of if cycle
+    }// end of method
+
+
+    /**
+     * Creazione di una view (AList) contenente una Grid
+     * Metodo invocato dal gestore (presenter( (dopo che ha elaborato i dati da visualizzare)
+     * Ricrea tutto ogni volta che la view diventa attiva
+     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * 2) Top: Contenitore grafico per la caption
+     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 4) Bottom - Barra dei bottoni inferiore
+     *
+     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
+     * @param columns     visibili ed ordinate della Grid
+     * @param items       da visualizzare nella Grid
+     * @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
+     */
+    @Override
+    public void start(Class<? extends AEntity> entityClazz, List<Field> columns, List items, List<EATypeButton> typeButtons) {
+        start(gestore, entityClazz, columns, items, typeButtons);
+    }// end of method
+
+    /**
+     * Creazione di una view (AList) contenente una Grid
+     * Metodo invocato dal gestore (presenter( (dopo che ha elaborato i dati da visualizzare)
+     * Ricrea tutto ogni volta che la view diventa attiva
+     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * 2) Top: Contenitore grafico per la caption
+     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 4) Bottom - Barra dei bottoni inferiore
+     *
+     * @param source      presenter che ha chiamato questa view ed a cui fare ritorno (di default il gestore)
+     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
+     * @param columns     visibili ed ordinate della Grid
+     * @param items       da visualizzare nella Grid
+     * @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
+     */
+    @Override
+    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items, List<EATypeButton> typeButtons) {
+        this.removeAllComponents();
+
+        //--componente grafico obbligatorio
+        menuLayout = creaMenu();
+        this.addComponent(menuLayout.getMenu());
+
+        //--componente grafico facoltativo
+        topLayout = creaTop(entityClazz, items);
+        if (topLayout != null) {
+            this.addComponent(topLayout);
+        }// end of if cycle
+
+        //--componente grafico obbligatorio
+        this.creaBody(source, entityClazz, columns, items);
+        this.addComponent(bodyLayout);
+
+        //--componente grafico facoltativo
+        if (typeButtons != null) {
+            bottomLayout = creaBottom(source, typeButtons);
+            if (bottomLayout != null) {
+                this.addComponent(bottomLayout);
+            }// end of if cycle
+        }// end of if cycle
+
+        this.setExpandRatio(bodyLayout, 1);
     }// end of method
 
 
@@ -140,12 +203,11 @@ public abstract class AList extends AView implements IAList {
                 caption += "Elenco di " + items.size() + " schede ";
             }// end of if/else cycle
 
-            //@todo RIMETTERE
-//            if (LibSession.isCompanyValida()) {
-//                caption += "della company " + LibSession.getCompany().getCode();
-//            } else {
-//                caption += "di tutte le company ";
-//            }// end of if/else cycle
+            if (login != null && login.getCompany() != null) {
+                caption += "di " + login.getCompany().getCode().toUpperCase();
+            } else {
+                caption += "di tutte le company ";
+            }// end of if/else cycle
         } else {
             caption += "Al momento non c'è nessuna scheda. ";
         }// end of if/else cycle

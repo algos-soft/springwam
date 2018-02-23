@@ -3,6 +3,7 @@ package it.algos.springwam.entity.turno;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import it.algos.springvaadin.enumeration.*;
 import it.algos.springwam.entity.iscrizione.Iscrizione;
 import it.algos.springwam.entity.servizio.Servizio;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -13,11 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.context.annotation.Scope;
 import lombok.*;
 import com.vaadin.spring.annotation.SpringComponent;
-import it.algos.springvaadin.enumeration.EARoleType;
-import it.algos.springvaadin.enumeration.EAListButton;
-import it.algos.springvaadin.enumeration.EACompanyRequired;
-import it.algos.springvaadin.enumeration.EAFieldAccessibility;
-import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.lib.ACost;
@@ -62,7 +58,7 @@ import java.util.List;
 @Qualifier(AppCost.TAG_TUR)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"giorno", "servizio"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni","titoloExtra","localitaExtra"})
+@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni", "titoloExtra", "localitaExtra"}, buttonsAdmin = EAFormButton.conferma, buttonsUser = EAFormButton.conferma)
 @AIScript(sovrascrivibile = false)
 public class Turno extends ACEntity {
 

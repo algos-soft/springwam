@@ -5,6 +5,8 @@ import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
+import it.algos.springvaadin.button.AButton;
+import it.algos.springvaadin.button.AButtonFactory;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.field.AField;
@@ -40,6 +42,12 @@ public abstract class AForm extends AView implements IAForm {
 
     @Autowired
     protected AFieldService fieldService;
+
+    /**
+     * Factory per la creazione dei bottoni
+     */
+    @Autowired
+    private AButtonFactory buttonFactory;
 
     //    @Autowired
 //    protected AFormToolbar toolbar;
@@ -87,21 +95,20 @@ public abstract class AForm extends AView implements IAForm {
 
 
     /**
-     * Metodo invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
+     * Metodo di ingresso nella view (nella sottoclasse concreta)
+     * Viene invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
      * Elimina il riferimento al menuLayout nella view 'uscente' (oldView) perché il menuLayout è un 'singleton'
      * Elimina tutti i componenti della view 'entrante' (this)
-     * Aggiunge il riferimento al menuLayout nella view 'entrante' (this)
-     * Passa il controllo al Presenter
+     * Passa il controllo al gestore che gestisce questa view (individuato nel costruttore della sottoclasse concreta)
+     * Questa classe diversifica la chiamata al presenter a seconda del tipo di view (List, Form, ... altro)
+     * Il gestore prepara/elabora i dati e poi ripassa il controllo al metodo AForm.start() di questa view
      */
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        //--Regolazioni comuni a tutte le views
+        //--Regolazioni comuni a tutte le views (list e form)
         super.enter(event);
 
-        //--Passa il controllo al Presenter
-        //--Il punto di ingresso invocato da SpringNavigator è unico e gestito dalla supeclasse AView
-        //--Questa classe diversifica la chiamata al Presenter a seconda del tipo di view (List, Form, ... altro)
-        //--Il Presenter prepara/elabora i dati e poi ripassa il controllo al metodo AList.start() di questa view
+        //--Passa il controllo al gestore che gestisce questa view
         if (gestore != null) {
             gestore.setForm();
         }// end of if cycle
@@ -109,17 +116,55 @@ public abstract class AForm extends AView implements IAForm {
 
 
     /**
-     * Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * Un eventuale menuBar specifica può essere iniettata dalla sottoclasse concreta
-     * Le sottoclassi possono aggiungere/modificare i menu che verranno ripristinati all'uscita della view
-     * Componente grafico obbligatorio
+     * Creazione di una view (AForm) contenente i fields
+     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
+     * Ricrea tutto ogni volta che la view diventa attiva
+     * La view comprende:
+     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * 2) Top: Contenitore grafico per la caption
+     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 4) Bottom - Barra dei bottoni inferiore
      *
-     * @return MenuLayout
+     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
+     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AForm
      */
-    protected IAMenu creaMenu() {
-        return null;
+    public void start(Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
+        this.removeAllComponents();
+
+        //--componente grafico facoltativo
+        this.addComponent(creaMenuForm());
+
+        //--componente grafico facoltativo
+        topLayout = creaTop(entityClazz, null);
+        if (topLayout != null) {
+            this.addComponent(topLayout);
+        }// end of if cycle
+
+        //--componente grafico obbligatorio
+        this.creaBody(source, reflectedJavaFields);
+        this.addComponent(bodyLayout);
+
+        //--componente grafico facoltativo
+        if (typeButtons != null) {
+            bottomLayout = creaBottom(source, typeButtons);
+            if (topLayout != null) {
+                this.addComponent(bottomLayout);
+            }// end of if cycle
+        }// end of if cycle
+
+        this.setExpandRatio(bodyLayout, 1);
     }// end of method
 
+
+    /**
+     * Restituisce un bottone di ritorno in alto sopra il form
+     *
+     * @return bottone annulla
+     */
+    protected AButton creaMenuForm() {
+        return buttonFactory.crea(EATypeButton.annulla, source, source, null, entityBean);
+    }// end of method
 
 
     /**
@@ -146,7 +191,7 @@ public abstract class AForm extends AView implements IAForm {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param gestore              presenter di riferimento per i componenti da cui vengono generati gli eventi
+     * @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
     @Override
@@ -188,7 +233,7 @@ public abstract class AForm extends AView implements IAForm {
      * Aggiunge i componenti grafici AField al layout
      * Eventuali regolazioni specifiche per i fields, dopo la trascrizione della entityBean nel binder
      *
-     * @param gestore              presenter di riferimento da cui vengono generati gli eventi
+     * @param gestore             presenter di riferimento da cui vengono generati gli eventi
      * @param layout              in cui inserire i campi (window o panel)
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */

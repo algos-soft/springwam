@@ -92,7 +92,6 @@ public abstract class APresenter extends APresenterEvents {
     protected IAForm form;
 
 
-
     /**
      * Costruttore @Autowired (nella sottoclasse concreta)
      * In the newest Spring release, it’s constructor does not need to be annotated with @Autowired annotation.
@@ -103,11 +102,11 @@ public abstract class APresenter extends APresenterEvents {
      * La sottoclasse usa una costante statica, per essere sicuri di scrivere sempre uguali i riferimenti
      *
      * @param entityClass iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
-     * @param service iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
-     * @param list    iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
-     * @param form    iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param service     iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param list        iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
+     * @param form        iniettato da Spring come sottoclasse concreta specificata dal @Qualifier
      */
-    public APresenter(Class<? extends AEntity> entityClass,IAService service, IAList list, IAForm form) {
+    public APresenter(Class<? extends AEntity> entityClass, IAService service, IAList list, IAForm form) {
         this.entityClass = entityClass;
         this.service = service;
         this.list = list;
@@ -116,10 +115,50 @@ public abstract class APresenter extends APresenterEvents {
 
 
     /**
+     * Metodo invocato da un evento, in alternativa al comando del menu
      * Usa lo SpringNavigator per cambiare view ed andare alla view AList
      */
     public void fireList() {
+        fireList(this);
+    }// end of method
+
+
+    /**
+     * Metodo invocato da un evento
+     * Usa lo SpringNavigator per cambiare view ed andare alla view AList
+     */
+    public void fireList(IAPresenter source) {
+        list.getList().source = source != null ? source : this;
+
         Class clazz = list.getViewComponent().getClass();
+        params.getNavigator().navigateTo(annotation.getViewName(clazz));
+    }// end of method
+
+
+    /**
+     * Metodo invocato da un evento, in alternativa al comando del menu
+     * Usa lo SpringNavigator per cambiare view ed andare ad AForm
+     *
+     * @param entityBean istanza da creare/elaborare
+     */
+    public void fireForm(AEntity entityBean) {
+        fireForm(entityBean, this);
+    }// end of method
+
+
+    /**
+     * Metodo invocato da un evento
+     * Usa lo SpringNavigator per cambiare view ed andare ad AForm
+     * Se source è nullo, usa questo gestore (presenter)
+     *
+     * @param entityBean istanza da creare/elaborare
+     * @param source     presenter che ha chiamato questo form
+     */
+    public void fireForm(AEntity entityBean, IAPresenter source) {
+        form.getForm().entityBean = entityBean != null ? entityBean : service.newEntity();
+        form.getForm().source = source != null ? source : this;
+
+        Class clazz = form.getViewComponent().getClass();
         params.getNavigator().navigateTo(annotation.getViewName(clazz));
     }// end of method
 
@@ -154,32 +193,7 @@ public abstract class APresenter extends APresenterEvents {
 
         typeButtons = service.getListTypeButtons();
 
-        list.start(this, entityClass, columns, items, typeButtons);
-    }// end of method
-
-
-    /**
-     * Usa lo SpringNavigator per cambiare view ed andare ad AForm
-     *
-     * @param entityBean istanza da creare/elaborare
-     */
-    public void fireForm(AEntity entityBean) {
-        fireForm(entityBean, null);
-    }// end of method
-
-
-    /**
-     * Usa lo SpringNavigator per cambiare view ed andare ad AForm
-     *
-     * @param entityBean istanza da creare/elaborare
-     * @param source     presenter che ha chiamato questo form
-     */
-    public void fireForm(AEntity entityBean, IAPresenter source) {
-        form.getForm().entityBean = entityBean != null ? entityBean : service.newEntity();
-        form.getForm().source = source != null ? source : this;
-
-        Class clazz = form.getViewComponent().getClass();
-        params.getNavigator().navigateTo(annotation.getViewName(clazz));
+        list.start(entityClass, columns, items, typeButtons);
     }// end of method
 
 
@@ -354,6 +368,10 @@ public abstract class APresenter extends APresenterEvents {
 
         if (form.getButton(EATypeButton.accetta) != null) {
             form.getButton(EATypeButton.accetta).setEnabled(enabled);
+        }// end of if cycle
+
+        if (form.getButton(EATypeButton.conferma) != null) {
+            form.getButton(EATypeButton.conferma).setEnabled(enabled);
         }// end of if cycle
     }// end of method
 

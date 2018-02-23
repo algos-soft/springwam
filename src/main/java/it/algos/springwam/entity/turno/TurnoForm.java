@@ -85,72 +85,24 @@ public class TurnoForm extends AForm {
     }// end of Spring constructor
 
 
-    /**
-     * Creazione di una view (AForm) contenente i fields
-     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
-     * Ricrea tutto ogni volta che la view diventa attiva
-     * La view comprende:
-     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-     * 4) Bottom - Barra dei bottoni inferiore
-     *
-     * @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
-     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
-     */
-    @Override
-    public void start(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
-        this.removeAllComponents();
-
-        //--componente grafico facoltativo
-        this.addComponent(creaMenuTurno(source));
-
-        //--componente grafico facoltativo
-        topLayout = creaTop(entityClazz, null);
-        if (topLayout != null) {
-            this.addComponent(topLayout);
-        }// end of if cycle
-
-        //--componente grafico obbligatorio
-        this.creaBody(gestore, reflectedJavaFields);
-        this.addComponent(bodyLayout);
-
-        //--componente grafico facoltativo
-        this.addComponent(creaBottomTurno(gestore, source));
-
-        this.setExpandRatio(bodyLayout, 1);
-    }// end of method
 
 
-    /**
-     * Crea un bottone annulla in alto, per ritornare al Tabellone
-     */
-    private AButton creaMenuTurno(IAPresenter gestore) {
-        AButton button = buttonFactory.crea(EATypeButton.annulla, source, gestore, null, entityBean);
-        button.setWidth("12em");
-        button.setCaption(TORNA);
-        return button;
-    }// end of method
-
-
-    /**
-     * Crea due bottoni in basso:
-     * Annulla
-     * Conferma
-     */
-    private AFormToolbar creaBottomTurno(IAPresenter gestore, IAPresenter source) {
-        ((AFormToolbar) toolbar).deleteAllButtons();
-
-        AButton buttonAnnulla = ((AFormToolbar) toolbar).creaAddButton(EATypeButton.annulla, source);
-        buttonAnnulla.setWidth("12em");
-        buttonAnnulla.setCaption(TORNA);
-
-        ((AFormToolbar) toolbar).creaAddButton(EATypeButton.registra, gestore, gestore, null, null);
-
-        return (AFormToolbar) toolbar;
-    }// end of method
+//    /**
+//     * Crea due bottoni in basso:
+//     * Annulla
+//     * Conferma
+//     */
+//    private AFormToolbar creaBottomTurno(IAPresenter gestore, IAPresenter source) {
+//        ((AFormToolbar) toolbar).deleteAllButtons();
+//
+//        AButton buttonAnnulla = ((AFormToolbar) toolbar).creaAddButton(EATypeButton.annulla, source);
+//        buttonAnnulla.setWidth("12em");
+//        buttonAnnulla.setCaption(TORNA);
+//
+//        ((AFormToolbar) toolbar).creaAddButton(EATypeButton.registra, gestore, source, null, null);
+//
+//        return (AFormToolbar) toolbar;
+//    }// end of method
 
 
     /**
@@ -159,8 +111,15 @@ public class TurnoForm extends AForm {
      */
     @Override
     protected void fixCaption(Class<? extends AEntity> entityClazz, List items) {
+        String servizio = "";
+        String data = "";
+
         if (entityBean != null && entityBean.getId() != null) {
-            caption = "Modifica di un turno previsto";
+            if (entityBean instanceof Turno) {
+                servizio = ((Turno) entityBean).getServizio().getCode();
+                data = ((Turno) entityBean).getGiorno().toString();
+            }// end of if cycle
+            caption = "Turno di " + servizio + " previsto per il " + data + "  - Modifica delle iscrizioni";
         } else {
             caption = "Creazione di un nuovo turno";
         }// end of if/else cycle

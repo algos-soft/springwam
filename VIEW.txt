@@ -1,0 +1,40 @@
+Ciclo delle views
+
+1) ogni vista viene 'annotata' da @SpringView(name = xxx)
+2) in qualche punto del codice viene generato un ''evento'' che necessita di cambiare view
+3) l'evento viene intercettato da APresenterEvents.onApplicationEvent(AEvent event)
+4) viene chiamato un metodo associato all'evento:
+    gestore.fireList()
+    gestore.fireForm(entityBean)
+5) registro nel form i parametri ricevuti prima cambiare 'vista' con SpringNavigator
+    (che non mi permette il passaggio dei parametri)
+    tipicamente sono: entityBean e source
+5) il gestore usa lo SpringNavigator per cambiare 'vista' (finestra o view)
+6) alternativamente, dal menu si chiama un cambio di 'vista' (finestra o view):
+    getUI().getNavigator().navigateTo(xxx);
+7) il codice arriva al metodo enter(ViewChangeListener.ViewChangeEvent event) della view concreta (list, form, ...)
+8) cancella alcuni riferimenti nella view 'uscente' (oldView)
+9) passa il controllo al gestore (presenter) che gestisce la view 'entrante' coi metodi:
+    gestore.setList()
+    gestore.setForm()
+10) il gestore prepara/elabora i dati (fields, columns, ecc.) e poi ripassa il controllo alla view:
+    list.setStart()
+    form.setStart()
+11) alla lista passa:
+    @param source      presenter di riferimento per i componenti da cui vengono generati gli eventi
+    @param entityClazz di riferimento, sottoclasse concreta di AEntity
+    @param columns     visibili ed ordinate della Grid
+    @param items       da visualizzare nella Grid
+    @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
+12) al form passa:
+    @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
+    @param entityClazz         di riferimento, sottoclasse concreta di AEntity
+    @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+    @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AForm
+13) La view (sia List che Form) regola e aggiunge:
+    * Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+    * Top: Contenitore grafico per la caption del componente
+    * Body: Corpo centrale della view. Utilizzando un Panel, si ottiene l'effetto scorrevole
+    * Bottom - Barra inferiore dei bottoni di comando
+
+

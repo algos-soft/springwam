@@ -19,7 +19,6 @@ public interface IAForm extends IAView {
 
 
 
-
     /**
      * Creazione di una view (AForm) contenente i fields
      * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
@@ -35,24 +34,6 @@ public interface IAForm extends IAView {
      * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
      */
     public void start( Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons);
-
-
-    /**
-     * Creazione di una view (AForm) contenente i fields
-     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
-     * Ricrea tutto ogni volta che la view diventa attiva
-     * La view comprende:
-     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-     * 4) Bottom - Barra dei bottoni inferiore
-     *
-     * @param gestore              di riferimento per gli eventi
-     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
-     */
-    public void start(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons);
 
 
     /**

@@ -311,7 +311,7 @@ public abstract class AService implements IAService {
                     matrice = new EATypeButton[]{EATypeButton.annulla};
                     break;
                 case conferma:
-                    matrice = new EATypeButton[]{EATypeButton.annulla, EATypeButton.revert, EATypeButton.conferma};
+                    matrice = new EATypeButton[]{EATypeButton.annulla, EATypeButton.conferma};
                     break;
                 default:
                     log.warn("Switch - caso non definito");

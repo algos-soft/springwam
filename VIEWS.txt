@@ -1,7 +1,0 @@
-Ciclo delle views
-
-1) otgni vista viene 'annotata' da @SpringView(name = xxx)
-2) dal menu (o da qualsiasi altro punto del codice) si chiama un cambio di 'vista' (finestra o view):
-    getUI().getNavigator().navigateTo(xxx);
-3) il codice arriva al metodo enter(ViewChangeListener.ViewChangeEvent event) della view
-4)

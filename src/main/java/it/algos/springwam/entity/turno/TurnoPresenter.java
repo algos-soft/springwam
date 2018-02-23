@@ -2,11 +2,13 @@ package it.algos.springwam.entity.turno;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
+import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.presenter.APresenter;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.IAService;
 import it.algos.springvaadin.list.IAList;
 import it.algos.springvaadin.form.IAForm;
+import it.algos.springwam.tabellone.TabellonePresenter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +16,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springwam.application.AppCost;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Project springwam
@@ -33,6 +38,10 @@ import it.algos.springwam.application.AppCost;
 @AIScript(sovrascrivibile = true)
 public class TurnoPresenter extends APresenter {
 
+//    @Lazy
+//    @Autowired
+//    private TabellonePresenter source;
+
     /**
      * Costruttore @Autowired (nella superclasse)
      * Si usa un @Qualifier(), per avere la sottoclasse specifica
@@ -45,6 +54,5 @@ public class TurnoPresenter extends APresenter {
             @Lazy @Qualifier(AppCost.TAG_TUR) IAForm form) {
         super(Turno.class, service, list, form);
     }// end of Spring constructor
-
 
 }// end of class

@@ -15,6 +15,7 @@
     <property name="tagAlgos" value="it/algos"/>
     <property name="tagPathJava" value="${tagIdea}/${tagAlgos}"/>
     <property name="tagPom" value="pom.xml"/>
+    <property name="tagView" value="VIEW.txt"/>
     <!--Fine dei tag-->
 
 
@@ -32,6 +33,8 @@
         <property name="destVaadin" value="${pathBaseProject}/${tagPathJava}/${nomeBaseFramework}"/>
         <property name="srcPom" value="${pathBaseFramework}/${tagPom}"/>
         <property name="destPom" value="${basedir}/../${tagPom}"/>
+        <property name="srcView" value="${pathBaseFramework}/${tagView}"/>
+        <property name="destView" value="${basedir}/../${tagView}"/>
     </target>
 
 
@@ -49,8 +52,12 @@
         <copyfile src="${srcPom}" dest="${destPom}"/>
     </target>
 
+    <target name="copiaView" depends="init" description="Ricopia il file view.txt">
+        <copyfile src="${srcView}" dest="${destView}"/>
+    </target>
 
-    <target name="updateProgetto" depends="init,deleteOldVaadin,copiaVaadin,copiaPom"
+
+    <target name="updateProgetto" depends="init,deleteOldVaadin,copiaVaadin,copiaPom,copiaView"
             description="Ricopia tutta la struttura di springvaadin">
     </target>
 

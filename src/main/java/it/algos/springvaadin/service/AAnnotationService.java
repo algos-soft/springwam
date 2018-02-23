@@ -5,6 +5,7 @@ import com.vaadin.spring.annotation.SpringView;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.*;
+import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.view.IAView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,10 @@ public class AAnnotationService {
      */
     @Autowired
     public ASessionService session;
+
+
+    @Autowired
+    public ALogin login;
 
 
     /**
@@ -928,6 +933,66 @@ public class AAnnotationService {
 
 
     /**
+     * Bottoni visibili nella toolbar
+     *
+     * @param clazz the entity class
+     *
+     * @return lista di bottoni visibili nella toolbar
+     */
+    @SuppressWarnings("all")
+    public  EAFormButton getFormBottonDev(final Class<? extends AEntity> clazz) {
+        EAFormButton listaNomiBottoni = EAFormButton.standard;
+        AIForm annotation = this.getAIForm(clazz);
+
+        if (annotation != null) {
+            listaNomiBottoni = annotation.buttonsDev();
+        }// end of if cycle
+
+        return listaNomiBottoni;
+    }// end of method
+
+
+    /**
+     * Bottoni visibili nella toolbar
+     *
+     * @param clazz the entity class
+     *
+     * @return lista di bottoni visibili nella toolbar
+     */
+    @SuppressWarnings("all")
+    public  EAFormButton getFormBottonAdmin(final Class<? extends AEntity> clazz) {
+        EAFormButton listaNomiBottoni = EAFormButton.standard;
+        AIForm annotation = this.getAIForm(clazz);
+
+        if (annotation != null) {
+            listaNomiBottoni = annotation.buttonsAdmin();
+        }// end of if cycle
+
+        return listaNomiBottoni;
+    }// end of method
+
+
+    /**
+     * Bottoni visibili nella toolbar
+     *
+     * @param clazz the entity class
+     *
+     * @return lista di bottoni visibili nella toolbar
+     */
+    @SuppressWarnings("all")
+    public  EAFormButton getFormBottonUser(final Class<? extends AEntity> clazz) {
+        EAFormButton listaNomiBottoni = EAFormButton.standard;
+        AIForm annotation = this.getAIForm(clazz);
+
+        if (annotation != null) {
+            listaNomiBottoni = annotation.buttonsUser();
+        }// end of if cycle
+
+        return listaNomiBottoni;
+    }// end of method
+
+
+    /**
      * Tipo di lista (EAFormButton) indicata nella AEntity class per la view AForm
      *
      * @return valore della enumeration
@@ -936,19 +1001,17 @@ public class AAnnotationService {
     public EAFormButton getFormBotton(final Class<? extends AEntity> clazz) {
         EAFormButton listaNomi = EAFormButton.standard;
 
-        //@todo RIMETTERE
-
-//        if (LibSession.isDeveloper()) {
-//            listaNomi = getListBottonDev(clazz);
-//        } else {
-//            if (LibSession.isAdmin()) {
-//                listaNomi = getListBottonAdmin(clazz);
-//            } else {
-//                if (true) {
-//                    listaNomi = getListBottonUser(clazz);
-//                }// end of if cycle
-//            }// end of if/else cycle
-//        }// end of if/else cycle
+        if (login.isDeveloper()) {
+            listaNomi = getFormBottonDev(clazz);
+        } else {
+            if (login.isAdmin()) {
+                listaNomi = getFormBottonAdmin(clazz);
+            } else {
+                if (true) {
+                    listaNomi = getFormBottonUser(clazz);
+                }// end of if cycle
+            }// end of if/else cycle
+        }// end of if/else cycle
 
         return listaNomi;
     }// end of method

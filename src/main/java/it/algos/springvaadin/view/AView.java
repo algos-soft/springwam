@@ -8,6 +8,7 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.lib.ACost;
+import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.menu.IAMenu;
 import it.algos.springvaadin.panel.APanel;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -38,6 +39,9 @@ import java.util.List;
 public abstract class AView extends VerticalLayout implements IAView {
 
 
+    @Autowired
+    protected ALogin login;
+
     /**
      * Service (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
      */
@@ -66,7 +70,7 @@ public abstract class AView extends VerticalLayout implements IAView {
 
 
     /**
-     * Chiamante di questo form (di solito il presenter)
+     * Chiamante di questa view (di solito il gestore)
      */
     public IAPresenter source;
 
@@ -157,13 +161,11 @@ public abstract class AView extends VerticalLayout implements IAView {
 
 
     /**
-     * Metodo invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
+     * Metodo di ingresso nella view (nella sottoclasse concreta)
+     * Viene invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
      * Elimina il riferimento al menuLayout nella view 'uscente' (oldView) perché il menuLayout è un 'singleton'
      * Elimina tutti i componenti della view 'entrante' (this)
-     * Aggiunge il riferimento al menuLayout nella view 'entrante' (this)
-     * Aggiunge il body di questa view (this)
-     * Aggiunge il bottom di questa view (this)
-     * Passa il controllo al Presenter (nella sottoclasse)
+     * Passa il controllo al presenter che gestisce questa view (individuato nel costruttore della sottoclasse concreta)
      */
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -172,115 +174,6 @@ public abstract class AView extends VerticalLayout implements IAView {
         if (oldView instanceof IAView) {
             ((IAView) oldView).removeComponents();
         }// end of if cycle
-    }// end of method
-
-
-    /**
-     * Creazione di una view (AList) contenente una Grid
-     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
-     * Ricrea tutto ogni volta che la view diventa attiva
-     * La view comprende:
-     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-     * 4) Bottom - Barra dei bottoni inferiore
-     *
-     * @param source      presenter di riferimento per i componenti da cui vengono generati gli eventi
-     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
-     * @param columns     visibili ed ordinate della Grid
-     * @param items       da visualizzare nella Grid
-     * @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
-     */
-    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items, List<EATypeButton> typeButtons) {
-        this.removeAllComponents();
-
-        //--componente grafico obbligatorio
-        menuLayout = creaMenu();
-        this.addComponent(menuLayout.getMenu());
-
-        //--componente grafico facoltativo
-        topLayout = creaTop(entityClazz, items);
-        if (topLayout != null) {
-            this.addComponent(topLayout);
-        }// end of if cycle
-
-        //--componente grafico obbligatorio
-        this.creaBody(source, entityClazz, columns, items);
-        this.addComponent(bodyLayout);
-
-        //--componente grafico facoltativo
-        if (typeButtons != null) {
-            bottomLayout = creaBottom(source, typeButtons);
-            if (bottomLayout != null) {
-                this.addComponent(bottomLayout);
-            }// end of if cycle
-        }// end of if cycle
-
-        this.setExpandRatio(bodyLayout, 1);
-    }// end of method
-
-
-    /**
-     * Creazione di una view (AForm) contenente i fields
-     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
-     * Ricrea tutto ogni volta che la view diventa attiva
-     * La view comprende:
-     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-     * 4) Bottom - Barra dei bottoni inferiore
-     *
-     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
-     */
-    public void start(Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
-        start(gestore, entityClazz, reflectedJavaFields, typeButtons);
-    }// end of method
-
-    /**
-     * Creazione di una view (AForm) contenente i fields
-     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
-     * Ricrea tutto ogni volta che la view diventa attiva
-     * La view comprende:
-     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-     * 4) Bottom - Barra dei bottoni inferiore
-     *
-     * @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
-     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
-     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
-     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AList
-     */
-    public void start(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
-        this.removeAllComponents();
-
-        //--componente grafico obbligatorio
-        menuLayout = creaMenu();
-        if (menuLayout != null) {
-            this.addComponent(menuLayout.getMenu());
-        }// end of if cycle
-
-        //--componente grafico facoltativo
-        topLayout = creaTop(entityClazz, null);
-        if (topLayout != null) {
-            this.addComponent(topLayout);
-        }// end of if cycle
-
-        //--componente grafico obbligatorio
-        this.creaBody(source, reflectedJavaFields);
-        this.addComponent(bodyLayout);
-
-        //--componente grafico facoltativo
-        if (typeButtons != null) {
-            bottomLayout = creaBottom(source, typeButtons);
-            if (topLayout != null) {
-                this.addComponent(bottomLayout);
-            }// end of if cycle
-        }// end of if cycle
-
-        this.setExpandRatio(bodyLayout, 1);
     }// end of method
 
 

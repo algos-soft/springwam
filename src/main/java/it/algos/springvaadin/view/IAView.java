@@ -23,20 +23,6 @@ public interface IAView extends View {
      */
     public void removeComponents();
 
-//    /**
-//     * Creazione di una view contenente una Grid
-//     * Ricrea tutto ogni volta che la view diventa attiva
-//     * La view comprende anche il menuLayout, una caption della Grid ed un footer di bottoni-comando
-//     *
-//     * @param source      di riferimento per gli eventi
-//     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
-//     * @param entityBean  di riferimento
-//     * @param columns     visibili ed ordinate della Grid
-//     * @param items       da visualizzare nella Grid
-//     * @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
-//     */
-//    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, AEntity entityBean, List<Field> columns, List items, List<EATypeButton> typeButtons);
-
 
     /**
      * Recupera il bottone del tipo specifico
