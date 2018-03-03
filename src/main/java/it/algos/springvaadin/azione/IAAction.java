@@ -2,6 +2,7 @@ package it.algos.springvaadin.azione;
 
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.grid.IAGrid;
+import it.algos.springvaadin.presenter.IAPresenter;
 
 /**
  * Project springvaadin
@@ -28,7 +29,7 @@ public interface IAAction {
      *
      * @param source di riferimento del componente che genera gli eventi
      */
-    public void setSource(IAListener source);
+    public void setSource(IAPresenter source);
 
 
     /**
@@ -36,7 +37,7 @@ public interface IAAction {
      *
      * @param target di riferimento per il componente che ascolta gli eventi
      */
-    public void setTarget(IAListener target);
+    public void setTarget(IAPresenter target);
 
 
     /**
@@ -46,6 +47,6 @@ public interface IAAction {
      * @param source di riferimento del componente che genera gli eventi
      * @param target di riferimento per il componente che ascolta gli eventi
      */
-    public void setSourceTarget(IAListener source, IAListener target);
+    public void setSourceTarget(IAPresenter source, IAPresenter target);
 
 }// end of interface

@@ -3,6 +3,7 @@ package it.algos.springvaadin.field;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.event.IAListener;
+import it.algos.springvaadin.presenter.IAPresenter;
 
 import java.lang.reflect.Field;
 
@@ -46,7 +47,7 @@ public interface IAFieldFactory {
      *
      * @return il field appena creato
      */
-    public AField crea(IAListener source, EAFieldType type, Field reflectionField, AEntity entityBean);
+    public AField crea(IAPresenter source, EAFieldType type, Field reflectionField, AEntity entityBean);
 
 
 }// end of interface

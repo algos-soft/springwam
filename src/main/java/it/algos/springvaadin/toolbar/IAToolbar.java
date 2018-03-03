@@ -24,16 +24,17 @@ public interface IAToolbar {
 
 
     /**
-     * Metodo invocato da restart() di Form e List
+     * Metodo invocato da restart() di List e Form
      * Seleziona i bottoni da mostrare nella toolbar
      * Crea i bottoni (iniettandogli il publisher)
      * Aggiunge i bottoni al contenitore grafico
-     * Inietta nei bottoni il parametro obbligatorio (source)
+     * Inietta nei bottoni i parametri obbligatori (gestore e target)
      *
-     * @param source      dell'evento generato dai bottoni
+     * @param source     dell'evento generato dai bottoni
+     * @param target      del presenter a cui indirizzare l'azione del bottone
      * @param typeButtons da visualizzare
      */
-    public void inizializza(IAPresenter source, List<EATypeButton> typeButtons);
+    public void inizializza(IAPresenter source, IAPresenter target, List<EATypeButton> typeButtons);
 
 
 //    /**

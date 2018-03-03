@@ -103,14 +103,14 @@ public class AGrid extends Grid implements IAGrid {
         this.presenter = presenter;
 //        this.setBeanType(beanType != null ? beanType : Role.class);
         this.setBeanType(beanType );
-        this.setRowHeight(40);
+        this.setRowHeight(47);
         this.setWidth(0,Unit.EM);
         this.addColumns(columns);
 
         if (items != null && items.size() > 0) {
             this.setItems(items);
             this.setHeightMode(HeightMode.ROW);
-            this.setHeightByRows(items.size());
+            this.setHeightByRows(items.size()+1);
         }// end of if cycle
 
         //--Aggiunge alla grid tutti i listener previsti

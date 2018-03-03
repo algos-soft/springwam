@@ -306,4 +306,6 @@ public class ServizioService extends AService {
         return super.save(entityBean);
     }// end of method
 
+
+
 }// end of class

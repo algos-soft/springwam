@@ -122,17 +122,17 @@ public class TurnoList extends AList {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param source
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
      * @param columns     visibili ed ordinate della Grid
      * @param items       da visualizzare nella Grid
      */
     @Override
-    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
-        super.creaBody(source, entityClazz, columns, items);
+    protected void creaBody( Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+        super.creaBody(entityClazz, columns, items);
         addColumnInizio();
         addColumnFine();
         addColumnIscrizioni();
+        addColumnTitoloExtra();
     }// end of method
 
 
@@ -227,5 +227,23 @@ public class TurnoList extends AList {
         grid.getGrid().setWidth(larghezza + larColIsc, Unit.PIXELS);
     }// end of method
 
+    /**
+     * Crea la colonna titolo extra (di tipo string)
+     */
+    private void addColumnTitoloExtra() {
+        String idKey = "titoloExtra";
+        int larColExtra = 200;
+
+        Grid.Column colonna = grid.getGrid().addColumn(turno -> {
+            String titolo = ((Turno) turno).getTitoloExtra();
+            return titolo;
+        });//end of lambda expressions
+
+        colonna.setId(idKey);
+        colonna.setCaption("Extra");
+        colonna.setWidth(larColExtra);
+        float larghezza = grid.getGrid().getWidth();
+        grid.getGrid().setWidth(larghezza + larColExtra, Unit.PIXELS);
+    }// end of method
 
 }// end of class

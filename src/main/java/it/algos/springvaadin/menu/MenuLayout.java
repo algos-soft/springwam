@@ -125,7 +125,7 @@ public class MenuLayout extends AMenu {
         this.removeAllComponents();
 
         if (AlgosApp.USE_SECURITY) {
-            if (login.isUser() && firstMenuBar.getItems().size() > 0) {
+            if (firstMenuBar.getItems().size() > 0) {
                 this.addComponent(new HorizontalLayout(firstMenuBar, loginButton));
             }// end of if/else cycle
 

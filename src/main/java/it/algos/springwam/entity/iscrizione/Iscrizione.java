@@ -5,7 +5,9 @@ import javax.validation.constraints.Size;
 
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springwam.entity.funzione.Funzione;
+import it.algos.springwam.entity.funzione.FunzioneService;
 import it.algos.springwam.entity.milite.Milite;
+import it.algos.springwam.entity.milite.MiliteService;
 import it.algos.springwam.entity.servizio.ServizioPresenter;
 import it.algos.springwam.entity.turno.Turno;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -65,34 +67,12 @@ import java.time.LocalDateTime;
 @AIList(fields = {"turno", "milite","funzione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
 @AIForm(fields = {"turno", "utente", "funzione"})
 @AIScript(sovrascrivibile = false)
-public class Iscrizione extends AEntity {
+public class Iscrizione extends ACEntity {
 
     /**
      * versione della classe per la serializzazione
      */
     private final static long serialVersionUID = 1L;
-
-
-//    /**
-//     * turno di riferimento (obbligatorio)
-//     * riferimento dinamico CON @DBRef
-//     */
-//    @NotNull
-//    @DBRef
-//    @AIField(type = EAFieldType.link, clazz = ServizioPresenter.class)
-//    @AIColumn(width = 140)
-//    private Turno turno;
-
-
-    /**
-     * milite di riferimento (obbligatorio)
-     * riferimento dinamico CON @DBRef
-     */
-    @NotNull
-    @DBRef
-    @AIField(type = EAFieldType.combo, clazz = Milite.class)
-    @AIColumn(width = 140)
-    private Milite milite;
 
 
     /**
@@ -101,9 +81,20 @@ public class Iscrizione extends AEntity {
      */
     @NotNull
     @DBRef
-    @AIField(type = EAFieldType.combo, clazz = Funzione.class)
+    @AIField(type = EAFieldType.combo, clazz = FunzioneService.class)
     @AIColumn(width = 140)
     private Funzione funzione;
+
+
+    /**
+     * milite di riferimento (obbligatorio)
+     * riferimento dinamico CON @DBRef
+     */
+    @NotNull
+    @DBRef
+    @AIField(type = EAFieldType.combo, clazz = MiliteService.class)
+    @AIColumn(width = 140)
+    private Milite milite;
 
 
     /**

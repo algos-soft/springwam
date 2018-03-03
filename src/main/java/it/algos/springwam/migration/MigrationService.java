@@ -11,6 +11,7 @@ import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.entity.user.User;
 import it.algos.springvaadin.entity.user.UserService;
 import it.algos.springvaadin.service.ADateService;
+import it.algos.springvaadin.service.ATextService;
 import it.algos.springwam.entity.croce.Croce;
 import it.algos.springwam.entity.croce.CroceService;
 import it.algos.springwam.entity.croce.EAOrganizzazione;
@@ -56,6 +57,9 @@ import java.util.List;
 @Scope("singleton")
 public class MigrationService {
 
+
+    @Autowired
+    public ATextService text;
 
     @Autowired
     private CroceService croceService;
@@ -277,26 +281,40 @@ public class MigrationService {
     private VaadinIcons selezionaIcona(String descrizione) {
         VaadinIcons icona = null;
         String autista = "utista";
-        String soc = "Soccorritore";
-        String soc2 = "Primo";
-        String ser = "Centralino";
-        String ser2 = "Pulizie";
-        String ser3 = "Ufficio";
+        String medica = "edica";
+        String soc = "Primo";
+        String soc2 = "Soccorritore";
+        String cen = "Centralino";
+        String pul = "Pulizie";
+        String uff = "Ufficio";
 
         if (descrizione.contains(autista)) {
-//            glyph = FontAwesome.AMBULANCE;
-            icona = VaadinIcons.ASTERISK;
+            if (descrizione.contains(medica)) {
+                icona = VaadinIcons.AMBULANCE;
+            } else {
+                icona = VaadinIcons.TRUCK;
+            }// end of if/else cycle
         } else {
             if (descrizione.contains(soc) || descrizione.contains(soc2)) {
-//                glyph = FontAwesome.HEART;
-                icona = VaadinIcons.MONEY;
+                if (descrizione.contains(soc)) {
+                    icona = VaadinIcons.DOCTOR;
+                }// end of if cycle
+                if (descrizione.contains(soc2)) {
+                    icona = VaadinIcons.SPECIALIST;
+                }// end of if cycle
             } else {
-                if (descrizione.contains(ser) || descrizione.contains(ser2) || descrizione.contains(ser3)) {
-//                    glyph = FontAwesome.USER;
-                    icona = VaadinIcons.FACEBOOK;
+                if (descrizione.contains(cen) || descrizione.contains(pul) || descrizione.contains(uff)) {
+                    if (descrizione.contains(cen)) {
+                        icona = VaadinIcons.PHONE;
+                    }// end of if cycle
+                    if (descrizione.contains(pul)) {
+                        icona = VaadinIcons.BED;
+                    }// end of if cycle
+                    if (descrizione.contains(uff)) {
+                        icona = VaadinIcons.OFFICE;
+                    }// end of if cycle
                 } else {
-//                    glyph = FontAwesome.STETHOSCOPE;
-                    icona = VaadinIcons.RECYCLE;
+                    icona = VaadinIcons.USER;
                 }// end of if/else cycle
             }// end of if/else cycle
         }// end of if/else cycle
@@ -480,35 +498,42 @@ public class MigrationService {
      */
     private void creaSingoloMilite(Croce croceNew, UserAmb userOld) {
         Milite entity;
+        Role role = getRuolo(userOld);
         String nickname = userOld.getNickname();
         String password = userOld.getPass();
-        Role role = getRuolo(userOld);
         boolean enabled = userOld.isEnabled();
         UtenteAmb utenteOld = userOld.getMilite();
         String nome = "";
         String cognome = "";
         boolean dipendente = false;
+        List<Funzione> funzioni = getFunzioni(croceNew, userOld);
 
         if (utenteOld != null) {
             nome = utenteOld.getNome();
             cognome = utenteOld.getCognome();
             dipendente = utenteOld.isDipendente();
         } else {
-            int a=87;
+            int a = 87;
         }// end of if/else cycle
+
+
+        if (text.isEmpty(nome) && text.isEmpty(cognome)) {
+            return;
+        }// end of if cycle
 
 
         if (militeService.findByKeyUnica(croceNew, nickname) == null) {
             entity = new Milite();
+            entity.setRole(role);
             entity.setNickname(nickname);
             entity.setPassword(password);
-            entity.setRole(role);
             entity.setEnabled(true);
             entity.setNome(nome);
             entity.setCognome(cognome);
             entity.setEnabled(enabled);
             entity.setDipendente(dipendente);
             entity.setInfermiere(false);
+            entity.setFunzioni(funzioni);
             entity.company = croceNew;
             militeService.save(entity);
         }// end of if cycle
@@ -555,6 +580,26 @@ public class MigrationService {
         }// end of if cycle
 
         return role;
+    }// end of method
+
+
+    private List<Funzione> getFunzioni(Croce croceNew, UserAmb userOld) {
+        List<Funzione> funzioni = null;
+        List<FunzioneAmb> funzioniOld = null;
+        UtenteAmb utenteOld = userOld.getMilite();
+
+        if (utenteOld != null) {
+            funzioniOld = MiliteFunzioneAmb.findAllFunzioniByMilite(utenteOld, manager);
+        }// end of if cycle
+
+        if (funzioniOld != null) {
+            funzioni = new ArrayList<>();
+            for (FunzioneAmb funzAmb : funzioniOld) {
+                funzioni.add(funzioneService.findByKeyUnica(croceNew, funzAmb.getSigla()));
+            }// end of for cycle
+        }// end of if cycle
+
+        return funzioni;
     }// end of method
 
 
@@ -662,22 +707,22 @@ public class MigrationService {
         List<Iscrizione> iscrizioni = new ArrayList<>();
         Iscrizione iscrizione;
 
-        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione1(), turnoOld.getFunzione1(), turnoOld.isProblemi_funzione1(), turnoNew);
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione1(), turnoOld.getFunzione1(), turnoOld.getOre_milite1(), turnoOld.isProblemi_funzione1(), turnoNew);
         if (iscrizione != null) {
             iscrizioni.add(iscrizione);
         }// end of if cycle
 
-        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione2(), turnoOld.getFunzione2(), turnoOld.isProblemi_funzione2(), turnoNew);
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione2(), turnoOld.getFunzione2(), turnoOld.getOre_milite2(), turnoOld.isProblemi_funzione2(), turnoNew);
         if (iscrizione != null) {
             iscrizioni.add(iscrizione);
         }// end of if cycle
 
-        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione3(), turnoOld.getFunzione3(), turnoOld.isProblemi_funzione3(), turnoNew);
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione3(), turnoOld.getFunzione3(), turnoOld.getOre_milite3(), turnoOld.isProblemi_funzione3(), turnoNew);
         if (iscrizione != null) {
             iscrizioni.add(iscrizione);
         }// end of if cycle
 
-        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione4(), turnoOld.getFunzione4(), turnoOld.isProblemi_funzione4(), turnoNew);
+        iscrizione = recuperaIscrizione(turnoOld, turnoOld.getMilite_funzione4(), turnoOld.getFunzione4(), turnoOld.getOre_milite4(), turnoOld.isProblemi_funzione4(), turnoNew);
         if (iscrizione != null) {
             iscrizioni.add(iscrizione);
         }// end of if cycle
@@ -696,7 +741,7 @@ public class MigrationService {
      * Quindi non posso usare il metodo userService.findOrCrea() che usa la company del login
      * Quindi inserisco la company direttamente
      */
-    private Iscrizione recuperaIscrizione(TurnoAmb turnoOld, UtenteAmb utenteOld, FunzioneAmb funzioneOld, boolean esisteProblema, Turno turnoNew) {
+    private Iscrizione recuperaIscrizione(TurnoAmb turnoOld, UtenteAmb utenteOld, FunzioneAmb funzioneOld, int durata, boolean esisteProblema, Turno turnoNew) {
         Iscrizione entity = null;
         String siglaOld;
         String codeNew;
@@ -704,7 +749,6 @@ public class MigrationService {
         Funzione funzioneNew = null;
         Milite militeNew;
         LocalDateTime timestamp = LocalDateTime.now();
-        int durata = 0;
         String nota = "";
 
         if (utenteOld != null) {

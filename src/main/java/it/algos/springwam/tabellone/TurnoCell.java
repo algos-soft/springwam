@@ -3,8 +3,11 @@ package it.algos.springwam.tabellone;
 import apple.laf.JRSUIConstants;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.event.LayoutEvents;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
@@ -12,8 +15,10 @@ import it.algos.springvaadin.component.AHorizontalLayout;
 import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.label.ALabel;
-import it.algos.springvaadin.label.LabelRosso;
+import it.algos.springvaadin.service.AResourceService;
+import it.algos.springwam.entity.funzione.Funzione;
 import it.algos.springwam.entity.iscrizione.Iscrizione;
+import it.algos.springwam.entity.milite.Milite;
 import it.algos.springwam.entity.riga.Riga;
 import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.turno.Turno;
@@ -36,7 +41,7 @@ import java.util.List;
  */
 @Slf4j
 @SpringComponent
-@Scope("session")
+@Scope("prototype")
 public class TurnoCell implements ValueProvider {
 
     /**
@@ -45,22 +50,30 @@ public class TurnoCell implements ValueProvider {
     private ApplicationEventPublisher publisher;
 
 
-    protected TurnoService turnoService;
+    private TurnoService turnoService;
 
-    protected TabellonePresenter gestore;
-
-    protected TurnoPresenter turnoPresenter;
-
+    private TurnoPresenter presenterSourceGestione;
+    private TabellonePresenter presenterTargetBack;
+    private TabelloneService tabelloneService;
 
     private final static String TURNO_VUOTO = "Turno non<br>(ancora)<br>previsto";
     private LocalDate giorno;
 
+    private AResourceService resource;
 
-    TurnoCell(ApplicationEventPublisher publisher, TurnoService turnoService, TabellonePresenter gestore, TurnoPresenter turnoPresenter, LocalDate giorno) {
+    TurnoCell(ApplicationEventPublisher publisher,
+              TurnoService turnoService,
+              TurnoPresenter presenterSourceGestione,
+              TabellonePresenter presenterTargetBack,
+              TabelloneService tabelloneService,
+              AResourceService resource,
+              LocalDate giorno) {
         this.publisher = publisher;
         this.turnoService = turnoService;
-        this.gestore = gestore;
-        this.turnoPresenter = turnoPresenter;
+        this.presenterSourceGestione = presenterSourceGestione;
+        this.presenterTargetBack = presenterTargetBack;
+        this.tabelloneService = tabelloneService;
+        this.resource = resource;
         this.giorno = giorno;
     }// end of constructor
 
@@ -70,9 +83,18 @@ public class TurnoCell implements ValueProvider {
         Riga riga;
         Turno turno;
         Servizio servizio = null;
+        List<Funzione> funzioni;
+        List<Iscrizione> iscrizioni;
+        Label label;
+        int pos = 0;
+        Funzione funz;
+        Milite milite;
+        VaadinIcons icona;
+
 //        List<Turno> turni = ((Riga) riga).getTurni();
 //        AHorizontalLayout turnoLayout = new AHorizontalLayout();
         VerticalLayout turnoLayout = new VerticalLayout();
+        turnoLayout.setHeight(120, Sizeable.Unit.PIXELS);
         turnoLayout.setMargin(false);
         turnoLayout.setSpacing(false);
 
@@ -86,15 +108,36 @@ public class TurnoCell implements ValueProvider {
         turnoLayout.setSpacing(false);
         turno = getTurnoFromGiorno(riga, giorno);
         if (turno != null) {
-//            turnoLayout.addComponent(new LabelRosso("Esiste"));
+            servizio = turno.getServizio();
+            funzioni = servizio.getFunzioni();
+            iscrizioni = tabelloneService.getIscrizioni(turno);
+            for (Iscrizione iscr : iscrizioni) {
+                funz = funzioni.get(pos);
+                icona = resource.getVaadinIcon(funz.getIcona());
+                if (iscr != null) {
+                    milite = iscr.getMilite();
+                    label = new Label(icona.getHtml() + " " + "<strong>" + milite.getNickname() + "</strong>", ContentMode.HTML);
+                    label.addStyleName("verde");
+                } else {
+                    if (funz.isObbligatoria()) {
+                        label = new Label(icona.getHtml() + " " + "<strong>" + funz.getSigla() + "</strong>", ContentMode.HTML);
+                        label.addStyleName("rosso");
+                    } else {
+                        label = new Label(icona.getHtml() + " " + funz.getSigla(),  ContentMode.HTML);
+                        label.addStyleName("blue");
+                    }// end of if/else cycle
+                }// end of if/else cycle
+                turnoLayout.addComponent(label);
+                pos++;
+            }// end of for cycle
 
-            if (turno.getIscrizioni() != null) {
-                for (Iscrizione iscrizione : turno.getIscrizioni()) {
-//                    turnoLayout.addComponent(new ALabel(iscrizione.getFunzione().getCode() + " - " + iscrizione.getMilite().getNickname()));
-                    turnoLayout.addComponent(new ALabel(iscrizione.getMilite().getNickname()));
-                }// end of for cycle
 
-            }// end of if cycle
+//            Label labelBlu = new Label("<strong>" + turno.getTitoloExtra() + "</strong>", ContentMode.HTML);
+//            labelBlu.addStyleName("blue");
+//            turnoLayout.addComponent(labelBlu);
+//            Label labelBlu2 = new Label("<strong>" + turno.getLocalitaExtra() + "</strong>", ContentMode.HTML);
+//            labelBlu2.addStyleName("blue");
+//            turnoLayout.addComponent(labelBlu2);
 
         } else {
             turnoLayout.addComponent(new ALabel(TURNO_VUOTO));
@@ -103,7 +146,6 @@ public class TurnoCell implements ValueProvider {
         turnoLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
             @Override
             public void layoutClick(LayoutEvents.LayoutClickEvent layoutClickEvent) {
-                Notification.show("Click nella cella; value: " + turno.getServizio() + " " + turno.getGiorno());
                 clickCell(turno);
             }// end of inner method
         });// end of anonymous inner class
@@ -142,8 +184,7 @@ public class TurnoCell implements ValueProvider {
      * Rimanda a TabellonePresenter
      */
     private void clickCell(Turno entityBean) {
-        publisher.publishEvent(new AActionEvent(EATypeAction.editLink, gestore, turnoPresenter, entityBean));
-        Notification.show("Click nella cella; value: " + entityBean.getServizio() + " " + entityBean.getGiorno());
+        publisher.publishEvent(new AActionEvent(EATypeAction.editLink, presenterSourceGestione, presenterTargetBack, entityBean));
     }// end of method
 
 }// end of class

@@ -20,6 +20,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,16 +82,16 @@ public class MiliteService extends ALoginService {
      * Ricerca di una entity (la crea se non la trova)
      * Properties obbligatorie
      *
+     * @param role     (obbligatoria, non unica)
      * @param nickname di riferimento (obbligatorio, unico per company)
      * @param password (obbligatoria o facoltativa, non unica)
-     * @param role     (obbligatoria, non unica)
      * @param nome:    (obbligatorio, non unico singolarmente nella company ma unico con cognome)
      * @param cognome: (obbligatorio, non unico singolarmente nella company ma unico con nome)
      *
      * @return la entity trovata o appena creata
      */
-    public Milite findOrCrea(String nickname, String password, Role role, String nome, String cognome) {
-        return findOrCrea(nickname, password, role, nome, cognome, "", "");
+    public Milite findOrCrea(Role role, String nickname, String password, String nome, String cognome) {
+        return findOrCrea(role, nickname, password, nome, cognome, "", "", (List<Funzione>) null);
     }// end of method
 
 
@@ -102,28 +103,30 @@ public class MiliteService extends ALoginService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
+     * @param role      (obbligatoria, non unica)
      * @param nickname  di riferimento (obbligatorio, unico per company)
      * @param password  (obbligatoria o facoltativa, non unica)
-     * @param role      (obbligatoria, non unica)
      * @param nome:     (obbligatorio, non unico singolarmente nella company ma unico con cognome)
      * @param cognome:  (obbligatorio, non unico singolarmente nella company ma unico con nome)
      * @param telefono: (facoltativo)
      * @param email:    posta elettronica (facoltativo)
+     * @param funzioni  del servizio (facoltativo)
      *
      * @return la entity trovata o appena creata
      */
     public Milite findOrCrea(
+            Role role,
             String nickname,
             String password,
-            Role role,
             String nome,
             String cognome,
             String telefono,
-            String email) {
+            String email,
+            List<Funzione> funzioni) {
         Milite entity = findByKeyUnica(nickname);
 
         if (entity == null) {
-            entity = newEntity(nickname, password, role, nome, cognome, telefono, email);
+            entity = newEntity(role, nickname, password, nome, cognome, telefono, email, funzioni);
             save(entity);
         }// end of if cycle
 
@@ -140,7 +143,7 @@ public class MiliteService extends ALoginService {
      */
     @Override
     public Milite newEntity() {
-        return newEntity("", "", (Role) null, "", "");
+        return newEntity((Role) null, "", "", "", "");
     }// end of method
 
 
@@ -154,16 +157,16 @@ public class MiliteService extends ALoginService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
+     * @param role     (obbligatoria, non unica)
      * @param nickname di riferimento (obbligatorio, unico per company)
      * @param password (obbligatoria o facoltativa, non unica)
-     * @param role     (obbligatoria, non unica)
      * @param nome:    (obbligatorio, non unico singolarmente nella company ma unico con cognome)
      * @param cognome: (obbligatorio, non unico singolarmente nella company ma unico con nome)
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Milite newEntity(String nickname, String password, Role role, String nome, String cognome) {
-        return newEntity(nickname, password, role, nome, cognome, "", "");
+    public Milite newEntity(Role role, String nickname, String password, String nome, String cognome) {
+        return newEntity(role, nickname, password, nome, cognome, "", "", (List<Funzione>) null);
     }// end of method
 
 
@@ -177,31 +180,33 @@ public class MiliteService extends ALoginService {
      * Se manca la prende dal Login
      * Se è obbligatoria e manca anche nel Login, va in errore
      *
+     * @param role      (obbligatoria, non unica)
      * @param nickname  di riferimento (obbligatorio, unico per company)
      * @param password  (obbligatoria o facoltativa, non unica)
-     * @param role      (obbligatoria, non unica)
      * @param nome:     (obbligatorio, non unico singolarmente nella company ma unico con cognome)
      * @param cognome:  (obbligatorio, non unico singolarmente nella company ma unico con nome)
      * @param telefono: (facoltativo)
      * @param email:    posta elettronica (facoltativo)
+     * @param funzioni  del servizio (facoltativo)
      *
      * @return la nuova entity appena creata (non salvata)
      */
     public Milite newEntity(
+            Role role,
             String nickname,
             String password,
-            Role role,
             String nome,
             String cognome,
             String telefono,
-            String email) {
+            String email,
+            List<Funzione> funzioni) {
         Milite entity = findByKeyUnica(nickname);
 
         if (entity == null) {
             entity = new Milite();
+            entity.setRole(role);
             entity.setNickname(nickname);
             entity.setPassword(password);
-            entity.setRole(role);
             entity.setEnabled(true);
             entity.setNome(nome);
             entity.setCognome(cognome);
@@ -209,6 +214,7 @@ public class MiliteService extends ALoginService {
             entity.setEmail(email);
             entity.setDipendente(false);
             entity.setInfermiere(false);
+            entity.setFunzioni(funzioni);
         }// end of if cycle
 
         return (Milite) addCompany(entity);
@@ -265,6 +271,25 @@ public class MiliteService extends ALoginService {
         return repository.findByCompanyAndNomeAndCognome(croce != null ? croce : (Company) login.getCompany(), nome, cognome);
     }// end of method
 
+    /**
+     * Returns all instances of the type
+     * Usa MultiCompany, ma il developer può vedere anche tutto
+     * Lista ordinata
+     *
+     * @param funzione per cui il milite deve esere abilitato (obbligatoria)
+     *
+     * @return lista ordinata di tutte le entities
+     */
+    public List findAllByFunzione(Funzione funzione) {
+        ArrayList<Milite> militiAbilitatiAllaFunzione = null;
+        List<Milite> allMiliti = this.findAll();
+
+        for (Milite milite : allMiliti) {
+
+        }// end of for cycle
+
+        return militiAbilitatiAllaFunzione;
+    }// end of method
 
     /**
      * Returns all instances of the type

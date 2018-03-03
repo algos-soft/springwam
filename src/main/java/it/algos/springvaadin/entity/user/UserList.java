@@ -10,8 +10,8 @@ import com.vaadin.ui.Grid;
 import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAFieldType;
-import it.algos.springvaadin.label.LabelRosso;
-import it.algos.springvaadin.label.LabelVerde;
+import it.algos.springvaadin.label.ALabelRosso;
+import it.algos.springvaadin.label.ALabelVerde;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.presenter.IAPresenter;
@@ -83,14 +83,13 @@ public class UserList extends AList {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param source
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
      * @param columns     visibili ed ordinate della Grid
      * @param items       da visualizzare nella Grid
      */
     @Override
-    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
-        super.creaBody(source, entityClazz, columns, items);
+    protected void creaBody(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+        super.creaBody(entityClazz, columns, items);
 
         this.addColonna(entityClazz, "enabled");
     }// end of method
@@ -125,9 +124,9 @@ public class UserList extends AList {
 
                             if (type == EAFieldType.checkboxlabel) {
                                 if ((Boolean) value) {
-                                    comp = new LabelVerde(VaadinIcons.CHECK);
+                                    comp = new ALabelVerde(VaadinIcons.CHECK);
                                 } else {
-                                    comp = new LabelRosso(VaadinIcons.CLOSE);
+                                    comp = new ALabelRosso(VaadinIcons.CLOSE);
                                 }// end of if/else cycle
                             }// end of if cycle
 

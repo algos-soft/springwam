@@ -4,6 +4,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import it.algos.springvaadin.enumeration.EATypeAction;
+import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,13 @@ import java.util.TimerTask;
 public class AActionClick extends AAction {
 
     private final static long defaultTimeInterval = 50000;
+
+    /**
+     */
+    public AActionClick() {
+        this(null);
+    }// end of constructor
+
 
     /**
      * Costruttore @Autowired
@@ -135,4 +143,6 @@ public class AActionClick extends AAction {
             isAlreadyOneClick = alreadyOneClick;
         }
     }// end of class
+
+
 }// end of class

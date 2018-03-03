@@ -1,6 +1,7 @@
 package it.algos.springwam.tabellone;
 
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
@@ -9,14 +10,17 @@ import it.algos.springvaadin.home.AHomeView;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALoginButton;
 import it.algos.springvaadin.menu.AMenu;
+import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.ATextService;
 import it.algos.springwam.application.AppCost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 /**
  * Project springwam
@@ -43,6 +47,16 @@ public class TabelloneMenuLayout extends AMenu {
      */
     @Autowired
     public ATextService text;
+
+    /**
+     * Libreria di servizio. Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    public ADateService date;
+
+    @Autowired
+    @Lazy
+    public TabellonePresenter tabellone;
 
     private MenuBar tabMenuBar;
 
@@ -103,19 +117,73 @@ public class TabelloneMenuLayout extends AMenu {
 
 
     private void addMenuPeriodo() {
-        MenuBar.MenuItem item = tabMenuBar.addItem("Periodo", VaadinIcons.LINES, null);
+      MenuBar.MenuItem menuPeriodo = tabMenuBar.addItem("Periodo", VaadinIcons.LINES, null);
         MenuBar.MenuItem itemAltro;
 
-        item.addItem("Indietro", VaadinIcons.ARROW_LEFT, null);
-        item.addItem("Oggi", VaadinIcons.CALENDAR_O, null);
-        item.addItem("Lunedì", VaadinIcons.CALENDAR_O, null);
-        item.addItem("Avanti", VaadinIcons.ARROW_RIGHT, null);
+        menuPeriodo.addItem("Indietro (7)", VaadinIcons.ARROW_LEFT, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                tabellone.setInizio(tabellone.getInizio().minusDays(7));
+                tabellone.setList();
+            }// end of inner method
+        });// end of anonymous inner class
 
-        itemAltro = item.addItem("Altro...", VaadinIcons.LINES, null);
-        itemAltro.addItem("Giorno precedente", VaadinIcons.ARROW_LEFT, null);
-        itemAltro.addItem("Giorno successivo", VaadinIcons.ARROW_RIGHT, null);
-        itemAltro.addItem("Seleziona periodo", VaadinIcons.SEARCH, null);
+
+        menuPeriodo.addItem("Avanti (7)", VaadinIcons.ARROW_RIGHT, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                tabellone.setInizio(tabellone.getInizio().plusDays(7));
+                tabellone.setList();
+            }// end of inner method
+        });// end of anonymous inner class
+
+
+        menuPeriodo.addItem("Oggi", VaadinIcons.CALENDAR_O, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                tabellone.setInizio(LocalDate.now());
+                tabellone.setList();
+            }// end of inner method
+        });// end of anonymous inner class
+
+
+        menuPeriodo.addItem("Lunedì", VaadinIcons.CALENDAR_O, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                LocalDate d1 = LocalDate.now();
+                int numDow = d1.getDayOfWeek().getValue();
+                LocalDate d2 = d1.minusDays(numDow - 1);
+                tabellone.setInizio(d2);
+                tabellone.setList();
+            }// end of inner method
+        });// end of anonymous inner class
+
+
+        menuPeriodo.addItem("Giorno precedente", VaadinIcons.ARROW_LEFT, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                tabellone.setInizio(tabellone.getInizio().minusDays(1));
+                tabellone.setList();
+            }// end of inner method
+        });// end of anonymous inner class
+
+
+        menuPeriodo.addItem("Giorno successivo", VaadinIcons.ARROW_RIGHT, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                tabellone.setInizio(tabellone.getInizio().plusDays(1));
+                tabellone.setList();
+            }// end of inner method
+        });// end of anonymous inner class
+
+
+        menuPeriodo.addItem("Seleziona periodo", VaadinIcons.SEARCH, new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+            }// end of inner method
+        });// end of anonymous inner class
     }// end of method
+
 
 
     private void addMenuNuoviTurni() {

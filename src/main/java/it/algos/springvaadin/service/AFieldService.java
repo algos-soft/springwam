@@ -10,6 +10,7 @@ import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AComboField;
 import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.field.IAFieldFactory;
+import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -41,6 +42,9 @@ public class AFieldService {
     @Autowired
     public AAnnotationService annotation;
 
+    @Autowired
+    public AArrayService array;
+
 
     @Autowired
     private AMongoService mongoService;
@@ -53,7 +57,7 @@ public class AFieldService {
      * @param reflectedJavaField di riferimento per estrarre le Annotation
      */
     @SuppressWarnings("all")
-    public AField create(IAListener source, Field reflectedJavaField, AEntity entityBean) {
+    public AField create(IAPresenter source, Field reflectedJavaField, AEntity entityBean) {
         AField algosField = null;
         List items = null;
         boolean nuovaEntity = text.isEmpty(entityBean.id);
@@ -66,6 +70,7 @@ public class AFieldService {
         boolean enabled = annotation.isFieldEnabled(reflectedJavaField, nuovaEntity);
         Class targetClazz = annotation.getComboClass(reflectedJavaField);
 //        boolean visible = annotation.isFieldVisibile(reflectedJavaField, nuovaEntity);
+        Object bean;
 
         //@todo RIMETTERE
 //        int rows = annotation.getNumRows(reflectionJavaField);
@@ -87,8 +92,15 @@ public class AFieldService {
         }// end of if cycle
 
         if (type == EAFieldType.combo && targetClazz != null && algosField != null) {
-            items = mongoService.findAll(targetClazz);
-            ((AComboField) algosField).fixCombo(items, false, false);
+            bean = context.getBean(targetClazz);
+
+            if (bean instanceof AService) {
+                items = ((AService) bean).findAll();
+            }// end of if cycle
+
+            if (array.isValid(items)) {
+                ((AComboField) algosField).fixCombo(items, false, false);
+            }// end of if cycle
         }// end of if cycle
 
 

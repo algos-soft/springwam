@@ -152,11 +152,11 @@ public abstract class APresenter extends APresenterEvents {
      * Se source è nullo, usa questo gestore (presenter)
      *
      * @param entityBean istanza da creare/elaborare
-     * @param source     presenter che ha chiamato questo form
+     * @param target     presenter che ha chiamato questo form
      */
-    public void fireForm(AEntity entityBean, IAPresenter source) {
+    public void fireForm(AEntity entityBean, IAPresenter target) {
         form.getForm().entityBean = entityBean != null ? entityBean : service.newEntity();
-        form.getForm().source = source != null ? source : this;
+        form.getForm().target = target != null ? target : this;
 
         Class clazz = form.getViewComponent().getClass();
         params.getNavigator().navigateTo(annotation.getViewName(clazz));
@@ -327,18 +327,35 @@ public abstract class APresenter extends APresenterEvents {
      * Registra le modifiche nel DB, tramite il service
      * Usa lo SpringNavigator per cambiare view ed andare alla view AList
      */
-    public void registra() {
+    @Override
+    public boolean registra() {
+        return this.registra(this);
+    }// end of method
+
+
+    /**
+     * Evento 'save' (registra) button pressed in form
+     * Esegue il 'commit' nel Form, trasferendo i valori dai campi alla entityBean
+     * Esegue, nel Form, eventuale validazione e trasformazione dei dati
+     * Registra le modifiche nel DB, tramite il service
+     * Usa lo SpringNavigator per cambiare view ed andare alla view AList
+     */
+    public boolean registra(IAPresenter target) {
+        boolean status = false;
         AEntity oldBean = getBean();
         AEntity modifiedBean = form.commit();
 
         try { // prova ad eseguire il codice
-            if (service.save(oldBean, modifiedBean) != null) {
-                fireList();
-            }// end of if cycle
+            status = service.save(oldBean, modifiedBean) != null;
+//            if (service.save(oldBean, modifiedBean) != null) {
+//                fireList(target);
+//            }// end of if cycle
         } catch (Exception unErrore) { // intercetta l'errore
             log.error(unErrore.toString());
             Notification.show("Nuova scheda", NullCompanyException.MESSAGE, Notification.Type.ERROR_MESSAGE);
         }// fine del blocco try-catch
+
+        return status;
     }// end of method
 
 

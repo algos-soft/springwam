@@ -12,14 +12,14 @@ import java.util.List;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
 import it.algos.springvaadin.entity.AEntity;
-import it.algos.springvaadin.label.LabelRosso;
-import it.algos.springvaadin.label.LabelVerde;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.annotation.AIView;
 import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.service.AResourceService;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springvaadin.enumeration.EARoleType;
 import it.algos.springwam.entity.funzione.Funzione;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -64,6 +64,8 @@ public class ServizioList extends AList {
      */
     public static final Resource VIEW_ICON = VaadinIcons.ASTERISK;
 
+    @Autowired
+    private AResourceService resource;
 
     /**
      * Costruttore @Autowired
@@ -105,14 +107,13 @@ public class ServizioList extends AList {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param source
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
      * @param columns     visibili ed ordinate della Grid
      * @param items       da visualizzare nella Grid
      */
     @Override
-    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
-        super.creaBody(source, entityClazz, columns, items);
+    protected void creaBody(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+        super.creaBody( entityClazz, columns, items);
 //        grid.getGrid().setRowHeight(47);
 //        addColumnOrarioBool();
 //        addColumnOrarioText();
@@ -183,9 +184,10 @@ public class ServizioList extends AList {
             List<Funzione> funzioni = ((Servizio) servizio).getFunzioni();
             if (funzioni != null && funzioni.size() > 0) {
                 for (Funzione funz : funzioni) {
-                    valueFunz = "";
                     if (funz != null) {
-                        valueFunz = funz.getSigla();
+                        valueFunz=resource.getVaadinIcon(funz.getIcona()).getHtml();
+                        valueFunz += " ";
+                        valueFunz += funz.getSigla();
                         if (funz.isObbligatoria()) {
                             valueFunz = html.setRossoBold(valueFunz);
                         } else {
@@ -204,9 +206,9 @@ public class ServizioList extends AList {
 //        fixColumn(colonna, "funzioni", "Funzioni del servizio", 350);//@todo ricreare un metodo generico
         colonna.setId("funzioni");
         colonna.setCaption("Funzioni del servizio");
-        colonna.setWidth(350);
+        colonna.setWidth(400);
         float lar = grid.getGrid().getWidth();
-        grid.getGrid().setWidth(lar + 350, Unit.PIXELS);
+        grid.getGrid().setWidth(lar + 400, Unit.PIXELS);
 
     }// end of method
 

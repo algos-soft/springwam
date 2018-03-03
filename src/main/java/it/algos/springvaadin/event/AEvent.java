@@ -5,6 +5,10 @@ import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.enumeration.EATypeField;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.service.ATextService;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
@@ -20,6 +24,13 @@ import org.springframework.context.ApplicationListener;
 public abstract class AEvent extends ApplicationEvent {
 
 
+    /**
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     */
+    @Autowired
+    protected ATextService text;
+
+
     //--Obbligatorio (presenter, form, field, window, dialog,... ) che ha generato l'evento
     //--ApplicationListener source -> gestito dalla superclasse
 
@@ -28,8 +39,9 @@ public abstract class AEvent extends ApplicationEvent {
     protected Object type;
 
 
-    //--Obbligatorio (presenter, form, field, window, dialog,... ) a cui indirizzare l'evento
-    protected IAListener target;
+    //--Opzionale (presenter, form, field, window, dialog,... ) a cui indirizzare l'evento successivo
+    // (dopo l'azione prevista in questo evento)
+    protected IAPresenter target;
 
 
     //--Opzionale nome della classe (di tipo IAListener) a cui indirizzare l'evento
@@ -52,7 +64,7 @@ public abstract class AEvent extends ApplicationEvent {
      * @param entityBean  Opzionale (entityBean) in elaborazione. Ha senso solo per alcuni eventi
      * @param sourceField Opzionale (field) in elaborazione. Ha senso solo per alcuni eventi
      */
-    public AEvent(Object type, IAListener source, IAListener target, AEntity entityBean, AField sourceField) {
+    public AEvent(Object type, IAPresenter source, IAPresenter target, AEntity entityBean, AField sourceField) {
         super(source);
         this.type = type;
         this.target = target;
@@ -72,12 +84,25 @@ public abstract class AEvent extends ApplicationEvent {
      * @return The object on which the Event initially occurred.
      */
     @Override
-    public ApplicationListener getSource() {
-        return (ApplicationListener) super.getSource();
+    public IAPresenter getSource() {
+        return (IAPresenter) super.getSource();
     }// end of method
 
 
-    public IAListener getTarget() {
+    public String getSourceClassName() {
+        String sourceClassName = source.getClass().getCanonicalName();
+
+        if (AopUtils.isAopProxy(source)) {
+            sourceClassName = source.toString();
+//            sourceClassName = text.levaCodaDa(sourceClassName, "@");
+            sourceClassName = sourceClassName.substring(0, sourceClassName.indexOf("@"));
+        }// end of if cycle
+
+        return sourceClassName;
+    }// end of method
+
+
+    public IAPresenter getTarget() {
         return target;
     }// end of method
 

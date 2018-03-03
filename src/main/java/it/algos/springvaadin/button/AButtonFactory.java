@@ -5,6 +5,7 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.context.ApplicationEventPublisher;
@@ -68,7 +69,7 @@ public class AButtonFactory implements IAButtonFactory {
      * @return il bottone creato
      */
     @Override
-    public AButton crea(EATypeButton type, IAListener source, IAListener target, AField sourceField) {
+    public AButton crea(EATypeButton type, IAPresenter source, IAPresenter target, AField sourceField) {
         return crea(type, source, target, sourceField, null);
     }// end of method
 
@@ -84,7 +85,7 @@ public class AButtonFactory implements IAButtonFactory {
      * @return il bottone creato
      */
 //    @Override
-    public AButton crea(EATypeButton type, IAListener source, IAListener target, AField sourceField, AEntity entityBean) {
+    public AButton crea(EATypeButton type, IAPresenter source, IAPresenter target, AField sourceField, AEntity entityBean) {
         AButton button = buttonFactory.apply(AButton.class);
 
         if (button != null) {

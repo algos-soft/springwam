@@ -5,6 +5,7 @@ import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.entity.stato.Stato;
+import it.algos.springvaadin.entity.stato.StatoService;
 import it.algos.springvaadin.enumeration.EACompanyRequired;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.enumeration.EAListButton;
@@ -96,7 +97,7 @@ public class Address extends ACEntity {
      */
     @DBRef
     @NotNull
-    @AIField(type = EAFieldType.combo, clazz = Stato.class)
+    @AIField(type = EAFieldType.combo, clazz = StatoService.class)
     @AIColumn(width = 140)
     private Stato stato;
 

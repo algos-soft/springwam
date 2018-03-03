@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import it.algos.springvaadin.enumeration.*;
 import it.algos.springwam.entity.iscrizione.Iscrizione;
 import it.algos.springwam.entity.servizio.Servizio;
+import it.algos.springwam.entity.servizio.ServizioService;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -58,7 +59,7 @@ import java.util.List;
 @Qualifier(AppCost.TAG_TUR)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"giorno", "servizio"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "iscrizioni", "titoloExtra", "localitaExtra"}, buttonsAdmin = EAFormButton.conferma, buttonsUser = EAFormButton.conferma)
+@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "titoloExtra", "localitaExtra"}, buttonsAdmin = EAFormButton.conferma, buttonsUser = EAFormButton.conferma)
 @AIScript(sovrascrivibile = false)
 public class Turno extends ACEntity {
 
@@ -83,7 +84,7 @@ public class Turno extends ACEntity {
      */
     @NotNull
     @DBRef
-    @AIField(type = EAFieldType.combo, clazz = Servizio.class)
+    @AIField(type = EAFieldType.combo, clazz = ServizioService.class)
     @AIColumn(width = 140)
     private Servizio servizio;
 
@@ -111,13 +112,14 @@ public class Turno extends ACEntity {
      * riferimento statico SENZA @DBRef (embedded)
      */
     @NotNull
+    @AIField(type = EAFieldType.noone, widthEM = 20, name = "Iscrizioni per questo turno")
     private List<Iscrizione> iscrizioni;
 
 
     /**
      * motivazione del turno extra (facoltativo)
      */
-    @AIField(type = EAFieldType.text)
+    @AIField(type = EAFieldType.text,widthEM = 24)
     @AIColumn()
     private String titoloExtra;
 
@@ -125,7 +127,7 @@ public class Turno extends ACEntity {
     /**
      * nome evidenziato della località per turni extra (facoltativo)
      */
-    @AIField(type = EAFieldType.text)
+    @AIField(type = EAFieldType.text,widthEM = 24)
     @AIColumn()
     private String localitaExtra;
 

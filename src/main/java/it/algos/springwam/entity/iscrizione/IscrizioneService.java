@@ -9,6 +9,7 @@ import it.algos.springvaadin.service.AService;
 import it.algos.springvaadin.service.ATextService;
 import it.algos.springwam.entity.funzione.Funzione;
 import it.algos.springwam.entity.milite.Milite;
+import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.turno.Turno;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.algos.springvaadin.annotation.*;
@@ -75,7 +77,7 @@ public class IscrizioneService extends AService {
      */
     @Override
     public Iscrizione newEntity() {
-        return newEntity((Milite) null, (Funzione) null, (LocalDateTime) null, 0);
+        return newEntity((Funzione) null, (Milite) null, (LocalDateTime) null, 0);
     }// end of method
 
 
@@ -85,18 +87,30 @@ public class IscrizioneService extends AService {
      * Properties obbligatorie
      * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
      *
-     * @param milite    di riferimento (obbligatorio)
+     * @return la nuova entity appena creata (non salvata)
+     */
+    public Iscrizione newEntity(Funzione funzione,int durata) {
+        return newEntity(funzione, (Milite) null, (LocalDateTime) null, durata);
+    }// end of method
+
+    /**
+     * Creazione in memoria di una nuova entity che NON viene salvata
+     * Eventuali regolazioni iniziali delle property
+     * Properties obbligatorie
+     * Gli argomenti (parametri) della new Entity DEVONO essere ordinati come nella Entity (costruttore lombok)
+     *
      * @param funzione  per cui il milite/volontario/utente si iscrive (obbligatorio)
+     * @param milite    di riferimento (obbligatorio)
      * @param timestamp di creazione (obbligatorio, inserito in automatico)
      * @param durata    effettiva del turno del milite/volontario di questa iscrizione (obbligatorio, proposta come dal servizio)
      *
      * @return la nuova entity appena creata (non salvata)
      */
-    public Iscrizione newEntity(Milite milite, Funzione funzione, LocalDateTime timestamp, int durata) {
+    public Iscrizione newEntity(Funzione funzione, Milite milite, LocalDateTime timestamp, int durata) {
         Iscrizione entity = Iscrizione.builder()
-                .milite(milite)
                 .funzione(funzione)
-                .timestamp(timestamp)
+                .milite(milite)
+                .timestamp(timestamp != null ? timestamp : LocalDateTime.now())
                 .durata(durata)
                 .build();
 
@@ -112,13 +126,38 @@ public class IscrizioneService extends AService {
      * @return lista ordinata di tutte le entities
      */
     public List findAll(Turno turno) {
-        if (login.isDeveloper()) {
-            return null;
-//            return repository.findByOrderByNicknameAsc();
-        } else {
-            return repository.findAll();
-        }// end of if/else cycle
+        return turno.getIscrizioni();
     }// end of method
 
+
+//    /**
+//     * Returns all instances of the type
+//     * Usa MultiCompany, ma il developer può vedere anche tutto
+//     * Lista ordinata
+//     *
+//     * @return lista ordinata di tutte le entities
+//     */
+//    public List findAll() {
+//        if (login.isDeveloper()) {
+//            return repository.findByOrderByCodeAsc();
+//        } else {
+//            return repository.findByCompanyOrderByOrdineAsc(login.getCompany());
+//        }// end of if/else cycle
+//    }// end of method
+
+
+    /**
+     * @return lista di code
+     */
+    public List<String> findAllCode(Turno turno) {
+        List lista = new ArrayList();
+        List<Iscrizione> listaIscrizioni = findAll(turno);
+
+        for (Iscrizione iscr : listaIscrizioni) {
+            lista.add(iscr.toString());
+        }// end of for cycle
+
+        return lista;
+    }// end of method
 
 }// end of class

@@ -87,10 +87,10 @@ public abstract class AForm extends AView implements IAForm {
      * Se ci sono DUE o più costruttori, va in errore
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
-     * @param gestore iniettato da Spring
+     * @param source iniettato da Spring
      */
-    public AForm(IAPresenter gestore, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
-        super(gestore, toolbar);
+    public AForm(IAPresenter source, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
+        super(source, toolbar);
     }// end of Spring constructor
 
 
@@ -109,9 +109,7 @@ public abstract class AForm extends AView implements IAForm {
         super.enter(event);
 
         //--Passa il controllo al gestore che gestisce questa view
-        if (gestore != null) {
-            gestore.setForm();
-        }// end of if cycle
+        source.setForm();
     }// end of method
 
 
@@ -142,12 +140,12 @@ public abstract class AForm extends AView implements IAForm {
         }// end of if cycle
 
         //--componente grafico obbligatorio
-        this.creaBody(source, reflectedJavaFields);
+        this.creaBody(reflectedJavaFields);
         this.addComponent(bodyLayout);
 
         //--componente grafico facoltativo
         if (typeButtons != null) {
-            bottomLayout = creaBottom(source, typeButtons);
+            bottomLayout = creaBottom(typeButtons);
             if (topLayout != null) {
                 this.addComponent(bottomLayout);
             }// end of if cycle
@@ -163,7 +161,7 @@ public abstract class AForm extends AView implements IAForm {
      * @return bottone annulla
      */
     protected AButton creaMenuForm() {
-        return buttonFactory.crea(EATypeButton.annulla, source, source, null, entityBean);
+        return buttonFactory.crea(EATypeButton.annulla, source, target, null, entityBean);
     }// end of method
 
 
@@ -191,11 +189,10 @@ public abstract class AForm extends AView implements IAForm {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param gestore             presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
     @Override
-    protected void creaBody(IAPresenter gestore, List<Field> reflectedJavaFields) {
+    protected void creaBody(List<Field> reflectedJavaFields) {
         /**
          * Crea un nuovo binder per questo Form e questa Entity
          * Costruisce i componenti grafici AFields (di tipo CustomField), in base ai reflectedFields ricevuti dal service
@@ -211,7 +208,7 @@ public abstract class AForm extends AView implements IAForm {
         layout.setHeightUndefined();
 
         //--rimanda ad un metodo separato per poterlo sovrascrivere
-        fixFields(gestore, layout, reflectedJavaFields);
+        fixFields(layout, reflectedJavaFields);
 
         //--inserisce il layout con i fields in un pannello scorrevole
         bodyLayout.setContent(layout);
@@ -233,11 +230,10 @@ public abstract class AForm extends AView implements IAForm {
      * Aggiunge i componenti grafici AField al layout
      * Eventuali regolazioni specifiche per i fields, dopo la trascrizione della entityBean nel binder
      *
-     * @param gestore             presenter di riferimento da cui vengono generati gli eventi
      * @param layout              in cui inserire i campi (window o panel)
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
-    protected void fixFields(IAPresenter gestore, Layout layout, List<Field> reflectedJavaFields) {
+    protected void fixFields(Layout layout, List<Field> reflectedJavaFields) {
         AField algosField;
 
         //--Ricostruisce una fieldList interna
@@ -249,7 +245,7 @@ public abstract class AForm extends AView implements IAForm {
         //--spazzola la lista di javaField
         for (Field reflectedField : reflectedJavaFields) {
             //--crea un AField e regola le varie properties grafiche (caption, visible, editable, width, ecc)
-            algosField = fieldService.create(gestore, reflectedField, entityBean);
+            algosField = fieldService.create(source, reflectedField, entityBean);
 
             //--Aggiunge AField al binder
             //--Aggiunge AField ad una fieldList interna
@@ -411,16 +407,29 @@ public abstract class AForm extends AView implements IAForm {
 
 
     /**
+     * Disabilita il field
+     */
+    protected void disabilitaField(String fieldName) {
+        AField field = getField(fieldName);
+        if (field != null) {
+            field.setEnabled(false);
+        } else {
+            log.error("TurnoForm.fixFieldsEditOnly(): field " + fieldName + " non trovato");
+        }// end of if/else cycle
+    }// end of method
+
+
+    /**
      * Crea la barra inferiore dei bottoni di comando
      * Chiamato ogni volta che la finestra diventa attiva
      * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
      */
     @Override
-    protected VerticalLayout creaBottom(IAPresenter source, List<EATypeButton> typeButtons) {
+    protected VerticalLayout creaBottom(List<EATypeButton> typeButtons) {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();
-        toolbar.inizializza(source, typeButtons);
+        toolbar.inizializza(source, target, typeButtons);
 
 //        fixToolbar();
 

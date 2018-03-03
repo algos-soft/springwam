@@ -3,6 +3,7 @@ package it.algos.springwam.entity.turno;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.button.AButtonFactory;
@@ -13,10 +14,17 @@ import it.algos.springvaadin.field.AField;
 import it.algos.springvaadin.form.AForm;
 import it.algos.springvaadin.menu.IAMenu;
 import it.algos.springvaadin.presenter.IAPresenter;
+import it.algos.springvaadin.service.AArrayService;
+import it.algos.springvaadin.service.AHtmlService;
 import it.algos.springvaadin.toolbar.AFormToolbar;
 import it.algos.springvaadin.toolbar.AToolbar;
 import it.algos.springvaadin.toolbar.IAToolbar;
+import it.algos.springwam.entity.funzione.Funzione;
+import it.algos.springwam.entity.iscrizione.Iscrizione;
+import it.algos.springwam.entity.iscrizione.IscrizioneService;
+import it.algos.springwam.entity.servizio.Servizio;
 import it.algos.springwam.entity.servizio.ServizioFieldFunzioni;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cglib.core.internal.Function;
@@ -43,6 +51,7 @@ import java.util.List;
  * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Costruttore con un link @Autowired al IAPresenter, di tipo @Lazy per evitare un loop nella injection
  */
+@Slf4j
 @SpringComponent
 @Scope("session")
 @Qualifier(AppCost.TAG_TUR)
@@ -50,6 +59,12 @@ import java.util.List;
 @AIScript(sovrascrivibile = true)
 public class TurnoForm extends AForm {
 
+
+    /**
+     * Libreria di servizio. Inietta da Spring come 'singleton'
+     */
+    @Autowired
+    protected AArrayService array;
 
     /**
      * Factory per la creazione dei bottoni
@@ -62,6 +77,9 @@ public class TurnoForm extends AForm {
      */
     @Autowired
     private Function<Class<? extends AField>, AField> fieldFactory;
+
+    @Autowired
+    private IscrizioneService iscrizioneService;
 
     private final static String TORNA = "Torna al tabellone";
 
@@ -83,8 +101,6 @@ public class TurnoForm extends AForm {
     public TurnoForm(@Lazy @Qualifier(AppCost.TAG_TUR) IAPresenter presenter, @Qualifier(ACost.BAR_FORM) IAToolbar toolbar) {
         super(presenter, toolbar);
     }// end of Spring constructor
-
-
 
 
 //    /**
@@ -116,13 +132,23 @@ public class TurnoForm extends AForm {
 
         if (entityBean != null && entityBean.getId() != null) {
             if (entityBean instanceof Turno) {
-                servizio = ((Turno) entityBean).getServizio().getCode();
-                data = ((Turno) entityBean).getGiorno().toString();
+                servizio = ((Turno) entityBean).getServizio().getDescrizione();
             }// end of if cycle
-            caption = "Turno di " + servizio + " previsto per il " + data + "  - Modifica delle iscrizioni";
+            caption = "Turno di " + servizio + "  - Modifica delle iscrizioni";
         } else {
             caption = "Creazione di un nuovo turno";
         }// end of if/else cycle
+    }// end of method
+
+
+    /**
+     * Regolazioni specifiche per i fields di una entity in modifica, dopo aver trascritto la entityBean nel binder
+     */
+    protected void fixFieldsEditOnly() {
+        disabilitaField("giorno");
+        disabilitaField("servizio");
+        disabilitaField("inizio");
+        disabilitaField("fine");
     }// end of method
 
 
@@ -137,17 +163,49 @@ public class TurnoForm extends AForm {
     @Override
     protected void addSpecificAlgosFields() {
         Field javaField = reflection.getField(entityBean.getClass(), ISCRIZIONI);
-        AField fieldIscrizioni = null;
+        TurnoFieldIscrizioni fieldIscrizioni = null;
+        Servizio servizio = null;
+        List<Funzione> funzioni = null;
+        List<Iscrizione> items = new ArrayList<>();
+        String funzCode = "";
+        boolean trovata = false;
+        Iscrizione iscrizione;
+        int durata = 0;
 
         //--crea un AField e regola le varie properties grafiche (caption, visible, editable, width, ecc)
-        fieldIscrizioni = fieldFactory.apply(TurnoFieldIscrizioni.class);
-        fieldIscrizioni.inizializza(ISCRIZIONI, gestore);
+        fieldIscrizioni = (TurnoFieldIscrizioni) fieldFactory.apply(TurnoFieldIscrizioni.class);
+        fieldIscrizioni.inizializza(ISCRIZIONI, source);
         fieldIscrizioni.setCaption(annotation.getFormFieldName(javaField));
         fieldIscrizioni.setEntityBean(entityBean);
-        fieldIscrizioni.setWidth("34em");
+        fieldIscrizioni.setWidth("28em");
+
+        servizio = ((Turno) entityBean).getServizio();
+        durata= servizio.getDurata();
+        funzioni = servizio.getFunzioni();
+        List<Iscrizione> iscrizioni = ((Turno) entityBean).getIscrizioni();
+
+        for (Funzione funz : funzioni) {
+            funzCode = funz.getCode();
+            trovata = false;
+
+            if (array.isValid(iscrizioni)) {
+                for (Iscrizione iscr : iscrizioni) {
+                    if (iscr.getFunzione().id.equals(funz.id)) {
+                        items.add(iscr);
+                        trovata = true;
+                    }// end of if cycle
+                }// end of for cycle
+            }// end of if cycle
+
+            if (!trovata) {
+                items.add(iscrizioneService.newEntity(funz,0));
+            }// end of if cycle
+        }// end of for cycle
+
+        fieldIscrizioni.setItems(items);
 
         if (fieldIscrizioni != null) {
-//            super.addFieldBinder(javaField, fieldIscrizioni);
+            super.addFieldBinder(javaField, fieldIscrizioni);
         }// end of if cycle
 
 
@@ -157,6 +215,33 @@ public class TurnoForm extends AForm {
 //        //--Inizializza il field
 //        fieldIscrizioni.initContent();
 
+    }// end of method
+
+
+    /**
+     * Aggiunge i componenti grafici AField al layout
+     * Inserimento automatico nel layout ''verticale''
+     * La sottoclasse può sovrascrivere integralmente questo metodo per realizzare un layout personalizzato
+     * La sottoclasse può sovrascrivere questo metodo; richiamarlo e poi aggiungere altri AField al layout verticale
+     * Nel layout sono già presenti una Label (sopra) ed una Toolbar (sotto)
+     *
+     * @param layout in cui inserire i campi (window o panel)
+     */
+    @Override
+    protected void layoutFields(Layout layout) {
+        AField fieldTitolo = getField("titoloExtra");
+        AField fieldLocalita = getField("localitaExtra");
+
+        int posTitolo = fieldList.indexOf(fieldTitolo);
+        fieldList.remove(posTitolo);
+
+        int posLocalita = fieldList.indexOf(fieldLocalita);
+        fieldList.remove(posLocalita);
+
+        fieldList.add(fieldTitolo);
+        fieldList.add(fieldLocalita);
+
+        super.layoutFields(layout);
     }// end of method
 
 }// end of class

@@ -4,6 +4,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.role.Role;
+import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.enumeration.*;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.IAUser;
@@ -92,7 +93,7 @@ public class User extends ACEntity implements IAUser {
      * riferimento dinamico con @DBRef (obbligatorio per il ComboBox)
      */
     @DBRef
-    @AIField(type = EAFieldType.combo, required = true, clazz = Role.class)
+    @AIField(type = EAFieldType.combo, required = true, clazz = RoleService.class)
     @AIColumn(name = "Ruolo", width = 200)
     public Role role;
 

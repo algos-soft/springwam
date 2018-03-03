@@ -80,7 +80,7 @@ public class ServizioForm extends AForm {
 
         //--crea un AField e regola le varie properties grafiche (caption, visible, editable, width, ecc)
         fieldFunzioni = fieldFactory.apply(ServizioFieldFunzioni.class);
-        fieldFunzioni.inizializza(FUNZIONI, gestore);
+        fieldFunzioni.inizializza(FUNZIONI, source);
         fieldFunzioni.setCaption(annotation.getFormFieldName(javaField));
         fieldFunzioni.setEntityBean(entityBean);
         fieldFunzioni.setWidth("34em");

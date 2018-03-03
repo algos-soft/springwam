@@ -6,6 +6,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.components.grid.GridSelectionModel;
 import com.vaadin.ui.components.grid.MultiSelectionModel;
 import it.algos.springvaadin.enumeration.EATypeAction;
+import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import org.springframework.beans.factory.annotation.Qualifier;

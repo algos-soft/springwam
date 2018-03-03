@@ -6,6 +6,7 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAFieldType;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.IAListener;
+import it.algos.springvaadin.presenter.IAPresenter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.context.ApplicationEventPublisher;
@@ -182,7 +183,7 @@ public class AFieldFactory implements IAFieldFactory {
      *
      * @return il field appena creato
      */
-    public AField crea(IAListener source, EAFieldType type, Field reflectionField, AEntity entityBean) {
+    public AField crea(IAPresenter source, EAFieldType type, Field reflectionField, AEntity entityBean) {
         AField field = null;
         AEntity entityBeanField = null;
         //@todo RIMETTERE
@@ -205,15 +206,15 @@ public class AFieldFactory implements IAFieldFactory {
                 case checkboxlabel:
                     field = fieldFactory.apply(ACheckBoxField.class);
                     break;
-//                case localdate:
-//                    field = fieldFactory.apply(ADateField.class);
-//                    break;
+                case localdate:
+                    field = fieldFactory.apply(ADateField.class);
+                    break;
                 case localdatetime:
                     field = fieldFactory.apply(ADateTimeField.class);
                     break;
-//                case dateNotEnabled:
-//                    field = fieldFactory.apply(ADateNotEnabledField.class);
-//                    break;
+                case dateNotEnabled:
+                    field = fieldFactory.apply(ADateNotEnabledField.class);
+                    break;
 //                case image:
 //                    field = fieldFactory.apply(AImageField.class);
 //                    field.setButton(buttonFactory.crea(AButtonType.image, source, targetImageAutowired, field));

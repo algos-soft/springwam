@@ -60,6 +60,11 @@ public class TabellonePresenter extends APresenter {
      */
     private Tabellone list;
 
+
+    private LocalDate inizio = LocalDate.now();
+    private int giorni = 7;
+
+
     /**
      * Costruttore @Autowired (nella superclasse)
      * Si usa un @Qualifier(), per avere la sottoclasse specifica
@@ -90,7 +95,7 @@ public class TabellonePresenter extends APresenter {
      * Passa il controllo alla view con i dati necessari
      */
     public void setList() {
-        setList(LocalDate.now(), 7);
+        setList(inizio, giorni);
     }// end of method
 
 
@@ -103,7 +108,7 @@ public class TabellonePresenter extends APresenter {
             log.info("Tabellone non ha nessun turno");
         }// end of if cycle
 
-        list.start(this, entityClass, null, items, null);
+        list.start(entityClass, null, items, null);
     }// end of method
 
 
@@ -132,5 +137,22 @@ public class TabellonePresenter extends APresenter {
 //            turnoNewAndEdit(entityBean);
 //        }// end of if cycle
 //    }// end of method
+
+
+    public LocalDate getInizio() {
+        return inizio;
+    }// end of method
+
+    public void setInizio(LocalDate inizio) {
+        this.inizio = inizio;
+    }// end of method
+
+    public int getGiorni() {
+        return giorni;
+    }// end of method
+
+    public void setGiorni(int giorni) {
+        this.giorni = giorni;
+    }// end of method
 
 }// end of class

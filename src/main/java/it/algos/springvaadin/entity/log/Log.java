@@ -4,6 +4,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.ACEntity;
 import it.algos.springvaadin.entity.logtype.Logtype;
+import it.algos.springvaadin.entity.logtype.LogtypeService;
 import it.algos.springvaadin.enumeration.*;
 import it.algos.springvaadin.lib.ACost;
 import lombok.*;
@@ -46,8 +47,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Qualifier(ACost.TAG_LOG)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
-@AIList(fields = {"code", "descrizione"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"code", "descrizione"})
+@AIList(fields = {"livello", "type", "descrizione", "evento"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
+@AIForm(fields = {"livello", "type", "descrizione", "evento"})
 @AIScript(sovrascrivibile = false)
 public class Log extends ACEntity {
 
@@ -68,16 +69,14 @@ public class Log extends ACEntity {
     private EALogLevel livello;
 
 
-
     /**
      * raggruppamento logico dei log per type di eventi (obbligatorio)
      */
     @NotEmpty(message = "La tipologia del log è obbligatoria")
     @Indexed()
-    @AIField(type = EAFieldType.combo, clazz = Logtype.class, nullSelectionAllowed = false, widthEM = 10, admin = EAFieldAccessibility.showOnly)
+    @AIField(type = EAFieldType.combo, clazz = LogtypeService.class, nullSelectionAllowed = false, widthEM = 10, admin = EAFieldAccessibility.showOnly)
     @AIColumn(width = 140)
     private Logtype type;
-
 
 
     /**

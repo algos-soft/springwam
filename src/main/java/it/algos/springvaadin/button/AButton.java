@@ -7,6 +7,7 @@ import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.AButtonEvent;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.ATextService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +57,13 @@ public class AButton extends Button {
     /**
      * Source (presenter, form, field, window, dialog,... ) che ha generato l'evento
      */
-    protected IAListener source;
+    protected IAPresenter source;
 
 
     /**
      * Target (presenter, form, field, window, dialog,... ) a cui indirizzare l'evento
      */
-    protected IAListener target;
+    protected IAPresenter target;
 
 
     /**
@@ -124,7 +125,7 @@ public class AButton extends Button {
      * @param target      a cui indirizzare l'evento generato dal bottone
      * @param sourceField che contiene il bottone bottone
      */
-    void inizializza(ApplicationEventPublisher publisher, EATypeButton type, IAListener source, IAListener target, AField sourceField, AEntity entityBean) {
+    void inizializza(ApplicationEventPublisher publisher, EATypeButton type, IAPresenter source, IAPresenter target, AField sourceField, AEntity entityBean) {
         this.setPublisher(publisher);
         this.setType(type);
         this.setSource(source);
@@ -194,11 +195,11 @@ public class AButton extends Button {
     }// end of method
 
 
-    public void setSource(IAListener source) {
+    public void setSource(IAPresenter source) {
         this.source = source;
     }// end of method
 
-    public void setTarget(IAListener target) {
+    public void setTarget(IAPresenter target) {
         this.target = target;
     }// end of method
 

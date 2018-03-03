@@ -10,12 +10,13 @@ import it.algos.springvaadin.annotation.AIScript;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EAListButton;
 import it.algos.springvaadin.enumeration.EATypeButton;
-import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.ALoginService;
 import it.algos.springvaadin.service.AReflectionService;
 import it.algos.springvaadin.service.AService;
 import it.algos.springwam.application.AppCost;
+import it.algos.springwam.entity.funzione.Funzione;
+import it.algos.springwam.entity.iscrizione.Iscrizione;
 import it.algos.springwam.entity.riga.Riga;
 import it.algos.springwam.entity.riga.RigaService;
 import it.algos.springwam.entity.servizio.Servizio;
@@ -113,8 +114,6 @@ public class TabelloneService extends AService {
 
         return colonne;
     }// end of method
-
-
 
 
 //    /**
@@ -274,6 +273,43 @@ public class TabelloneService extends AService {
      */
     public List<EATypeButton> getListTypeButtons() {
         return null;
+    }// end of method
+
+
+    /**
+     * Lista di iscrizioni, lunga quanto le funzioni del servizio del turno
+     * Se una funzione non ha iscrizione, ne metto una vuota
+     *
+     * @param turno di riferimento
+     *
+     * @return lista (Iscrizione) di iscrizioni del turno
+     */
+    public List<Iscrizione> getIscrizioni(Turno turno) {
+        List<Iscrizione> items = new ArrayList<>();
+        List<Iscrizione> iscrizioniEmbeddeTurno = turno.getIscrizioni();
+        Servizio servizio = null;
+        servizio = turno.getServizio();
+        List<Funzione> funzioni = servizio.getFunzioni();
+        boolean trovata;
+
+        for (Funzione funz : funzioni) {
+            trovata = false;
+
+            if (array.isValid(iscrizioniEmbeddeTurno)) {
+                for (Iscrizione iscr : iscrizioniEmbeddeTurno) {
+                    if (iscr.getFunzione().getCode().equals(funz.getCode())) {
+                        items.add(iscr);
+                        trovata = true;
+                    }// end of if cycle
+                }// end of for cycle
+            }// end of if cycle
+
+            if (!trovata) {
+                items.add(null);
+            }// end of if cycle
+        }// end of for cycle
+
+        return items;
     }// end of method
 
 }// end of class

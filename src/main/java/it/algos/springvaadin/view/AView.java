@@ -2,19 +2,19 @@ package it.algos.springvaadin.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.button.AButton;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
-import it.algos.springvaadin.label.LabelRosso;
+import it.algos.springvaadin.label.ALabelRosso;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
 import it.algos.springvaadin.menu.IAMenu;
 import it.algos.springvaadin.panel.APanel;
 import it.algos.springvaadin.presenter.IAPresenter;
-import it.algos.springvaadin.service.AArrayService;
-import it.algos.springvaadin.service.AHtmlService;
-import it.algos.springvaadin.service.ATextService;
+import it.algos.springvaadin.service.*;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,40 +39,65 @@ import java.util.List;
 public abstract class AView extends VerticalLayout implements IAView {
 
 
-    @Autowired
-    protected ALogin login;
-
     /**
-     * Service (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
      */
     @Autowired
     protected ATextService text;
 
 
     /**
-     * Service (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
      */
     @Autowired
     protected AHtmlService htlm;
 
 
     /**
-     * Service (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
      */
     @Autowired
     protected AArrayService array;
 
 
     /**
-     * Gestore principale per la 'business logic' del modulo, iniettato da Spring nel costruttore
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
      */
-    public IAPresenter gestore;
+    @Autowired
+    protected AReflectionService reflection;
 
 
     /**
-     * Chiamante di questa view (di solito il gestore)
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     */
+    @Autowired
+    protected AAnnotationService annotation;
+
+
+    /**
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     */
+    @Autowired
+    protected AHtmlService html;
+
+
+    /**
+     * Iniettato da Spring (@Scope = 'session'). Unico per la sessione.
+     */
+    @Autowired
+    protected ALogin login;
+
+
+    /**
+     * Gestore principale per la 'business logic' del modulo, iniettato da Spring nel costruttore
      */
     public IAPresenter source;
+
+
+    /**
+     * Chiamante (eventuale) di questa view, da parte di un altro modulo (di default il source)
+     */
+    public IAPresenter target;
 
 
     /**
@@ -93,9 +118,6 @@ public abstract class AView extends VerticalLayout implements IAView {
      */
     protected VerticalLayout topLayout;
 
-
-    @Autowired
-    public LabelRosso labelRosso;
 
     /**
      * Caption sovrastante il body della view
@@ -132,11 +154,12 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Se ci sono DUE o più costruttori, va in errore
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
-     * @param gestore iniettato da Spring
+     * @param source gestore principale per la 'business logic' del modulo, iniettato da Spring
      */
-    public AView(IAPresenter gestore, IAToolbar toolbar) {
+    public AView(IAPresenter source, IAToolbar toolbar) {
         super();
-        this.gestore = gestore;
+        this.source = source;
+        this.target = source;
         this.toolbar = toolbar;
     }// end of Spring constructor
 
@@ -205,7 +228,8 @@ public abstract class AView extends VerticalLayout implements IAView {
         //--gestione delle scritte in rosso sopra il body
         this.fixCaption(entityClazz, items);
         if (text.isValid(caption)) {
-            labelRosso.setValue(caption);
+            Label labelRosso = new Label("<strong>" + caption + "</strong>", ContentMode.HTML);
+            labelRosso.addStyleName("rosso");
             topLayout = new VerticalLayout();
             topLayout.setMargin(false);
             topLayout.setHeightUndefined();
@@ -228,12 +252,11 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param gestore     presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
      * @param columns     visibili ed ordinate della Grid
      * @param items       da visualizzare nella Grid
      */
-    protected void creaBody(IAPresenter gestore, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+    protected void creaBody(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
     }// end of method
 
 
@@ -242,10 +265,9 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param source              presenter di riferimento per i componenti da cui vengono generati gli eventi
      * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
      */
-    protected void creaBody(IAPresenter source, List<Field> reflectedJavaFields) {
+    protected void creaBody(List<Field> reflectedJavaFields) {
     }// end of method
 
 
@@ -255,7 +277,7 @@ public abstract class AView extends VerticalLayout implements IAView {
      * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      */
-    protected VerticalLayout creaBottom(IAPresenter gestore, List<EATypeButton> typeButtons) {
+    protected VerticalLayout creaBottom(List<EATypeButton> typeButtons) {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();

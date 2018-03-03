@@ -6,6 +6,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -15,7 +16,6 @@ import it.algos.springvaadin.app.AlgosApp;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.event.AActionEvent;
-import it.algos.springvaadin.label.LabelRosso;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.list.AList;
 import it.algos.springvaadin.login.ALogin;
@@ -24,6 +24,7 @@ import it.algos.springvaadin.menu.MenuLayout;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.AReflectionService;
+import it.algos.springvaadin.service.AResourceService;
 import it.algos.springvaadin.service.ASessionService;
 import it.algos.springvaadin.toolbar.IAToolbar;
 import it.algos.springvaadin.view.AView;
@@ -91,8 +92,11 @@ public class Tabellone extends AList {
     @Autowired
     private TurnoPresenter turnoPresenter;
 
-    private TabellonePresenter gestore;
+    @Autowired
+    private TabelloneService tabelloneService;
 
+    @Autowired
+    private   AResourceService resource;
 
     /**
      * Publisher degli eventi a livello Application
@@ -106,7 +110,7 @@ public class Tabellone extends AList {
 
     private final static String COLUMN_SERVIZIO_ID = "serv";
     private final static int LAR_SERVIZIO = 250;
-    private final static int LAR_COLONNE = 170;
+    private final static int LAR_COLONNE = 200;
 
     public static final String W_COLONNE_TURNI = "8em";   // larghezza fissa delle colonne turni
     public static final String H_ISCRIZIONI = "1.6em";   // altezza fissa delle celle iscrizione
@@ -134,7 +138,6 @@ public class Tabellone extends AList {
      */
     public Tabellone(@Lazy @Qualifier(AppCost.TAG_TAB) TabellonePresenter gestore) {
         super(gestore, null);
-        this.gestore=gestore;
         addStyleName("ctabellone");
     }// end of Spring constructor
 
@@ -167,45 +170,51 @@ public class Tabellone extends AList {
      * Componente grafico obbligatorio
      * Sovrascritto nella sottoclasse della view specifica (AList, AForm, ...)
      *
-     * @param source
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
      * @param columns     visibili ed ordinate della Grid
      * @param items       da visualizzare nella Grid
      */
     @Override
-    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
-        super.creaBody(source, entityClazz, columns, items);
-        grid.getGrid().setRowHeight(85);
+    protected void creaBody(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+        super.creaBody(entityClazz, columns, items);
+        int alt = 120;
+        grid.getGrid().setRowHeight(alt);
         grid.getGrid().setSelectionMode(Grid.SelectionMode.NONE);
+
+
+        grid.getGrid().setHeightMode(HeightMode.ROW);
+        grid.getGrid().setHeightByRows(2 * items.size());
+        grid.getGrid().setHeight(alt * (items.size() + 1), Unit.PIXELS);
+
 
 //        addListener(); //@todo il layout della cella lo 'copre' e non prende il click
         columnsTurni(items);
     }// end of method
 
 
-    /**
-     * Crea i listeners per i clicks nelle singole celle
-     * Estrae la riga
-     * Estrae la colonna
-     * Elabora il turno interessato
-     */
-    private void addListener() {
-        grid.getGrid().addItemClickListener(event -> {
-            Object obj = event.getItem();
-            Riga riga;
-            String columnId;
-
-            if (obj instanceof Riga) {
-                riga = (Riga) obj;
-                columnId = event.getColumn().getId();
-
-                if (!columnId.equals(COLUMN_SERVIZIO_ID)) {
-                    clickCellTurno(riga, columnId);
-                }// end of if/else cycle
-            }// end of if/else cycle
-        });//end of lambda expressions
-    }// end of method
-
+//    /**
+//     * Crea i listeners per i clicks nelle singole celle
+//     * Estrae la riga
+//     * Estrae la colonna
+//     * Elabora il turno interessato
+//     */
+//    private void addListener() {
+//        grid.getGrid().addItemClickListener(event -> {
+//            Object obj = event.getItem();
+//            Riga riga;
+//            String columnId;
+//
+//            if (obj instanceof Riga) {
+//                riga = (Riga) obj;
+//                columnId = event.getColumn().getId();
+//
+//                if (!columnId.equals(COLUMN_SERVIZIO_ID)) {
+//                    clickCellTurno(riga, columnId);
+//                }// end of if/else cycle
+//            }// end of if/else cycle
+//        });//end of lambda expressions
+//    }// end of method
+//
 
     /**
      * Crea le colonne (di tipo Component) per visualizzare i turni
@@ -260,7 +269,7 @@ public class Tabellone extends AList {
     private void columnTurno(LocalDate giornoInizio, int delta) {
         LocalDate giorno = giornoInizio.plusDays(delta);
         int userId = giorno.getDayOfYear();
-        TurnoCell cella = new TurnoCell(publisher, turnoService,  gestore, turnoPresenter, giorno);
+        TurnoCell cella = new TurnoCell(publisher, turnoService, turnoPresenter, (TabellonePresenter) source, tabelloneService, resource,giorno);
         Grid.Column colonna = grid.getGrid().addComponentColumn(cella);
         fixColumn(colonna, userId + "", dateService.getWeekLong(giorno), LAR_COLONNE);
     }// end of method
@@ -278,30 +287,30 @@ public class Tabellone extends AList {
     }// end of method
 
 
-    /**
-     * Fire event
-     * entityBean Opzionale (entityBean) in elaborazione
-     * Rimanda a TabellonePresenter
-     */
-    private void clickCellTurno(Riga riga, String columnId) {
-        int dayOfYear;
-        LocalDate giorno;
-        Turno turno;
-
-        try { // prova ad eseguire il codice
-            dayOfYear = Integer.decode(columnId);
-        } catch (Exception unErrore) { // intercetta l'errore
-            log.error(unErrore.toString());
-            return;
-        }// fine del blocco try-catch
-
-        giorno = dateService.getLocalDateByDay(dayOfYear);
-        turno = getTurnoFromGiorno(riga, giorno);
-
-        //apre una scheda (form) in edit o new
-        Notification.show("Click nella Grid, TURNO -> " + riga.getServizio().getCode() + " " + giorno);
-        publisher.publishEvent(new AActionEvent(EATypeAction.editLink, gestore, turnoPresenter, turno));
-    }// end of method
+//    /**
+//     * Fire event
+//     * entityBean Opzionale (entityBean) in elaborazione
+//     * Rimanda a TabellonePresenter
+//     */
+//    private void clickCellTurno(Riga riga, String columnId) {
+//        int dayOfYear;
+//        LocalDate giorno;
+//        Turno turno;
+//
+//        try { // prova ad eseguire il codice
+//            dayOfYear = Integer.decode(columnId);
+//        } catch (Exception unErrore) { // intercetta l'errore
+//            log.error(unErrore.toString());
+//            return;
+//        }// fine del blocco try-catch
+//
+//        giorno = dateService.getLocalDateByDay(dayOfYear);
+//        turno = getTurnoFromGiorno(riga, giorno);
+//
+//        //apre una scheda (form) in edit o new
+//        Notification.show("Click nella Grid, TURNO -> " + riga.getServizio().getCode() + " " + giorno);
+//        publisher.publishEvent(new AActionEvent(EATypeAction.editLink, gestore, turnoPresenter, turno));
+//    }// end of method
 
 
     /**

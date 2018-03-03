@@ -2,6 +2,8 @@ package it.algos.springvaadin.list;
 
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.VerticalLayout;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
@@ -9,6 +11,7 @@ import it.algos.springvaadin.grid.AGrid;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.ALogin;
+import it.algos.springvaadin.menu.AMenu;
 import it.algos.springvaadin.presenter.IAPresenter;
 import it.algos.springvaadin.service.AAnnotationService;
 import it.algos.springvaadin.service.AColumnService;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +47,13 @@ public abstract class AList extends AView implements IAList {
 
 
     /**
+     * Service iniettato da Spring (@Scope = 'singleton'). Unica per tutta l'applicazione. Usata come libreria.
+     */
+    @Autowired
+    protected AColumnService column;
+
+
+    /**
      * Contenitore grafico (Grid) per visualizzare i dati
      * Un eventuale Grid specifico può essere iniettato dalla sottoclasse concreta
      */
@@ -50,35 +61,6 @@ public abstract class AList extends AView implements IAList {
     protected IAGrid grid;
 
 
-    /**
-     * Libreria di servizio. Inietta da Spring come 'singleton'
-     */
-    @Autowired
-    protected AReflectionService reflection;
-
-
-    /**
-     * Libreria di servizio. Inietta da Spring come 'singleton'
-     */
-    @Autowired
-    protected AAnnotationService annotation;
-
-
-    /**
-     * Libreria di servizio. Inietta da Spring come 'singleton'
-     */
-    @Autowired
-    protected AHtmlService html;
-
-    /**
-     * Libreria di servizio. Inietta da Spring come 'singleton'
-     */
-    @Autowired
-    protected AColumnService column;
-
-
-    @Autowired
-    protected ALogin login;
 
 //    @Autowired
 //    private APanel panel;
@@ -93,11 +75,11 @@ public abstract class AList extends AView implements IAList {
      * Se ci sono DUE o più costruttori, va in errore
      * Se ci sono DUE costruttori, di cui uno senza parametri, inietta quello senza parametri
      *
-     * @param gestore iniettato da Spring
+     * @param source  gestore principale per la 'business logic' del modulo, iniettato da Spring
      * @param toolbar iniettato da Spring
      */
-    public AList(IAPresenter gestore, @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
-        super(gestore, toolbar);
+    public AList(IAPresenter source, @Qualifier(ACost.BAR_LIST) IAToolbar toolbar) {
+        super(source, toolbar);
     }// end of Spring constructor
 
 
@@ -116,10 +98,9 @@ public abstract class AList extends AView implements IAList {
         super.enter(event);
 
         //--Passa il controllo al gestore che gestisce questa view
-        if (gestore != null) {
-            gestore.setList();
-        }// end of if cycle
+        source.setList();
     }// end of method
+
 
 
     /**
@@ -128,7 +109,7 @@ public abstract class AList extends AView implements IAList {
      * Ricrea tutto ogni volta che la view diventa attiva
      * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
      * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 3) Body: Corpo centrale della view. Utilizzando una Grid dentro un Panel, si ottine l'effetto scorrevole
      * 4) Bottom - Barra dei bottoni inferiore
      *
      * @param entityClazz di riferimento, sottoclasse concreta di AEntity
@@ -138,26 +119,6 @@ public abstract class AList extends AView implements IAList {
      */
     @Override
     public void start(Class<? extends AEntity> entityClazz, List<Field> columns, List items, List<EATypeButton> typeButtons) {
-        start(gestore, entityClazz, columns, items, typeButtons);
-    }// end of method
-
-    /**
-     * Creazione di una view (AList) contenente una Grid
-     * Metodo invocato dal gestore (presenter( (dopo che ha elaborato i dati da visualizzare)
-     * Ricrea tutto ogni volta che la view diventa attiva
-     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
-     * 2) Top: Contenitore grafico per la caption
-     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
-     * 4) Bottom - Barra dei bottoni inferiore
-     *
-     * @param source      presenter che ha chiamato questa view ed a cui fare ritorno (di default il gestore)
-     * @param entityClazz di riferimento, sottoclasse concreta di AEntity
-     * @param columns     visibili ed ordinate della Grid
-     * @param items       da visualizzare nella Grid
-     * @param typeButtons lista di (tipi di) bottoni visibili nella toolbar della view AList
-     */
-    @Override
-    public void start(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items, List<EATypeButton> typeButtons) {
         this.removeAllComponents();
 
         //--componente grafico obbligatorio
@@ -171,18 +132,18 @@ public abstract class AList extends AView implements IAList {
         }// end of if cycle
 
         //--componente grafico obbligatorio
-        this.creaBody(source, entityClazz, columns, items);
+        this.creaBody(entityClazz, columns, items);
         this.addComponent(bodyLayout);
 
         //--componente grafico facoltativo
         if (typeButtons != null) {
-            bottomLayout = creaBottom(source, typeButtons);
+            bottomLayout = creaBottom(typeButtons);
             if (bottomLayout != null) {
                 this.addComponent(bottomLayout);
             }// end of if cycle
         }// end of if cycle
 
-        this.setExpandRatio(bodyLayout, 1);
+        this.setExpandRatio(bodyLayout, 1); //@todo da rimettere
     }// end of method
 
 
@@ -224,7 +185,7 @@ public abstract class AList extends AView implements IAList {
      * @param items       da visualizzare nella Grid
      */
     @Override
-    protected void creaBody(IAPresenter source, Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+    protected void creaBody(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
         grid.inizia(source, entityClazz, columns, items, 50);
         bodyLayout.setContent((Component) grid);
 //        VerticalLayout layout = new VerticalLayout();
@@ -238,11 +199,11 @@ public abstract class AList extends AView implements IAList {
      * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
      */
     @Override
-    protected VerticalLayout creaBottom(IAPresenter source, List<EATypeButton> typeButtons) {
+    protected VerticalLayout creaBottom(List<EATypeButton> typeButtons) {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setMargin(false);
         bottomLayout.setHeightUndefined();
-        toolbar.inizializza(source, typeButtons);
+        toolbar.inizializza(source, target, typeButtons);
 
 //        fixToolbar();
 
@@ -262,17 +223,52 @@ public abstract class AList extends AView implements IAList {
     }// end of method
 
 
-//    /**
-//     * Abilita o disabilita lo specifico bottone della Toolbar
-//     *
-//     * @param type   del bottone, secondo la Enumeration EATypeButton
-//     * @param status abilitare o disabilitare
-//     */
-//    @Override
-//    public void enableButton(EATypeButton type, boolean status){
-//        toolbar.enableButton(type, status);
-//    }// end of method
+    /**
+     * Sposta una colonna nella posizione richiesta
+     *
+     * @param columnID      della colonna da spostare
+     * @param columnIdPrima della colonna prima della quale devo inserire la colonna da spostare
+     */
+    protected void spostaColonnaPrima(String columnID, String columnIdPrima) {
+        spostaColonna(columnID, columnIdPrima, false);
+    }// end of method
 
+
+    /**
+     * Sposta una colonna nella posizione richiesta
+     *
+     * @param columnID     della colonna da spostare
+     * @param columnIdDopo della colonna dopo la quale devo inserire la colonna da spostare
+     */
+    protected void spostaColonnaDopo(String columnID, String columnIdDopo) {
+        spostaColonna(columnID, columnIdDopo, true);
+    }// end of method
+
+
+    /**
+     * Sposta una colonna nella posizione richiesta
+     *
+     * @param columnID    della colonna da spostare
+     * @param columnCheck della colonna prima/dopo la quale devo inserire la colonna da spostare
+     */
+    private void spostaColonna(String columnID, String columnCheck, boolean dopo) {
+        String[] matrice = null;
+        List<Grid.Column> listaColonne = grid.getGrid().getColumns();
+        ArrayList lista = new ArrayList();
+        for (Grid.Column col : listaColonne) {
+            lista.add(col.getId());
+        }// end of for cycle
+        lista.remove(columnID);
+        int pos = lista.indexOf(columnCheck);
+        if (pos != -1) {
+            if (dopo) {
+                pos++;
+            }// end of if cycle
+            lista.add(pos, columnID);
+            matrice = (String[]) lista.toArray(new String[lista.size()]);
+            grid.getGrid().setColumnOrder(matrice);
+        }// end of if cycle
+    }// end of method
 
     /**
      * Componente concreto di questa interfaccia

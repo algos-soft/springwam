@@ -1,12 +1,18 @@
 package it.algos.springvaadin.event;
 
+import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.enumeration.EALoginTypes;
 import it.algos.springvaadin.login.IAUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Login event object
  */
+@Slf4j
+@SpringComponent
+@Scope("session")
 public class ALoginEvent extends ApplicationEvent {
 
 

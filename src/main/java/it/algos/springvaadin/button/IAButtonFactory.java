@@ -4,6 +4,7 @@ import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeButton;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.field.AField;
+import it.algos.springvaadin.presenter.IAPresenter;
 
 /**
  * Project springvaadin
@@ -29,7 +30,7 @@ public interface IAButtonFactory {
      *
      * @return il bottone creato
      */
-    public AButton crea(EATypeButton type, IAListener source, IAListener target, AField sourceField);
+    public AButton crea(EATypeButton type, IAPresenter source, IAPresenter target, AField sourceField);
 
     /**
      * Creazione di un bottone
@@ -41,6 +42,6 @@ public interface IAButtonFactory {
      *
      * @return il bottone creato
      */
-    public AButton crea(EATypeButton type, IAListener source, IAListener target, AField sourceField, AEntity entityBean);
+    public AButton crea(EATypeButton type, IAPresenter source, IAPresenter target, AField sourceField, AEntity entityBean);
 
 }// end of interface

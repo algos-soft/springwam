@@ -5,6 +5,7 @@ import it.algos.springvaadin.enumeration.EATypeAction;
 import it.algos.springvaadin.event.AActionEvent;
 import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.grid.IAGrid;
+import it.algos.springvaadin.presenter.IAPresenter;
 import org.springframework.context.ApplicationEventPublisher;
 
 /**
@@ -26,14 +27,14 @@ public abstract class AAction implements IAAction {
      * Gestore principale per la 'business logic' modulo, iniettato dalla AView che costruisce questa azione
      * Presenter, form, field, window, dialog,...  che ha generato l'azione
      */
-    protected IAListener source;
+    protected IAPresenter source;
 
 
     /**
      * Gestore principale per la 'business logic' modulo, iniettato dalla AView che costruisce questa azione
      * Presenter, form, field, window, dialog,...  a cui indirizzare l'azione
      */
-    protected IAListener target;
+    protected IAPresenter target;
 
 
     /**
@@ -102,28 +103,28 @@ public abstract class AAction implements IAAction {
      *
      * @param source di riferimento del componente che genera gli eventi
      */
-    public void setSource(IAListener source) {
+    public void setSource(IAPresenter source) {
         this.source = source;
     }// end of method
 
 
     /**
-     * Aggiunge il IAListener alla AAction
+     * Aggiunge il IAPresenter alla AAction
      *
      * @param target di riferimento per il componente che ascolta gli eventi
      */
-    public void setTarget(IAListener target) {
+    public void setTarget(IAPresenter target) {
         this.target = target;
     }// end of method
 
     /**
-     * Aggiunge il source IAListener alla AAction
-     * Aggiunge il target IAListener alla AAction
+     * Aggiunge il source IAPresenter alla AAction
+     * Aggiunge il target IAPresenter alla AAction
      *
      * @param source di riferimento del componente che genera gli eventi
      * @param target di riferimento per il componente che ascolta gli eventi
      */
-    public void setSourceTarget(IAListener source, IAListener target) {
+    public void setSourceTarget(IAPresenter source, IAPresenter target) {
         this.setSource(source);
         this.setTarget(target);
     }// end of method

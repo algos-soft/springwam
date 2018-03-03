@@ -5,6 +5,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import it.algos.springvaadin.entity.AEntity;
 import it.algos.springvaadin.enumeration.EATypeAction;
+import it.algos.springvaadin.event.IAListener;
 import it.algos.springvaadin.grid.IAGrid;
 import it.algos.springvaadin.lib.ACost;
 import org.springframework.beans.factory.annotation.Qualifier;

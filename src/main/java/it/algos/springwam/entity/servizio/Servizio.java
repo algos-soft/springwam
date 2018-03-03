@@ -113,7 +113,7 @@ public class Servizio extends ACEntity {
             required = true,
             name = "Descrizione completa",
             widthEM = 26)
-    @AIColumn(name = "Descrizione", width = 400)
+    @AIColumn(name = "Descrizione", width = 300)
     private String descrizione;
 
 
@@ -124,7 +124,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Colore distintivo per il tabellone",
             widthEM = 3)
-    @AIColumn(name = "Colore", width = 120)
+    @AIColumn(name = "Colore", width = 100)
     private int colore = new Color(128, 128, 128).getRGB();
 
 
@@ -147,7 +147,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Ora inizio turno",
             widthEM = 3)
-    @AIColumn(name = "Inizio", width = 120)
+    @AIColumn(name = "Inizio", width = 90)
     private int oraInizio;
 
     /**
@@ -168,7 +168,7 @@ public class Servizio extends ACEntity {
             type = EAFieldType.integer,
             name = "Ora (prevista) fine turno",
             widthEM = 3)
-    @AIColumn(name = "Fine", width = 120)
+    @AIColumn(name = "Fine", width = 90)
     private int oraFine;
 
     /**
@@ -241,5 +241,21 @@ public class Servizio extends ACEntity {
         }
         return s;
     }
+
+
+    public int getDurata() {
+        int durata = 0;
+        int fine = 0;
+        int inizio;
+
+        if (orario) {
+            fine = oraFine + minutiFine * 60;
+            inizio = oraInizio + minutiInizio * 60;
+            durata = fine - inizio;
+        }// end of if cycle
+
+        return durata;
+    }// end of method
+
 
 }// end of entity class

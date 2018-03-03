@@ -4,10 +4,12 @@ import com.vaadin.spring.annotation.SpringComponent;
 import it.algos.springvaadin.annotation.*;
 import it.algos.springvaadin.entity.persona.Persona;
 import it.algos.springvaadin.entity.role.Role;
+import it.algos.springvaadin.entity.role.RoleService;
 import it.algos.springvaadin.enumeration.*;
 import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.login.IAUser;
 import it.algos.springwam.application.AppCost;
+import it.algos.springwam.entity.funzione.Funzione;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Project springvaadin
@@ -55,7 +58,7 @@ import javax.validation.constraints.Size;
 @Qualifier(AppCost.TAG_MIL)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"nome", "cognome"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"nome", "cognome"})
+@AIForm(fields = {"nome", "cognome", "role", "nickname", "password", "enabled", "dipendente", "infermiere"})
 @AIScript(sovrascrivibile = false)
 public class Milite extends Persona implements IAUser {
 
@@ -63,6 +66,16 @@ public class Milite extends Persona implements IAUser {
      * versione della classe per la serializzazione
      */
     private final static long serialVersionUID = 1L;
+
+
+    /**
+     * ruolo (obbligatorio, non unico)
+     * riferimento dinamico con @DBRef (obbligatorio per il ComboBox)
+     */
+    @DBRef
+    @AIField(type = EAFieldType.combo, required = true, clazz = RoleService.class)
+    @AIColumn(name = "Ruolo", width = 200)
+    public Role role;
 
 
     /**
@@ -96,16 +109,6 @@ public class Milite extends Persona implements IAUser {
 
 
     /**
-     * ruolo (obbligatorio, non unico)
-     * riferimento dinamico con @DBRef (obbligatorio per il ComboBox)
-     */
-    @DBRef
-    @AIField(type = EAFieldType.combo, required = true, clazz = Role.class)
-    @AIColumn(name = "Ruolo", width = 200)
-    public Role role;
-
-
-    /**
      * buttonUser abilitato (facoltativo, di default true)
      */
     @AIField(type = EAFieldType.checkboxlabel, required = true, admin = EAFieldAccessibility.allways)
@@ -121,6 +124,18 @@ public class Milite extends Persona implements IAUser {
     @AIField(type = EAFieldType.checkbox)
     @AIColumn(name = "inf")
     private boolean infermiere = false;
+
+
+    /**
+     * Funzioni per le quali il milite è abilitato
+     * Siccome sono 'embedded' in servizio, non serve @OneToMany() o @ManyToOne()
+     * Usando la caratteristica 'embedded', la funzione viene ricopiata dentro milite come si trova al momento.
+     * Se modifico successivamente all'interno del milite la copia della funzione, le modifiche rimangono circostritte a questo singolo milite
+     * Se modifico successivamente la funzione originaria, le modifiche NON si estendono alla funzione 'congelata' nel milite
+     */
+    @AIField(type = EAFieldType.noone, widthEM = 20, name = "Funzioni per le quali il milite è abilitato")
+    @AIColumn()
+    private List<Funzione> funzioni;
 
 
     /**
