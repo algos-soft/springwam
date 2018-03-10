@@ -79,7 +79,7 @@ public class TurnoForm extends AForm {
     private Function<Class<? extends AField>, AField> fieldFactory;
 
     @Autowired
-    private IscrizioneService iscrizioneService;
+    private TurnoService service;
 
     private final static String TORNA = "Torna al tabellone";
 
@@ -166,7 +166,7 @@ public class TurnoForm extends AForm {
         TurnoFieldIscrizioni fieldIscrizioni = null;
         Servizio servizio = null;
         List<Funzione> funzioni = null;
-        List<Iscrizione> items = new ArrayList<>();
+        List<Iscrizione> items = service.getIscrizioni((Turno)entityBean);
         String funzCode = "";
         boolean trovata = false;
         Iscrizione iscrizione;
@@ -182,25 +182,24 @@ public class TurnoForm extends AForm {
         servizio = ((Turno) entityBean).getServizio();
         durata= servizio.getDurata();
         funzioni = servizio.getFunzioni();
-        List<Iscrizione> iscrizioni = ((Turno) entityBean).getIscrizioni();
 
-        for (Funzione funz : funzioni) {
-            funzCode = funz.getCode();
-            trovata = false;
-
-            if (array.isValid(iscrizioni)) {
-                for (Iscrizione iscr : iscrizioni) {
-                    if (iscr.getFunzione().id.equals(funz.id)) {
-                        items.add(iscr);
-                        trovata = true;
-                    }// end of if cycle
-                }// end of for cycle
-            }// end of if cycle
-
-            if (!trovata) {
-                items.add(iscrizioneService.newEntity(funz,0));
-            }// end of if cycle
-        }// end of for cycle
+//        for (Funzione funz : funzioni) {
+//            funzCode = funz.getCode();
+//            trovata = false;
+//
+//            if (array.isValid(iscrizioni)) {
+//                for (Iscrizione iscr : iscrizioni) {
+//                    if (iscr.getFunzione().id.equals(funz.id)) {
+//                        items.add(iscr);
+//                        trovata = true;
+//                    }// end of if cycle
+//                }// end of for cycle
+//            }// end of if cycle
+//
+//            if (!trovata) {
+//                items.add(iscrizioneService.newEntity(funz,0));
+//            }// end of if cycle
+//        }// end of for cycle
 
         fieldIscrizioni.setItems(items);
 
@@ -212,8 +211,8 @@ public class TurnoForm extends AForm {
 //        //--aggiunge AField alla lista interna, necessaria per ''recuperare'' un singolo algosField dal nome
 //        fieldList.add(fieldIscrizioni);
 //
-//        //--Inizializza il field
-//        fieldIscrizioni.initContent();
+        //--Inizializza il field
+        fieldIscrizioni.initContent();
 
     }// end of method
 
@@ -229,17 +228,20 @@ public class TurnoForm extends AForm {
      */
     @Override
     protected void layoutFields(Layout layout) {
-        AField fieldTitolo = getField("titoloExtra");
-        AField fieldLocalita = getField("localitaExtra");
+        if (((Turno)entityBean).getServizio().isOrario()) {
+        } else {
+            AField fieldTitolo = getField("titoloExtra");
+            AField fieldLocalita = getField("localitaExtra");
 
-        int posTitolo = fieldList.indexOf(fieldTitolo);
-        fieldList.remove(posTitolo);
+            int posTitolo = fieldList.indexOf(fieldTitolo);
+            fieldList.remove(posTitolo);
 
-        int posLocalita = fieldList.indexOf(fieldLocalita);
-        fieldList.remove(posLocalita);
+            int posLocalita = fieldList.indexOf(fieldLocalita);
+            fieldList.remove(posLocalita);
 
-        fieldList.add(fieldTitolo);
-        fieldList.add(fieldLocalita);
+            fieldList.add(fieldTitolo);
+            fieldList.add(fieldLocalita);
+        }// end of if/else cycle
 
         super.layoutFields(layout);
     }// end of method

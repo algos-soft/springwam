@@ -65,25 +65,40 @@ public class TurnoFieldIscrizioni extends AField {
 
     private List items;
 
+    private int larghezzaGrid;
+
     /**
      * Crea (o ricrea dopo una clonazione) il componente base
      */
     @Override
     public void creaContent() {
-        int width = 170;
+
         grid = new Grid(Iscrizione.class);
-        grid.setHeight("14em");
+        grid.setWidth("100%");
+        grid.setRowHeight(47);
+        grid.setHeightByRows(5);
         grid.setStyleName("");
         grid.removeAllColumns();
-//        grid.setRowHeight(28);
 
+        int larFunzione = 120;
+        int larMilite = 270;
+        int larDurata = 70;
+        larghezzaGrid = larFunzione + larMilite + larDurata;
 
         //--aggiunge una colonna calcolata
         Grid.Column colonnaFunzione = grid.addComponentColumn(iscrizione -> {
             Funzione funz = ((Iscrizione) iscrizione).getFunzione();
             Milite milite = ((Iscrizione) iscrizione).getMilite();
-            String labelTxt = funz.getSigla();
             Label label = new Label("", ContentMode.HTML);
+            String labelTxt = "";
+
+            if (funz == null) {
+                labelTxt = html.setRossoBold("Manca funz.");
+                label.setValue(labelTxt);
+                return label;
+            }// end of if cycle
+
+            labelTxt = funz.getSigla();
             if (milite != null) {
                 labelTxt = html.setVerdeBold(labelTxt);
             } else {
@@ -99,7 +114,7 @@ public class TurnoFieldIscrizioni extends AField {
         });//end of lambda expressions
         colonnaFunzione.setCaption("Funzione");
         colonnaFunzione.setId("funzione");
-        colonnaFunzione.setWidth(120);
+        colonnaFunzione.setWidth(larFunzione);
 
 
         //--aggiunge una colonna calcolata
@@ -109,11 +124,8 @@ public class TurnoFieldIscrizioni extends AField {
 //            List<Milite> listaMilitiDellaCroceAbilitatiPerLaFunzione = militeService.findByFunzione(funz);
             List<Milite> listaMilitiDellaCroceAbilitatiPerLaFunzione = militeService.findAll();//@todo SBAGLIATO
             ComboBox combo = new ComboBox();
-            combo.setWidth("7em");
+            combo.setWidth(larMilite -40, Sizeable.Unit.PIXELS);
             combo.setItems(listaMilitiDellaCroceAbilitatiPerLaFunzione);
-
-//            List<String> items = iscrizioneService.findAllCode();
-            combo.setItems(items);
             combo.setValue(milite);
 
             combo.addValueChangeListener(new HasValue.ValueChangeListener<String>() {
@@ -127,7 +139,7 @@ public class TurnoFieldIscrizioni extends AField {
         });//end of lambda expressions
         colonnaMilite.setCaption("Milite");
         colonnaMilite.setId("milite");
-        colonnaMilite.setWidth(width);
+        colonnaMilite.setWidth(larMilite);
 
 
 //        //--aggiunge una colonna calcolata
@@ -155,7 +167,7 @@ public class TurnoFieldIscrizioni extends AField {
         });//end of lambda expressions
         colonnaDurata.setCaption("Ore");
         colonnaDurata.setId("durata");
-        colonnaDurata.setWidth(80);
+        colonnaDurata.setWidth(larDurata);
 
 
 //        //--aggiunge una colonna calcolata
@@ -188,9 +200,7 @@ public class TurnoFieldIscrizioni extends AField {
         lista.add("milite");
         lista.add("durata");
         grid.setColumns((String[]) lista.toArray(new String[lista.size()]));
-        float lar = grid.getWidth();
-//        grid.setWidth(lar + width + column.WIDTH_CHECK_BOX + 565, Sizeable.Unit.PIXELS);
-
+        grid.setWidth(larghezzaGrid, Sizeable.Unit.PIXELS);
 
         grid.setStyleGenerator(new StyleGenerator() {
             @Override
@@ -203,9 +213,8 @@ public class TurnoFieldIscrizioni extends AField {
 
     @Override
     public void setWidth(String width) {
-        width = "28em";
         if (grid != null) {
-            grid.setWidth(width);
+            grid.setWidth(larghezzaGrid, Sizeable.Unit.PIXELS);
         }// end of if cycle
     }// end of method
 

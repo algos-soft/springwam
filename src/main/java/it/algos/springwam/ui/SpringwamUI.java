@@ -102,7 +102,9 @@ public class SpringwamUI extends AUI {
      */
     protected void checkCookies(VaadinRequest request) {
         super.checkCookies(request);
-        startService.checkUtente("Porcari Stefano", "7777");//@Todo Test Provvisorio
+//        startService.checkUtente("Porcari Stefano", "7777");//@Todo Test Provvisorio
+//        startService.checkUtente("Michelini Mauro", "crocerossa");//@Todo Test Provvisorio
+        startService.checkUtente("Piana Silvano", "piana987");//@Todo Test Provvisorio
     }// end of method
 
 

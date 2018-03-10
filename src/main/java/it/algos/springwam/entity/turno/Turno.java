@@ -59,7 +59,7 @@ import java.util.List;
 @Qualifier(AppCost.TAG_TUR)
 @AIEntity(roleTypeVisibility = EARoleType.admin, company = EACompanyRequired.obbligatoria)
 @AIList(fields = {"giorno", "servizio"}, dev = EAListButton.standard, admin = EAListButton.noSearch, user = EAListButton.show)
-@AIForm(fields = {"giorno", "servizio", "inizio", "fine", "titoloExtra", "localitaExtra"}, buttonsAdmin = EAFormButton.conferma, buttonsUser = EAFormButton.conferma)
+@AIForm(fields = {"giorno", "servizio", "inizio", "fine"}, buttonsAdmin = EAFormButton.conferma, buttonsUser = EAFormButton.conferma)
 @AIScript(sovrascrivibile = false)
 public class Turno extends ACEntity {
 

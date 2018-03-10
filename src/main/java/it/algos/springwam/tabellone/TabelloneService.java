@@ -276,40 +276,4 @@ public class TabelloneService extends AService {
     }// end of method
 
 
-    /**
-     * Lista di iscrizioni, lunga quanto le funzioni del servizio del turno
-     * Se una funzione non ha iscrizione, ne metto una vuota
-     *
-     * @param turno di riferimento
-     *
-     * @return lista (Iscrizione) di iscrizioni del turno
-     */
-    public List<Iscrizione> getIscrizioni(Turno turno) {
-        List<Iscrizione> items = new ArrayList<>();
-        List<Iscrizione> iscrizioniEmbeddeTurno = turno.getIscrizioni();
-        Servizio servizio = null;
-        servizio = turno.getServizio();
-        List<Funzione> funzioni = servizio.getFunzioni();
-        boolean trovata;
-
-        for (Funzione funz : funzioni) {
-            trovata = false;
-
-            if (array.isValid(iscrizioniEmbeddeTurno)) {
-                for (Iscrizione iscr : iscrizioniEmbeddeTurno) {
-                    if (iscr.getFunzione().getCode().equals(funz.getCode())) {
-                        items.add(iscr);
-                        trovata = true;
-                    }// end of if cycle
-                }// end of for cycle
-            }// end of if cycle
-
-            if (!trovata) {
-                items.add(null);
-            }// end of if cycle
-        }// end of for cycle
-
-        return items;
-    }// end of method
-
 }// end of class

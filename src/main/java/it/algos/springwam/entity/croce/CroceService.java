@@ -166,9 +166,7 @@ public class CroceService extends AService {
             entity.setTelefono(telefono);
             entity.setEmail(email);
             entity.setIndirizzo(indirizzo);
-        } else {
-            return findByKeyUnica(code);
-        }// end of if/else cycle
+        }// end of if cycle
 
         return entity;
     }// end of method

@@ -8,6 +8,7 @@ import it.algos.springvaadin.lib.ACost;
 import it.algos.springvaadin.service.ADateService;
 import it.algos.springvaadin.service.AService;
 import it.algos.springvaadin.service.ATextService;
+import it.algos.springwam.entity.funzione.Funzione;
 import it.algos.springwam.entity.iscrizione.Iscrizione;
 import it.algos.springwam.entity.servizio.Servizio;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.algos.springvaadin.annotation.*;
@@ -214,6 +216,44 @@ public class TurnoService extends AService {
         }// end of if cycle
 
         return super.save(entityBean);
+    }// end of method
+
+
+    /**
+     * Lista di iscrizioni, lunga quanto le funzioni del servizio del turno
+     * Se una funzione non ha iscrizione, ne metto una vuota
+     * Con la funzione e senza milite
+     *
+     * @param turno di riferimento
+     *
+     * @return lista (Iscrizione) di iscrizioni del turno
+     */
+    public List<Iscrizione> getIscrizioni(Turno turno) {
+        List<Iscrizione> items = new ArrayList<>();
+        List<Iscrizione> iscrizioniEmbeddeTurno = turno.getIscrizioni();
+        Servizio servizio = null;
+        servizio = turno.getServizio();
+        List<Funzione> funzioni = servizio.getFunzioni();
+        boolean trovata;
+
+        for (Funzione funz : funzioni) {
+            trovata = false;
+
+            if (array.isValid(iscrizioniEmbeddeTurno)) {
+                for (Iscrizione iscr : iscrizioniEmbeddeTurno) {
+                    if (iscr.getFunzione().getCode().equals(funz.getCode())) {
+                        items.add(iscr);
+                        trovata = true;
+                    }// end of if cycle
+                }// end of for cycle
+            }// end of if cycle
+
+            if (!trovata) {
+                items.add(Iscrizione.builder().funzione(funz).build());
+            }// end of if cycle
+        }// end of for cycle
+
+        return items;
     }// end of method
 
 }// end of class

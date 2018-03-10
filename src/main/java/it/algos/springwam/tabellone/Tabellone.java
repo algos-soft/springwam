@@ -110,7 +110,7 @@ public class Tabellone extends AList {
 
     private final static String COLUMN_SERVIZIO_ID = "serv";
     private final static int LAR_SERVIZIO = 250;
-    private final static int LAR_COLONNE = 200;
+    private final static int LAR_COLONNE = 220;
 
     public static final String W_COLONNE_TURNI = "8em";   // larghezza fissa delle colonne turni
     public static final String H_ISCRIZIONI = "1.6em";   // altezza fissa delle celle iscrizione

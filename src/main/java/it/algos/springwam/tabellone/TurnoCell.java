@@ -110,20 +110,30 @@ public class TurnoCell implements ValueProvider {
         if (turno != null) {
             servizio = turno.getServizio();
             funzioni = servizio.getFunzioni();
-            iscrizioni = tabelloneService.getIscrizioni(turno);
+            iscrizioni = turnoService.getIscrizioni(turno);
             for (Iscrizione iscr : iscrizioni) {
                 funz = funzioni.get(pos);
                 icona = resource.getVaadinIcon(funz.getIcona());
                 if (iscr != null) {
                     milite = iscr.getMilite();
-                    label = new Label(icona.getHtml() + " " + "<strong>" + milite.getNickname() + "</strong>", ContentMode.HTML);
-                    label.addStyleName("verde");
+                    if (milite != null) {
+                        label = new Label(icona.getHtml() + " " + "<strong>" + milite.getNickname() + "</strong>", ContentMode.HTML);
+                        label.addStyleName("verde");
+                    } else {
+                        if (funz.isObbligatoria()) {
+                            label = new Label(icona.getHtml() + " " + "<strong>" + funz.getSigla() + "</strong>", ContentMode.HTML);
+                            label.addStyleName("rosso");
+                        } else {
+                            label = new Label(icona.getHtml() + " " + funz.getSigla(), ContentMode.HTML);
+                            label.addStyleName("blue");
+                        }// end of if/else cycle
+                    }// end of if/else cycle
                 } else {
                     if (funz.isObbligatoria()) {
                         label = new Label(icona.getHtml() + " " + "<strong>" + funz.getSigla() + "</strong>", ContentMode.HTML);
                         label.addStyleName("rosso");
                     } else {
-                        label = new Label(icona.getHtml() + " " + funz.getSigla(),  ContentMode.HTML);
+                        label = new Label(icona.getHtml() + " " + funz.getSigla(), ContentMode.HTML);
                         label.addStyleName("blue");
                     }// end of if/else cycle
                 }// end of if/else cycle

@@ -113,7 +113,7 @@ public class TurnoList extends AList {
             caption += "</br>Solo il developer vede queste note";
         } else {
             char uniCharCircaTilde = '\u007E';
-            caption += " - Da oggi per i prossimi 7 giorni "+uniCharCircaTilde;
+            caption += " - Da oggi per i prossimi 7 giorni " + uniCharCircaTilde;
         }// end of if/else cycle
     }// end of method
 
@@ -127,12 +127,13 @@ public class TurnoList extends AList {
      * @param items       da visualizzare nella Grid
      */
     @Override
-    protected void creaBody( Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
+    protected void creaBody(Class<? extends AEntity> entityClazz, List<Field> columns, List items) {
         super.creaBody(entityClazz, columns, items);
         addColumnInizio();
         addColumnFine();
         addColumnIscrizioni();
         addColumnTitoloExtra();
+        addColumnLocalitaExtra();
     }// end of method
 
 
@@ -204,7 +205,15 @@ public class TurnoList extends AList {
                     if (mappa.containsKey(code)) {
                         Iscrizione iscrizione = mappa.get(code);
                         Milite milite = iscrizione.getMilite();
-                        valueIsc = html.setVerdeBold(milite.getCognome() + " (" + code + ")");
+                        if (milite != null) {
+                            valueIsc = html.setVerdeBold(milite.getCognome() + " (" + code + ")");
+                        } else {
+                            if (funz.isObbligatoria()) {
+                                valueIsc = html.setRossoBold(funz.getCode());
+                            } else {
+                                valueIsc = html.setBluBold(funz.getCode());
+                            }// end of if/else cycle
+                        }// end of if/else cycle
                     } else {
                         if (funz.isObbligatoria()) {
                             valueIsc = html.setRossoBold(funz.getCode());
@@ -241,6 +250,26 @@ public class TurnoList extends AList {
 
         colonna.setId(idKey);
         colonna.setCaption("Extra");
+        colonna.setWidth(larColExtra);
+        float larghezza = grid.getGrid().getWidth();
+        grid.getGrid().setWidth(larghezza + larColExtra, Unit.PIXELS);
+    }// end of method
+
+
+    /**
+     * Crea la colonna titolo extra (di tipo string)
+     */
+    private void addColumnLocalitaExtra() {
+        String idKey = "localitaExtra";
+        int larColExtra = 200;
+
+        Grid.Column colonna = grid.getGrid().addColumn(turno -> {
+            String titolo = ((Turno) turno).getLocalitaExtra();
+            return titolo;
+        });//end of lambda expressions
+
+        colonna.setId(idKey);
+        colonna.setCaption("Località");
         colonna.setWidth(larColExtra);
         float larghezza = grid.getGrid().getWidth();
         grid.getGrid().setWidth(larghezza + larColExtra, Unit.PIXELS);
