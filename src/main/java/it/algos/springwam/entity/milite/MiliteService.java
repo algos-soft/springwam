@@ -284,9 +284,16 @@ public class MiliteService extends ALoginService {
         ArrayList<Milite> militiAbilitatiAllaFunzione = null;
         List<Milite> allMiliti = this.findAll();
 
-        for (Milite milite : allMiliti) {
-
-        }// end of for cycle
+        if (allMiliti != null) {
+            militiAbilitatiAllaFunzione = new ArrayList<>();
+            for (Milite milite : allMiliti) {
+                for (Funzione funz : milite.getFunzioni()) {
+                    if (funz.id.equals(funzione.id)) {
+                        militiAbilitatiAllaFunzione.add(milite);
+                    }// end of if cycle
+                }// end of for cycle
+            }// end of for cycle
+        }// end of if cycle
 
         return militiAbilitatiAllaFunzione;
     }// end of method

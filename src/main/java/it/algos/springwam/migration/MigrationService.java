@@ -758,7 +758,7 @@ public class MigrationService {
         }// end of if/else cycle
 
         if (funzioneOld != null) {
-            funzioneNew = recuperaFunzione(croceNew, funzioneOld);
+            funzioneNew = recuperaFunzione(funzioneOld, croceNew, turnoNew);
         }// end of if cycle
 
         entity = new Iscrizione();
@@ -785,14 +785,21 @@ public class MigrationService {
     }// end of method
 
 
-    private Funzione recuperaFunzione(Croce croceNew, FunzioneAmb funzioneOld) {
+    private Funzione recuperaFunzione(FunzioneAmb funzioneOld, Croce croceNew, Turno turnoNew) {
         Funzione funzione = null;
+        List<Funzione> funzioniEmbeddeNelServizio = null;
         String siglaOld;
         String codeNew;
-
+        Servizio servizio = turnoNew.getServizio();
         siglaOld = funzioneOld.getSigla();
         codeNew = siglaOld;
-        funzione = funzioneService.findByKeyUnica(croceNew, codeNew);
+        funzioniEmbeddeNelServizio = servizio.getFunzioni();
+
+        for (Funzione funz : funzioniEmbeddeNelServizio) {
+            if (funz.getCode().equals(codeNew)) {
+                funzione=funz;
+            }// end of if cycle
+        }// end of for cycle
 
         return funzione;
     }// end of method

@@ -103,23 +103,17 @@ public class TurnoForm extends AForm {
     }// end of Spring constructor
 
 
-//    /**
-//     * Crea due bottoni in basso:
-//     * Annulla
-//     * Conferma
-//     */
-//    private AFormToolbar creaBottomTurno(IAPresenter gestore, IAPresenter source) {
-//        ((AFormToolbar) toolbar).deleteAllButtons();
-//
-//        AButton buttonAnnulla = ((AFormToolbar) toolbar).creaAddButton(EATypeButton.annulla, source);
-//        buttonAnnulla.setWidth("12em");
-//        buttonAnnulla.setCaption(TORNA);
-//
-//        ((AFormToolbar) toolbar).creaAddButton(EATypeButton.registra, gestore, source, null, null);
-//
-//        return (AFormToolbar) toolbar;
-//    }// end of method
-
+    /**
+     * Crea la barra inferiore dei bottoni di comando
+     * Chiamato ogni volta che la finestra diventa attiva
+     * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
+     *
+     * @param typeButtons
+     */
+    @Override
+    protected VerticalLayout creaBottom(List<EATypeButton> typeButtons) {
+        return super.creaBottom(typeButtons);
+    }
 
     /**
      * Crea la scritta esplicativa
@@ -166,7 +160,7 @@ public class TurnoForm extends AForm {
         TurnoFieldIscrizioni fieldIscrizioni = null;
         Servizio servizio = null;
         List<Funzione> funzioni = null;
-        List<Iscrizione> items = service.getIscrizioni((Turno)entityBean);
+        List<Iscrizione> items = service.getIscrizioni((Turno) entityBean);
         String funzCode = "";
         boolean trovata = false;
         Iscrizione iscrizione;
@@ -180,40 +174,26 @@ public class TurnoForm extends AForm {
         fieldIscrizioni.setWidth("28em");
 
         servizio = ((Turno) entityBean).getServizio();
-        durata= servizio.getDurata();
+        durata = servizio.getDurata();
         funzioni = servizio.getFunzioni();
-
-//        for (Funzione funz : funzioni) {
-//            funzCode = funz.getCode();
-//            trovata = false;
-//
-//            if (array.isValid(iscrizioni)) {
-//                for (Iscrizione iscr : iscrizioni) {
-//                    if (iscr.getFunzione().id.equals(funz.id)) {
-//                        items.add(iscr);
-//                        trovata = true;
-//                    }// end of if cycle
-//                }// end of for cycle
-//            }// end of if cycle
-//
-//            if (!trovata) {
-//                items.add(iscrizioneService.newEntity(funz,0));
-//            }// end of if cycle
-//        }// end of for cycle
 
         fieldIscrizioni.setItems(items);
 
         if (fieldIscrizioni != null) {
-            super.addFieldBinder(javaField, fieldIscrizioni);
+//            super.addFieldBinder(javaField, fieldIscrizioni);
         }// end of if cycle
 
+        //--aggiunge AField alla lista interna, necessaria per ''recuperare'' un singolo algosField dal nome
+        fieldList.add(fieldIscrizioni);
+
+        //--Inizializza il field
+        fieldIscrizioni.initContent();
 
 //        //--aggiunge AField alla lista interna, necessaria per ''recuperare'' un singolo algosField dal nome
 //        fieldList.add(fieldIscrizioni);
 //
         //--Inizializza il field
         fieldIscrizioni.initContent();
-
     }// end of method
 
 
@@ -228,22 +208,55 @@ public class TurnoForm extends AForm {
      */
     @Override
     protected void layoutFields(Layout layout) {
-        if (((Turno)entityBean).getServizio().isOrario()) {
+        if (((Turno) entityBean).getServizio().isOrario()) {
         } else {
             AField fieldTitolo = getField("titoloExtra");
             AField fieldLocalita = getField("localitaExtra");
 
             int posTitolo = fieldList.indexOf(fieldTitolo);
-            fieldList.remove(posTitolo);
+            if (posTitolo > 0) {
+                fieldList.remove(posTitolo);
+            }// end of if cycle
 
             int posLocalita = fieldList.indexOf(fieldLocalita);
-            fieldList.remove(posLocalita);
+            if (posLocalita > 0) {
+                fieldList.remove(posLocalita);
+            }// end of if cycle
 
             fieldList.add(fieldTitolo);
             fieldList.add(fieldLocalita);
         }// end of if/else cycle
 
         super.layoutFields(layout);
+    }// end of method
+
+    /**
+     * eventuali ultime regolazioni facoiltative nella sottoclasse
+     */
+    @Override
+    protected void fixFormBeforeShow() {
+        super.fixFormBeforeShow();
+        toolbar.getButton(EATypeButton.conferma).setEnabled(true);
+    }// end of method
+
+    /**
+     * Trasferisce i valori dai fields del Form alla entityBean
+     * Esegue la (eventuale) validazione dei dati
+     * Esegue la (eventuale) trasformazione dei dati
+     *
+     * @return la entityBean del Form
+     */
+    @Override
+    public AEntity commit() {
+        AField fieldIscrizioni = getField(ISCRIZIONI);
+        List<Iscrizione> listaModificata = null;
+
+        if (fieldIscrizioni != null) {
+            listaModificata = (List<Iscrizione>) fieldIscrizioni.getValue();
+        }// end of if cycle
+        ((Turno)entityBean).setIscrizioni(listaModificata);
+
+        return super.commit();
     }// end of method
 
 }// end of class

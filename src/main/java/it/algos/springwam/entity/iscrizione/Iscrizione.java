@@ -77,10 +77,9 @@ public class Iscrizione extends ACEntity {
 
     /**
      * funzione per cui il milite/volontario/utente si iscrive (obbligatorio)
-     * riferimento dinamico CON @DBRef
+     * riferimento statico SENZA @DBRef (embedded)
      */
     @NotNull
-    @DBRef
     @AIField(type = EAFieldType.combo, clazz = FunzioneService.class)
     @AIColumn(width = 140)
     private Funzione funzione;

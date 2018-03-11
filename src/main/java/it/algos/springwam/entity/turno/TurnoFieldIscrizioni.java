@@ -61,9 +61,7 @@ public class TurnoFieldIscrizioni extends AField {
 
     private Grid grid;
 
-    private List<Iscrizione> iscrizioni;
-
-    private List items;
+    private List<Iscrizione> items;
 
     private int larghezzaGrid;
 
@@ -118,47 +116,28 @@ public class TurnoFieldIscrizioni extends AField {
 
 
         //--aggiunge una colonna calcolata
-        Grid.Column colonnaMilite = grid.addComponentColumn(iscrizione -> {
+        Grid.Column colonnaComboMilite = grid.addComponentColumn(iscrizione -> {
             Funzione funz = ((Iscrizione) iscrizione).getFunzione();
             Milite milite = ((Iscrizione) iscrizione).getMilite();
-//            List<Milite> listaMilitiDellaCroceAbilitatiPerLaFunzione = militeService.findByFunzione(funz);
-            List<Milite> listaMilitiDellaCroceAbilitatiPerLaFunzione = militeService.findAll();//@todo SBAGLIATO
+            List<Milite> listaMilitiDellaCroceAbilitatiPerLaFunzione = militeService.findAllByFunzione(funz);
+            int num = listaMilitiDellaCroceAbilitatiPerLaFunzione.size();
             ComboBox combo = new ComboBox();
-            combo.setWidth(larMilite -40, Sizeable.Unit.PIXELS);
+            combo.setWidth(larMilite - 40, Sizeable.Unit.PIXELS);
             combo.setItems(listaMilitiDellaCroceAbilitatiPerLaFunzione);
             combo.setValue(milite);
 
             combo.addValueChangeListener(new HasValue.ValueChangeListener<String>() {
                 @Override
                 public void valueChange(HasValue.ValueChangeEvent<String> valueChangeEvent) {
-//                    codeChanged(idKey, valueChangeEvent.getOldValue(), valueChangeEvent.getValue());
+                    militeChanged(funz, valueChangeEvent.getOldValue(), valueChangeEvent.getValue());
                 }// end of inner method
             });// end of anonymous inner class
 
             return combo;
         });//end of lambda expressions
-        colonnaMilite.setCaption("Milite");
-        colonnaMilite.setId("milite");
-        colonnaMilite.setWidth(larMilite);
-
-
-//        //--aggiunge una colonna calcolata
-//        Grid.Column colonnaDescrizione = grid.addComponentColumn(funzione -> {
-//            String descrizione = ((Funzione) funzione).getDescrizione();
-//            Label label = new Label("", ContentMode.HTML);
-//            String labelTxt = "";
-//            if (((Funzione) funzione).isObbligatoria()) {
-//                labelTxt = html.setRossoBold(descrizione);
-//            } else {
-//                labelTxt = html.setBluBold(descrizione);
-//            }// end of if/else cycle
-//            label.setValue(labelTxt);
-//
-//            return label;
-//        });//end of lambda expressions
-//        colonnaDescrizione.setCaption("Descrizione");
-//        colonnaDescrizione.setId("descrizione2");
-//        colonnaDescrizione.setWidth(350);
+        colonnaComboMilite.setCaption("Milite");
+        colonnaComboMilite.setId("milite");
+        colonnaComboMilite.setWidth(larMilite);
 
 
         //--aggiunge una colonna calcolata
@@ -168,32 +147,6 @@ public class TurnoFieldIscrizioni extends AField {
         colonnaDurata.setCaption("Ore");
         colonnaDurata.setId("durata");
         colonnaDurata.setWidth(larDurata);
-
-
-//        //--aggiunge una colonna calcolata
-//        Grid.Column colonnaCheck = grid.addComponentColumn(funzione -> {
-//            String idKey = ((Funzione) funzione).getId();
-//            CheckBox checkBox = null;
-//            if (text.isEmpty(((Funzione) funzione).getId())) {
-//            } else {
-//                boolean obbligatoria = ((Funzione) funzione).isObbligatoria();
-//                checkBox = new CheckBox("", obbligatoria);
-//            }// end of if/else cycle
-//
-//            if (checkBox != null) {
-//                checkBox.addValueChangeListener(new HasValue.ValueChangeListener<Boolean>() {
-//                    @Override
-//                    public void valueChange(HasValue.ValueChangeEvent<Boolean> valueChangeEvent) {
-//                        checkChanged(idKey, valueChangeEvent.getValue());
-//                    }// end of inner method
-//                });// end of anonymous inner class
-//            }// end of if cycle
-//
-//            return checkBox;
-//        });//end of lambda expressions
-//        colonnaCheck.setCaption("Obb.");
-//        colonnaCheck.setId("obb");
-//        colonnaCheck.setWidth(column.WIDTH_CHECK_BOX);
 
         ArrayList lista = new ArrayList();
         lista.add("funzione");
@@ -206,8 +159,8 @@ public class TurnoFieldIscrizioni extends AField {
             @Override
             public String apply(Object o) {
                 return "error_row";
-            }
-        });
+            }// end of inner method
+        });// end of anonymous inner class
     }// end of method
 
 
@@ -221,36 +174,9 @@ public class TurnoFieldIscrizioni extends AField {
 
     @Override
     public Component initContent() {
-        Funzione lastFunz = null;
-
         if (items != null && items.size() > 0) {
             grid.setItems(items);
-//            this.setHeightMode(HeightMode.ROW);
-//            this.setHeightByRows(items.size());
         }// end of if cycle
-
-
-//        if (entityBean != null) {
-//            funzioni = ((Servizio) entityBean).getFunzioni();
-//            if (grid != null && funzioni != null) {
-//                lastFunz = funzioni.get(funzioni.size() - 1);
-//                if (text.isValid(lastFunz.getId())) {
-//                    funzioni.add(funzioneService.newEntity());
-//                }// end of if cycle
-//                grid.setHeightByRows(funzioni.size());
-//                grid.setItems(funzioni);
-//            } else {
-//                funzioni = new ArrayList<>();
-//                funzioni.add(funzioneService.newEntity());
-//                grid.setItems(funzioni);
-//                grid.setHeightByRows(1);
-//            }// end of if/else cycle
-//        } else {
-//            if (grid != null) {
-//                grid.setItems("");
-//                grid.setHeightByRows(1);
-//            }// end of if cycle
-//        }// end of if/else cycle
 
         return grid;
     }// end of method
@@ -262,7 +188,7 @@ public class TurnoFieldIscrizioni extends AField {
      */
     @Override
     public Object getValue() {
-        return iscrizioni;
+        return items;
     }// end of method
 
 
@@ -274,126 +200,27 @@ public class TurnoFieldIscrizioni extends AField {
     public void doSetValue(Object value) {
     }// end of method
 
-//    /**
-//     * Cambiato il code di selezione della funzione
-//     */
-//    private void codeChanged(String idKey, String oldCode, String newCode) {
-//
-//        //--combo dell'ultima riga (vuota) della Grid
-//        if (text.isEmpty(oldCode) && text.isValid(newCode)) {
-//            aggiungeRiga(newCode);
-//            return;
-//        }// end of if cycle
-//
-//        //--modifica una riga
-//        if (text.isValid(oldCode) && text.isValid(newCode)) {
-//            modificaRiga(idKey, newCode);
-//            return;
-//        }// end of if cycle
-//
-//    }// end of method
-
-//    /**
-//     * Cambiato il check di obbligatorietà della funzione
-//     */
-//    private void checkChanged(String idKey, boolean newCode) {
-//        Funzione funz = getFunz(idKey);
-//        funz.setObbligatoria(newCode);
-//        //@todo It's a bug. Grid doesn't update itself after changes were done in underlying container nor has any reasonable method to refresh. There are several hacks around this issue i.e.
-//        grid.setItems(iscrizioni);
-//
-//        publish();
-//    }// end of method
-
-
-//    /**
-//     * Cancella l'ultima riga
-//     * Aggiunge la funzione corrispondente al code ricevuto
-//     * Aggiunge un'ultima riga vuota
-//     */
-//    private void aggiungeRiga(String newCode) {
-//        Funzione funz = funzioneService.findByKeyUnica(newCode);
-//
-//        if (funz != null) {
-//            funzioni.remove(funzioni.size() - 1);
-//            funzioni.add(funz);
-//            funzioni.add(funzioneService.newEntity());
-//            grid.setItems(funzioni);
-//            grid.setHeightByRows(funzioni.size());
-//
-//            publish();
-//        }// end of if cycle
-//
-//    }// end of method
-
 
     /**
-     * Modifica la riga
+     * Cambiato il milite selezionato per una iscrizione
      */
-    private void modificaRiga(String idKey, String newCode) {
-        Funzione oldFunz = null;
-        Funzione newFunz = null;
-        int oldPos = 0;
+    private void militeChanged(Funzione funz, Object oldValue, Object newValue) {
+        for (Iscrizione iscr : items) {
+            if (iscr.getFunzione() == funz) {
+                iscr.setMilite((Milite) newValue);
+            }// end of if cycle
+        }// end of for cycle
 
-//        oldFunz = getFunz(idKey);
-//        newFunz = funzioneService.findByKeyUnica(newCode);
-//
-//        if (oldFunz != null && newFunz != null) {
-//            oldPos = funzioni.indexOf(oldFunz);
-//            funzioni.remove(oldFunz);
-//            funzioni.add(oldPos, newFunz);
-//            grid.setItems(funzioni);
-//            grid.setHeightByRows(funzioni.size());
-//
-//            publish();
-//        }// end of if cycle
-
-    }// end of method
-
-//    /**
-//     * Recupera la funzione selezionata dalla idKey
-//     */
-//    private Funzione getFunz(String idKey) {
-//        for (Funzione funz : funzioni) {
-//            if (funz.getId().equals(idKey)) {
-//                return funz;
-//            }// end of if cycle
-//        }// end of for cycle
-//
-//        return null;
-//    }// end of method
-
-
-    /**
-     * Fire event
-     * source     Obbligatorio questo field
-     * target     Obbligatorio (window, dialog, presenter) a cui indirizzare l'evento
-     * entityBean Opzionale (entityBean) in elaborazione
-     */
-    public void publish() {
-        if (source != null) {
-            publisher.publishEvent(new AFieldEvent(EATypeField.fieldModificato, source, target, entityBean, this));
-        }// end of if cycle
+        grid.getDataProvider().refreshAll();
     }// end of method
 
 
-    /**
-     * Aggiunge il listener al field
-     */
-    protected void addListener() {
-//        if (radio != null) {
-//            radio.addValueChangeListener(new HasValue.ValueChangeListener<String>() {
-//                @Override
-//                public void valueChange(HasValue.ValueChangeEvent<String> valueChangeEvent) {
-//                    publish();
-//                }// end of inner method
-//            });// end of anonymous inner class
-//        }// end of if cycle
-    }// end of method
-
-
-    public void setItems(List items) {
+    public void setItems(List<Iscrizione> items) {
         this.items = items;
+    }// end of method
+
+    public List<Iscrizione> getItems() {
+        return items;
     }// end of method
 
 }// end of class

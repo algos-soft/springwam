@@ -151,6 +151,9 @@ public abstract class AForm extends AView implements IAForm {
             }// end of if cycle
         }// end of if cycle
 
+        //--eventuali ultime regolazioni facoiltative nella sottoclasse
+        this.fixFormBeforeShow();
+
         this.setExpandRatio(bodyLayout, 1);
     }// end of method
 
@@ -349,6 +352,11 @@ public abstract class AForm extends AView implements IAForm {
         }// end of if cycle
     }// end of method
 
+    /**
+     * eventuali ultime regolazioni facoiltative nella sottoclasse
+     */
+    protected void fixFormBeforeShow() {
+    }// end of method
 
     /**
      * Modifica l'ordine in cui vengono presentati i componenti grafici nel layout
