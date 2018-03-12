@@ -96,7 +96,7 @@ public class Tabellone extends AList {
     private TabelloneService tabelloneService;
 
     @Autowired
-    private   AResourceService resource;
+    private AResourceService resource;
 
     /**
      * Publisher degli eventi a livello Application
@@ -269,7 +269,7 @@ public class Tabellone extends AList {
     private void columnTurno(LocalDate giornoInizio, int delta) {
         LocalDate giorno = giornoInizio.plusDays(delta);
         int userId = giorno.getDayOfYear();
-        TurnoCell cella = new TurnoCell(publisher, turnoService, turnoPresenter, (TabellonePresenter) source, tabelloneService, resource,giorno);
+        TurnoCell cella = new TurnoCell(publisher, turnoService, turnoPresenter, (TabellonePresenter) source, tabelloneService, resource, giorno);
         Grid.Column colonna = grid.getGrid().addComponentColumn(cella);
         fixColumn(colonna, userId + "", dateService.getWeekLong(giorno), LAR_COLONNE);
     }// end of method

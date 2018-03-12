@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
@@ -102,7 +103,19 @@ public class TurnoService extends AService {
      * @return la nuova entity appena creata (non salvata)
      */
     public Turno newEntity(LocalDate giorno, Servizio servizio) {
-        return newEntity(giorno, servizio, (LocalDateTime) null, (LocalDateTime) null, (List<Iscrizione>) null, "", "");
+        int ini = servizio.getOraInizio();
+        int end = servizio.getOraFine();
+        if (ini==24) {
+            ini=23;
+        }// end of if cycle
+        if (end==24) {
+            end=23;
+        }// end of if cycle
+
+        LocalDateTime inizio = LocalDateTime.of(giorno, LocalTime.of(ini, 0));
+        LocalDateTime fine = LocalDateTime.of(giorno, LocalTime.of(end, 0));
+
+        return newEntity(giorno, servizio, inizio, fine, (List<Iscrizione>) null, "", "");
     }// end of method
 
 
@@ -192,7 +205,7 @@ public class TurnoService extends AService {
         Company company = login.getCompany();
 
         if (company != null) {
-            return repository.findByCompanyAndGiornoAndServizio(company, giorno,servizio);
+            return repository.findByCompanyAndGiornoAndServizio(company, giorno, servizio);
         } else {
             return null;
         }// end of if/else cycle

@@ -107,7 +107,7 @@ public class TurnoCell implements ValueProvider {
 
         turnoLayout.setSpacing(false);
         turno = getTurnoFromGiorno(riga, giorno);
-        if (turno != null) {
+        if (turno != null && turno.id != null) {
             servizio = turno.getServizio();
             funzioni = servizio.getFunzioni();
             iscrizioni = turnoService.getIscrizioni(turno);
@@ -150,7 +150,7 @@ public class TurnoCell implements ValueProvider {
 //            turnoLayout.addComponent(labelBlu2);
 
         } else {
-            turnoLayout.addComponent(new ALabel(TURNO_VUOTO));
+            turnoLayout.addComponent(new Label(TURNO_VUOTO, ContentMode.HTML));
         }// end of if/else cycle
 
         turnoLayout.addLayoutClickListener(new LayoutEvents.LayoutClickListener() {
@@ -183,6 +183,10 @@ public class TurnoCell implements ValueProvider {
                 }// end of if cycle
             }// end of if cycle
         }// end of for cycle
+
+        if (turno == null) {
+            turno = turnoService.newEntity(giorno, riga.getServizio());
+        }// end of if cycle
 
         return turno;
     }// end of method

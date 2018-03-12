@@ -1,5 +1,6 @@
 package it.algos.springwam.entity.turno;
 
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.HorizontalLayout;
@@ -104,15 +105,38 @@ public class TurnoForm extends AForm {
 
 
     /**
-     * Crea la barra inferiore dei bottoni di comando
-     * Chiamato ogni volta che la finestra diventa attiva
-     * Componente grafico facoltativo. Normalmente presente (AList e AForm), ma non obbligatorio.
+     * Metodo di ingresso nella view (nella sottoclasse concreta)
+     * Viene invocato (dalla SpringNavigator di SpringBoot) ogni volta che la view diventa attiva
+     * Elimina il riferimento al menuLayout nella view 'uscente' (oldView) perché il menuLayout è un 'singleton'
+     * Elimina tutti i componenti della view 'entrante' (this)
+     * Passa il controllo al gestore che gestisce questa view (individuato nel costruttore della sottoclasse concreta)
+     * Questa classe diversifica la chiamata al presenter a seconda del tipo di view (List, Form, ... altro)
+     * Il gestore prepara/elabora i dati e poi ripassa il controllo al metodo AForm.start() di questa view
      *
-     * @param typeButtons
+     * @param event
      */
     @Override
-    protected VerticalLayout creaBottom(List<EATypeButton> typeButtons) {
-        return super.creaBottom(typeButtons);
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        super.enter(event);
+    }
+
+    /**
+     * Creazione di una view (AForm) contenente i fields
+     * Metodo invocato dal Presenter (dopo che ha elaborato i dati da visualizzare)
+     * Ricrea tutto ogni volta che la view diventa attiva
+     * La view comprende:
+     * 1) Menu: Contenitore grafico per la barra di menu principale e per il menu/bottone del Login
+     * 2) Top: Contenitore grafico per la caption
+     * 3) Body: Corpo centrale della view. Utilizzando un Panel, si ottine l'effetto scorrevole
+     * 4) Bottom - Barra dei bottoni inferiore
+     *
+     * @param entityClazz         di riferimento, sottoclasse concreta di AEntity
+     * @param reflectedJavaFields previsti nel modello dati della Entity più eventuali aggiunte della sottoclasse
+     * @param typeButtons         lista di (tipi di) bottoni visibili nella toolbar della view AForm
+     */
+    @Override
+    public void start(Class<? extends AEntity> entityClazz, List<Field> reflectedJavaFields, List<EATypeButton> typeButtons) {
+        super.start(entityClazz, reflectedJavaFields, typeButtons);
     }
 
     /**
@@ -136,14 +160,16 @@ public class TurnoForm extends AForm {
 
 
     /**
-     * Regolazioni specifiche per i fields di una entity in modifica, dopo aver trascritto la entityBean nel binder
+     * Regolazioni specifiche per i fields di una entity, dopo aver trascritto la entityBean nel binder
      */
-    protected void fixFieldsEditOnly() {
+    @Override
+    protected void fixFieldsAllways() {
         disabilitaField("giorno");
         disabilitaField("servizio");
         disabilitaField("inizio");
         disabilitaField("fine");
     }// end of method
+
 
 
     /**
