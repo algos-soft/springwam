@@ -47,6 +47,7 @@ import java.util.List;
  * Annotated with @AIScript (facoltativo) per controllare la ri-creazione di questo file nello script del framework
  * Inserisce SEMPRE la versione di serializzazione che viene poi filtrata per non mostrarla in List e Form
  * Le singole property sono annotate con @AIField (obbligatorio per il tipo di Field) e @AIColumn (facoltativo)
+ * Alfa modifica
  */
 @SpringComponent
 @Document(collection = "servizio")

@@ -76,7 +76,7 @@ public class AddressList extends AList {
 
 
     /**
-     * Crea la scritta esplicativa
+     * Crea la scritta esplicativaDevAlert
      * Può essere sovrascritto per un'intestazione specifica (caption) della grid
      */
     @Override

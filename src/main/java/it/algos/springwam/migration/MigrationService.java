@@ -272,7 +272,7 @@ public class MigrationService {
 
 
     /**
-     * Elabora la vecchia descrizione2 per selezionare una icona adeguata
+     * Elabora la vecchia descrizione per selezionare una icona adeguata
      *
      * @param descrizione usata in webambulanze
      *

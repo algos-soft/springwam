@@ -1,7 +1,6 @@
 package it.algos.springwam.migration;
 
 import it.algos.webbase.web.entity.BaseEntity;
-import it.algos.webbase.web.query.AQuery;
 import lombok.Data;
 import org.eclipse.persistence.annotations.ReadOnly;
 
